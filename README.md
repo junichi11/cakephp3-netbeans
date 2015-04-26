@@ -2,6 +2,16 @@
 
 This plugin provides support for CakePHP3.
 
+## How To Enable
+
+- Open the project properties dialog (Right-Click your project > properties)
+- Frameworks > CakePHP3 > Check `Enabled`
+
+## Use Your Custom Directory Structure
+
+- Open the project properties
+- Set relative paths from your Source Directory to Path settings
+
 ## Features
 
 - Code completion
