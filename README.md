@@ -16,6 +16,7 @@ This plugin provides support for CakePHP3.
 
 - Code completion
 - Smart Go To
+- Template files(Controller, Table, Helper, e.t.c.)
 - Resolve mime-types for a ctp extension and a `.cake` file
 
 ### Code Completion
