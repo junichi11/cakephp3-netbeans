@@ -486,21 +486,21 @@ public abstract class CakePHP3ModuleImpl {
      */
     public String getNamespace(FileObject fileObject) {
         if (fileObject == null) {
-            return "";
+            return ""; // NOI18N
         }
         Base base = getBase(fileObject);
         StringBuilder sb = new StringBuilder();
         String pluginName = null;
         if (base == Base.APP) {
-            sb.append(getAppNamespace()).append("\\");
+            sb.append(getAppNamespace()).append("\\"); // NOI18N
         } else if (base == Base.CORE) {
-            sb.append("Cake\\");
+            sb.append("Cake\\"); // NOI18N
         } else if (base == Base.PLUGIN) {
             pluginName = getPluginName(fileObject);
             if (StringUtils.isEmpty(pluginName)) {
                 return sb.toString();
             }
-            sb.append(pluginName).append("\\");
+            sb.append(pluginName).append("\\"); // NOI18N
         } else {
             return sb.toString();
         }
@@ -508,13 +508,13 @@ public abstract class CakePHP3ModuleImpl {
         // XXX not default directory structure
         FileObject srcDir = getSrcDir(base, pluginName);
         if (srcDir == null) {
-            return "";
+            return ""; // NOI18N
         }
         FileObject target = fileObject;
         if (!fileObject.isFolder()) {
             target = fileObject.getParent();
             if (target == null) {
-                return "";
+                return ""; // NOI18N
             }
         }
 
@@ -522,7 +522,7 @@ public abstract class CakePHP3ModuleImpl {
         if (relativePath == null) {
             return "";
         }
-        sb.append(relativePath);
+        sb.append(relativePath.replace("/", "\\")); // NOI18N
         return sb.toString();
     }
 
