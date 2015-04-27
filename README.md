@@ -2,6 +2,17 @@
 
 This plugin provides support for CakePHP3.
 
+## Downloads
+
+- https://github.com/junichi11/cakephp3-netbeans/releases
+
+## How To Install
+
+- Download a nbm (e.g. org-netbeans-modules-php-cake3-0.0.1-dev-201408251540.nbm)
+- Tools > Plugins > Downloaded > Add Plugins
+- Select the nbm
+- Click Install
+
 ## How To Enable
 
 - Open the project properties dialog (Right-Click your project > properties)
