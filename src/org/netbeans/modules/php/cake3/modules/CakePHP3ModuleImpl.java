@@ -541,6 +541,16 @@ public abstract class CakePHP3ModuleImpl {
         return null;
     }
 
+    public ModuleInfo createModuleInfo(FileObject fileObject) {
+        Base base = getBase(fileObject);
+        Category category = getCategory(fileObject);
+        String pluginName = null;
+        if (base == Base.PLUGIN) {
+            pluginName = getPluginName(fileObject);
+        }
+        return new ModuleInfoImpl(fileObject, base, category, pluginName);
+    }
+
     /**
      * Check whether a file is template one.
      *
@@ -659,6 +669,48 @@ public abstract class CakePHP3ModuleImpl {
         public List<Pair<String, String>> getPlugins() {
             return plugins;
         }
+    }
+
+    private static class ModuleInfoImpl implements ModuleInfo {
+
+        private final FileObject fileObject;
+        private final String pluginName;
+        private final Base base;
+        private final Category category;
+
+        private ModuleInfoImpl(FileObject fileObject, Base base, Category category, String pluginName) {
+            this.fileObject = fileObject;
+            this.base = base;
+            this.category = category;
+            this.pluginName = pluginName;
+        }
+
+        @Override
+        public FileObject getFileObject() {
+            return fileObject;
+        }
+
+        @Override
+        public Base getBase() {
+            if (base == null) {
+                return Base.UNKNOWN;
+            }
+            return base;
+        }
+
+        @Override
+        public Category getCategory() {
+            if (category == null) {
+                return Category.UNKNOWN;
+            }
+            return category;
+        }
+
+        @Override
+        public String getPluginName() {
+            return pluginName;
+        }
+
     }
 
 }

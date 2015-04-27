@@ -55,8 +55,8 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.FileUtils;
 import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.ModuleInfo;
 import org.netbeans.modules.php.cake3.modules.ModuleUtils;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
@@ -188,18 +188,13 @@ public abstract class CakePHP3GoToStatus {
             return Collections.emptyList();
         }
         CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
-        Base base = cakeModule.getBase(fileObject);
-        String pluginName = null;
-        if (base == Base.PLUGIN) {
-            pluginName = cakeModule.getPluginName(fileObject);
-        }
-        Category category = cakeModule.getCategory(fileObject);
-        if (ModuleUtils.isTemplate(category)) {
+        ModuleInfo info = cakeModule.createModuleInfo(fileObject);
+        if (ModuleUtils.isTemplate(info.getCategory())) {
             return Collections.emptyList();
         }
 
         List<GoToItem> items = new ArrayList<>();
-        List<FileObject> directories = cakeModule.getDirectories(base, null, pluginName);
+        List<FileObject> directories = cakeModule.getDirectories(info.getBase(), null, info.getPluginName());
         for (FileObject directory : directories) {
             Set<ClassElement> classElements = getClassElements(directory, fileObject.getName() + "Test"); // NOI18N
             for (ClassElement classElement : classElements) {
@@ -240,12 +235,8 @@ public abstract class CakePHP3GoToStatus {
         }
         List<GoToItem> items = new ArrayList<>();
         CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
-        CakePHP3Module.Base base = cakeModule.getBase(fileObject);
-        String pluginName = null;
-        if (base == CakePHP3Module.Base.PLUGIN) {
-            pluginName = cakeModule.getPluginName(fileObject);
-        }
-        List<FileObject> directories = cakeModule.getDirectories(base, category, pluginName);
+        ModuleInfo info = cakeModule.createModuleInfo(fileObject);
+        List<FileObject> directories = cakeModule.getDirectories(info.getBase(), category, info.getPluginName());
         for (FileObject directory : directories) {
             for (FileObject child : directory.getChildren()) {
                 if (child.isFolder() || !FileUtils.PHP_MIME_TYPE.equals(child.getMIMEType(FileUtils.PHP_MIME_TYPE))) {

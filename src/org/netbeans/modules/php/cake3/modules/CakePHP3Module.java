@@ -205,4 +205,8 @@ public class CakePHP3Module {
         return impl.getNamespace(fileObject);
     }
 
+    public ModuleInfo createModuleInfo(FileObject fileObject) {
+        return impl.createModuleInfo(fileObject);
+    }
+
 }

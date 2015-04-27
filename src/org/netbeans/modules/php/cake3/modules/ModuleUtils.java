@@ -125,7 +125,7 @@ public final class ModuleUtils {
             case TEST_CASE:
             case VIEW:
             case VIEW_CELL:
-                String regex = category.getSuffix().concat("$");
+                String regex = category.getSuffix().concat("$"); // NOI18N
                 return className.replaceAll(regex, ""); // NOI18N
             default:
                 return className;
