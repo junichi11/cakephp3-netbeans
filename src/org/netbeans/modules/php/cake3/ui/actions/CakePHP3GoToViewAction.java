@@ -39,62 +39,24 @@
  *
  * Portions Copyrighted 2015 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3;
+package org.netbeans.modules.php.cake3.ui.actions;
 
-import java.util.Arrays;
-import java.util.List;
-import javax.swing.Action;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
-import org.netbeans.modules.php.cake3.ui.actions.CakePHP3GoToActionAction;
-import org.netbeans.modules.php.cake3.ui.actions.CakePHP3GoToViewAction;
-import org.netbeans.modules.php.cake3.ui.actions.CakeServerAction;
-import org.netbeans.modules.php.spi.framework.PhpModuleActionsExtender;
-import org.netbeans.modules.php.spi.framework.actions.GoToActionAction;
+import org.netbeans.modules.php.cake3.ui.actions.gotos.CakePHP3SmartGoToAction;
 import org.netbeans.modules.php.spi.framework.actions.GoToViewAction;
-import org.openide.filesystems.FileObject;
-import org.openide.util.NbBundle;
 
 /**
  *
  * @author junichi11
  */
-public class CakePHP3ActionsExtender extends PhpModuleActionsExtender {
+public class CakePHP3GoToViewAction extends GoToViewAction {
 
-    @NbBundle.Messages({
-        "CakePHP3ActionsExtender.menuName=CakePHP3"
-    })
-    @Override
-    public String getMenuName() {
-        return Bundle.CakePHP3ActionsExtender_menuName();
-    }
+    private static final long serialVersionUID = -8407813132091607464L;
 
     @Override
-    public List<? extends Action> getActions() {
-        return Arrays.asList(new CakeServerAction());
-    }
-
-    @Override
-    public GoToViewAction getGoToViewAction(FileObject fo, int offset) {
-        return new CakePHP3GoToViewAction();
-    }
-
-    @Override
-    public GoToActionAction getGoToActionAction(FileObject fo, int offset) {
-        return new CakePHP3GoToActionAction();
-    }
-
-    @Override
-    public boolean isActionWithView(FileObject fo) {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fo);
-        CakePHP3Module.Category category = cakeModule.getCategory(fo);
-        return category == Category.CONTROLLER;
-    }
-
-    @Override
-    public boolean isViewWithAction(FileObject fo) {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fo);
-        return cakeModule.isTemplateFile(fo);
+    public boolean goToView() {
+        CakePHP3SmartGoToAction action = new CakePHP3SmartGoToAction();
+        action.actionPerformed(null);
+        return true;
     }
 
 }
