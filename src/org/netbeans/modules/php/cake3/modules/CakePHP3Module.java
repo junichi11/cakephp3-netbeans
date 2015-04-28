@@ -139,6 +139,10 @@ public class CakePHP3Module {
         return forPhpModule(phpModule);
     }
 
+    public boolean isTemplateFile(FileObject fo) {
+        return impl.isTemplateFile(fo);
+    }
+
     public List<FileObject> getDirectories(Base base) {
         return impl.getDirectories(base);
     }
