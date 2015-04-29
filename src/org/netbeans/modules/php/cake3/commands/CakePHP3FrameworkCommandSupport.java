@@ -39,69 +39,67 @@
  *
  * Portions Copyrighted 2015 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3;
+package org.netbeans.modules.php.cake3.commands;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import javax.swing.Action;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
-import org.netbeans.modules.php.cake3.ui.actions.CakePHP3GoToActionAction;
-import org.netbeans.modules.php.cake3.ui.actions.CakePHP3GoToViewAction;
-import org.netbeans.modules.php.cake3.ui.actions.CakePHP3RunCommandAction;
-import org.netbeans.modules.php.cake3.ui.actions.CakeServerAction;
-import org.netbeans.modules.php.spi.framework.PhpModuleActionsExtender;
-import org.netbeans.modules.php.spi.framework.actions.GoToActionAction;
-import org.netbeans.modules.php.spi.framework.actions.GoToViewAction;
-import org.netbeans.modules.php.spi.framework.actions.RunCommandAction;
-import org.openide.filesystems.FileObject;
-import org.openide.util.NbBundle;
+import org.netbeans.modules.php.api.executable.InvalidPhpExecutableException;
+import org.netbeans.modules.php.api.phpmodule.PhpModule;
+import org.netbeans.modules.php.api.util.UiUtils;
+import org.netbeans.modules.php.cake3.CakePHP3Constants;
+import org.netbeans.modules.php.spi.framework.commands.FrameworkCommand;
+import org.netbeans.modules.php.spi.framework.commands.FrameworkCommandSupport;
 
 /**
  *
  * @author junichi11
  */
-public class CakePHP3ActionsExtender extends PhpModuleActionsExtender {
+public final class CakePHP3FrameworkCommandSupport extends FrameworkCommandSupport {
 
-    @NbBundle.Messages({
-        "CakePHP3ActionsExtender.menuName=CakePHP3"
-    })
-    @Override
-    public String getMenuName() {
-        return Bundle.CakePHP3ActionsExtender_menuName();
+    public CakePHP3FrameworkCommandSupport(PhpModule phpModule) {
+        super(phpModule);
     }
 
     @Override
-    public List<? extends Action> getActions() {
-        return Arrays.asList(new CakeServerAction());
+    public String getFrameworkName() {
+        return CakePHP3Constants.CAKEPHP3;
     }
 
     @Override
-    public GoToViewAction getGoToViewAction(FileObject fo, int offset) {
-        return new CakePHP3GoToViewAction();
+    public void runCommand(CommandDescriptor commandDescriptor, Runnable postExecution) {
+        String[] commands = commandDescriptor.getFrameworkCommand().getCommands();
+        String[] commandParams = commandDescriptor.getCommandParams();
+        List<String> params = new ArrayList<>(commands.length + commandParams.length);
+        params.addAll(Arrays.asList(commands));
+        params.addAll(Arrays.asList(commandParams));
+        try {
+            Cake3Script.forPhpModule(phpModule, false).runCommand(phpModule, params, postExecution);
+        } catch (InvalidPhpExecutableException ex) {
+            UiUtils.invalidScriptProvided(ex.getLocalizedMessage(), getOptionsPath());
+        }
     }
 
     @Override
-    public GoToActionAction getGoToActionAction(FileObject fo, int offset) {
-        return new CakePHP3GoToActionAction();
+    protected String getOptionsPath() {
+        return UiUtils.FRAMEWORKS_AND_TOOLS_OPTIONS_PATH;
     }
 
     @Override
-    public boolean isActionWithView(FileObject fo) {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fo);
-        CakePHP3Module.Category category = cakeModule.getCategory(fo);
-        return category == Category.CONTROLLER;
+    protected File getPluginsDirectory() {
+        return null;
     }
 
     @Override
-    public boolean isViewWithAction(FileObject fo) {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fo);
-        return cakeModule.isTemplateFile(fo);
-    }
-
-    @Override
-    public RunCommandAction getRunCommandAction() {
-        return CakePHP3RunCommandAction.getInstance();
+    protected List<FrameworkCommand> getFrameworkCommandsInternal() {
+        try {
+            return Cake3Script.forPhpModule(phpModule, true).getCommands(phpModule);
+        } catch (InvalidPhpExecutableException ex) {
+            UiUtils.invalidScriptProvided(ex.getLocalizedMessage(), getOptionsPath());
+        }
+        return Collections.emptyList();
     }
 
 }

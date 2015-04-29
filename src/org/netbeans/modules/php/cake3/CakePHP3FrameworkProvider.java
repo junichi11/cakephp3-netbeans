@@ -48,6 +48,7 @@ import org.netbeans.api.annotations.common.StaticResource;
 import org.netbeans.modules.php.api.framework.BadgeIcon;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.phpmodule.PhpModuleProperties;
+import org.netbeans.modules.php.cake3.commands.CakePHP3FrameworkCommandSupport;
 import org.netbeans.modules.php.cake3.editor.CakePHP3EditorExtender;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
@@ -148,8 +149,7 @@ public class CakePHP3FrameworkProvider extends PhpFrameworkProvider {
 
     @Override
     public FrameworkCommandSupport getFrameworkCommandSupport(PhpModule phpModule) {
-        // TODO
-        return null;
+        return new CakePHP3FrameworkCommandSupport(phpModule);
     }
 
     @Override
