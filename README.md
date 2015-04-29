@@ -20,8 +20,45 @@ This plugin provides support for CakePHP3.
 
 ## Use Your Custom Directory Structure
 
+If you just installed Cake3 via Composer, you don't have to do anything.
+
 - Open the project properties
 - Set relative paths from your Source Directory to Path settings
+
+#### Root
+
+Use when your CakePHP app directory exists in your php project as a subdirectory.
+
+e.g. set `app` to Root setting like the following case:
+```
+source directory
+    ├── foo
+    ├── bar
+    └── app
+            ├── README.md
+            ├── bin
+            ├── composer.json
+            ├── composer.lock
+            ├── config
+            ├── index.php
+            ├── logs
+            ├── nbproject
+            ├── phpunit.xml.dist
+            ├── plugins
+            ├── src
+            ├── tests
+            ├── tmp
+            ├── vendor
+            └── webroot
+```
+
+#### The Others
+
+The same as App settings of config/app.php
+
+#### Templates, plugins, locales, e.t.c.
+
+I'll support them using `.cake` file.
 
 ## Features
 
