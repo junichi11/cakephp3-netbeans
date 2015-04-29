@@ -227,7 +227,7 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
         }
         FileObject defaultPlugins = rootDirectory.getFileObject("plugins"); // NOI18N
         if (defaultPlugins != null) {
-            Collections.singletonList(defaultPlugins);
+            return Collections.singletonList(defaultPlugins);
         }
         return Collections.emptyList();
     }
