@@ -587,6 +587,16 @@ public abstract class CakePHP3ModuleImpl {
     public abstract FileObject getController(FileObject template);
 
     /**
+     * Get a controller for a template file.
+     *
+     * @param template a template file
+     * @param fallback whether fallback to App
+     * @return a file if the controller exists, otherwise {@code null}
+     */
+    @CheckForNull
+    public abstract FileObject getController(FileObject template, boolean fallback);
+
+    /**
      * Get a view cell for a template file.
      *
      * @param template a template file
@@ -601,10 +611,11 @@ public abstract class CakePHP3ModuleImpl {
      * @param relativePath a relative path for a template file from a controller
      * directory.
      * @param controller a controller file
+     * @param themeName a themeName
      * @return a template file if it exists, otherwise {@code null}
      */
     @CheckForNull
-    public abstract FileObject getTemplate(String relativePath, FileObject controller);
+    public abstract FileObject getTemplate(String relativePath, FileObject controller, String themeName);
 
     /**
      * Get an entity file for a table.

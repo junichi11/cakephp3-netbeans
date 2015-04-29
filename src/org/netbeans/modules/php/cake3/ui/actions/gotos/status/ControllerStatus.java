@@ -46,6 +46,7 @@ import java.util.List;
 import org.netbeans.modules.parsing.spi.ParseException;
 import org.netbeans.modules.php.api.editor.PhpClass;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
+import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.editor.visitors.ControllerVisitor;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
@@ -75,6 +76,7 @@ class ControllerStatus extends CakePHP3GoToStatus {
     private final List<GoToItem> tables = new ArrayList<>();
     private final List<GoToItem> templates = new ArrayList<>();
     private final List<GoToItem> allTemplates = new ArrayList<>();
+    private String themeName = ""; // NOI18N
 
     public ControllerStatus(FileObject fileObject, int offset) {
         super(fileObject, offset);
@@ -89,11 +91,12 @@ class ControllerStatus extends CakePHP3GoToStatus {
         } catch (ParseException ex) {
             Exceptions.printStackTrace(ex);
         }
+        themeName = visitor.getThemeName();
         addItems(Category.COMPONENT, visitor.getComponents());
         addItems(Category.HELPER, visitor.getHelpers());
         addItems(Category.TABLE, visitor.getTables());
-        addTemplates(visitor.getTemplateNames(), fileObject);
-        addAllTemplates(visitor.getAllTemplateNames(), fileObject);
+        addTemplates(visitor, fileObject);
+        addAllTemplates(visitor, fileObject);
     }
 
     private void addItems(Category category, List<Pair<String, PhpClass>> phpClasses) {
@@ -119,12 +122,31 @@ class ControllerStatus extends CakePHP3GoToStatus {
         }
     }
 
-    protected void addTemplates(List<String> names, FileObject controller) {
+    protected void addTemplates(ControllerVisitor visitor, FileObject controller) {
+        List<String> names = visitor.getTemplateNames();
         if (names.isEmpty() || controller == null) {
             return;
         }
+        List<String> themeNames = visitor.getThemeNames();
         CakePHP3Module cakeModule = CakePHP3Module.forFileObject(controller);
         for (String name : names) {
+            // theme
+            if (!StringUtils.isEmpty(themeName)) {
+                FileObject themeTemplate = getTemplate(name, controller, themeName);
+                if (themeTemplate != null) {
+                    templates.add(GoToItemFactory.create(cakeModule.getCategory(themeTemplate), themeTemplate, DEFAULT_OFFSET));
+                }
+            }
+            for (String tn : themeNames) {
+                if (tn.equals(themeName)) {
+                    continue;
+                }
+                FileObject themeTemplate = getTemplate(name, controller, tn);
+                if (themeTemplate != null) {
+                    templates.add(GoToItemFactory.create(cakeModule.getCategory(themeTemplate), themeTemplate, DEFAULT_OFFSET));
+                }
+            }
+
             FileObject template = getTemplate(name, controller);
             if (template == null) {
                 return;
@@ -133,12 +155,31 @@ class ControllerStatus extends CakePHP3GoToStatus {
         }
     }
 
-    protected void addAllTemplates(List<String> names, FileObject controller) {
+    protected void addAllTemplates(ControllerVisitor visitor, FileObject controller) {
+        List<String> names = visitor.getAllTemplateNames();
         if (names.isEmpty() || controller == null) {
             return;
         }
+        List<String> themeNames = visitor.getAllThemeNames();
         CakePHP3Module cakeModule = CakePHP3Module.forFileObject(controller);
         for (String name : names) {
+            // theme
+            if (!StringUtils.isEmpty(themeName)) {
+                FileObject themeTemplate = getTemplate(name, controller, themeName);
+                if (themeTemplate != null) {
+                    allTemplates.add(GoToItemFactory.create(cakeModule.getCategory(themeTemplate), themeTemplate, DEFAULT_OFFSET));
+                }
+            }
+            for (String tn : themeNames) {
+                if (tn.equals(themeName)) {
+                    continue;
+                }
+                FileObject themeTemplate = getTemplate(name, controller, tn);
+                if (themeTemplate != null) {
+                    allTemplates.add(GoToItemFactory.create(cakeModule.getCategory(themeTemplate), themeTemplate, DEFAULT_OFFSET));
+                }
+            }
+
             FileObject template = getTemplate(name, controller);
             if (template == null) {
                 continue;
@@ -148,9 +189,13 @@ class ControllerStatus extends CakePHP3GoToStatus {
     }
 
     private FileObject getTemplate(String name, FileObject controller) {
+        return getTemplate(name, controller, ""); // NOI18N
+    }
+
+    private FileObject getTemplate(String name, FileObject controller, String themeName) {
         CakePHP3Module cakeModule = CakePHP3Module.forFileObject(controller);
         String relativePath = cakeModule.toPhpFileName(Category.TEMPLATE, name);
-        return cakeModule.getTemplate(relativePath, controller);
+        return cakeModule.getTemplate(relativePath, controller, themeName);
     }
 
     @Override

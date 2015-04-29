@@ -55,8 +55,11 @@ import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
 import org.netbeans.modules.php.cake3.utils.CakePHPCodeUtils;
 import org.netbeans.modules.php.editor.CodeUtils;
+import org.netbeans.modules.php.editor.parser.astnodes.Assignment;
 import org.netbeans.modules.php.editor.parser.astnodes.ClassDeclaration;
 import org.netbeans.modules.php.editor.parser.astnodes.Expression;
+import org.netbeans.modules.php.editor.parser.astnodes.ExpressionStatement;
+import org.netbeans.modules.php.editor.parser.astnodes.FieldAccess;
 import org.netbeans.modules.php.editor.parser.astnodes.FunctionDeclaration;
 import org.netbeans.modules.php.editor.parser.astnodes.FunctionInvocation;
 import org.netbeans.modules.php.editor.parser.astnodes.MethodDeclaration;
@@ -64,6 +67,8 @@ import org.netbeans.modules.php.editor.parser.astnodes.MethodInvocation;
 import org.netbeans.modules.php.editor.parser.astnodes.NamespaceName;
 import org.netbeans.modules.php.editor.parser.astnodes.Scalar;
 import org.netbeans.modules.php.editor.parser.astnodes.StaticMethodInvocation;
+import org.netbeans.modules.php.editor.parser.astnodes.Variable;
+import org.netbeans.modules.php.editor.parser.astnodes.VariableBase;
 import org.openide.filesystems.FileObject;
 import org.openide.util.Lookup;
 import org.openide.util.Pair;
@@ -80,7 +85,8 @@ public class ControllerVisitor extends FieldsVisitor {
     private String templateName = ""; // NOI18N
     private final Set<String> templateNames = Collections.synchronizedSet(new HashSet<String>());
     private final Set<String> allTemplateNames = Collections.synchronizedSet(new HashSet<String>());
-    // TODO add themes
+    private final Set<String> themeNames = Collections.synchronizedSet(new HashSet<String>());
+    private final Set<String> allThemeNames = Collections.synchronizedSet(new HashSet<String>());
 
     public ControllerVisitor(PhpModule phpModule) {
         this(phpModule, false);
@@ -109,6 +115,48 @@ public class ControllerVisitor extends FieldsVisitor {
             return new HashSet<>(Arrays.asList(HELPERS));
         }
         return new HashSet<>(Arrays.asList(COMPONENTS, MODELS));
+    }
+
+    @Override
+    public void visit(ExpressionStatement node) {
+        super.visit(node);
+        if (StringUtils.isEmpty(currentMethodName)) {
+            return;
+        }
+
+        Expression expression = node.getExpression();
+        if (expression instanceof Assignment) {
+            Assignment assignment = (Assignment) expression;
+            Assignment.Type operator = assignment.getOperator();
+            if (operator != Assignment.Type.EQUAL) {
+                return;
+            }
+
+            VariableBase leftHandSide = assignment.getLeftHandSide();
+            if (leftHandSide instanceof FieldAccess) {
+                // e.g. $this->theme = 'Modern';
+                // left
+                FieldAccess f = (FieldAccess) leftHandSide;
+                Variable v = f.getField();
+                String variableName = CodeUtils.extractVariableName(v);
+                if (!"theme".equals(variableName)) { // NOI18N
+                    return;
+                }
+
+                // right
+                Expression rightHandSide = assignment.getRightHandSide();
+                String rightValue = CakePHPCodeUtils.getStringValue(rightHandSide);
+                if (rightValue.isEmpty()) {
+                    return;
+                }
+
+                if (currentMethodName.equals(templateName)) {
+                    themeNames.add(rightValue);
+                } else {
+                    allThemeNames.add(rightValue);
+                }
+            }
+        }
     }
 
     @Override
@@ -255,4 +303,11 @@ public class ControllerVisitor extends FieldsVisitor {
         return new ArrayList<>(allTemplateNames);
     }
 
+    public List<String> getThemeNames() {
+        return new ArrayList<>(themeNames);
+    }
+
+    public List<String> getAllThemeNames() {
+        return new ArrayList<>(allThemeNames);
+    }
 }

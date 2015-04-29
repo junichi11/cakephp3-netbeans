@@ -179,14 +179,18 @@ public class CakePHP3Module {
         return impl.getController(template);
     }
 
+    public FileObject getController(FileObject template, boolean forceApp) {
+        return impl.getController(template, forceApp);
+    }
+
     @CheckForNull
     public FileObject getViewCell(FileObject template) {
         return impl.getViewCell(template);
     }
 
     @CheckForNull
-    public FileObject getTemplate(String relativePath, FileObject controller) {
-        return impl.getTemplate(relativePath, controller);
+    public FileObject getTemplate(String relativePath, FileObject controller, String themeName) {
+        return impl.getTemplate(relativePath, controller, themeName);
     }
 
     public FileObject getEntity(FileObject table) {

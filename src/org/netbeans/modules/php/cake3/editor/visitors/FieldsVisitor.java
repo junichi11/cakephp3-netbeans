@@ -72,10 +72,12 @@ public abstract class FieldsVisitor extends CakePHP3Visitor {
     private final Set<Pair<String, PhpClass>> componentClasses = Collections.synchronizedSet(new HashSet<Pair<String, PhpClass>>());
     private final Set<Pair<String, PhpClass>> helperClasses = Collections.synchronizedSet(new HashSet<Pair<String, PhpClass>>());
     private final Set<Pair<String, PhpClass>> modelClasses = Collections.synchronizedSet(new HashSet<Pair<String, PhpClass>>());
+    private String themeName = ""; // NOI18N
 
     public static final String COMPONENTS = "$components"; // NOI18N
     public static final String HELPERS = "$helpers"; // NOI18N
     public static final String MODELS = "$models"; // NOI18N dummy
+    public static final String THEME = "$theme"; // NOI18N
     public static final Map<String, Category> CATEGORIES = new HashMap<>();
 
     static {
@@ -94,6 +96,14 @@ public abstract class FieldsVisitor extends CakePHP3Visitor {
         for (SingleFieldDeclaration field : fields) {
             // check field name
             String fieldName = CodeUtils.extractVariableName(field.getName());
+
+            // theme
+            if (THEME.equals(fieldName)) {
+                setThemeName(field);
+                continue;
+            }
+
+            // the others
             Category category = CATEGORIES.get(fieldName);
             if (category == null) {
                 continue;
@@ -154,6 +164,13 @@ public abstract class FieldsVisitor extends CakePHP3Visitor {
         }
     }
 
+    private void setThemeName(SingleFieldDeclaration field) {
+        Expression value = field.getValue();
+        if (value instanceof Scalar) {
+            themeName = CakePHPCodeUtils.getStringValue(value);
+        }
+    }
+
     public List<Pair<String, PhpClass>> getPhpClasses() {
         Set<String> fields = getAvailableFieldNames();
         List<Pair<String, PhpClass>> phpClasses = new ArrayList<>();
@@ -179,6 +196,10 @@ public abstract class FieldsVisitor extends CakePHP3Visitor {
 
     public List<Pair<String, PhpClass>> getTables() {
         return new ArrayList<>(modelClasses);
+    }
+
+    public String getThemeName() {
+        return themeName;
     }
 
     public abstract Set<String> getAvailableFieldNames();
