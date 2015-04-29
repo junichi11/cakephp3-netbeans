@@ -80,6 +80,7 @@ public final class CakePHP3Constants {
     @StaticResource
     public static final String GOTO_VIEW_CELL_ICON = "org/netbeans/modules/php/cake3/resources/goto-view-cell.png"; // NOI18N
 
+    public static final String CAKEPHP3 = "CakePHP3"; // NOI18N
     public static final String CAKEPHP3_FRAMEWORK = "CakePHP3 Framework"; // NOI18N
 
     private CakePHP3Constants() {
