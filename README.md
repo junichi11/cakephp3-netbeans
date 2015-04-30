@@ -64,6 +64,7 @@ I'll support them using `.cake` file.
 
 - Code completion
 - Smart Go To
+- Run Actions (Run Command)
 - Template files(Controller, Table, Helper, e.t.c.)
 - Resolve mime-types for a ctp extension and a `.cake` file
 
@@ -143,7 +144,12 @@ You can change a list to specific category's one like the following.
 
 Right-click a project > CakePHP3
 
+- Run Command
 - Run server
+
+### Run Command
+
+All commands will be shown as a list in the command dialog. Then you can run a command with some parameters.
 
 ### Run server
 
