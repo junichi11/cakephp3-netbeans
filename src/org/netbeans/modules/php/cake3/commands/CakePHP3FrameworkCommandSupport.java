@@ -39,54 +39,67 @@
  *
  * Portions Copyrighted 2015 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3.ui.actions.gotos.status;
+package org.netbeans.modules.php.cake3.commands;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.netbeans.modules.php.api.executable.InvalidPhpExecutableException;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
-import org.netbeans.modules.php.cake3.modules.ModuleInfo;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
-import org.netbeans.modules.php.cake3.utils.Inflector;
-import org.openide.filesystems.FileObject;
+import org.netbeans.modules.php.api.util.UiUtils;
+import org.netbeans.modules.php.cake3.CakePHP3Constants;
+import org.netbeans.modules.php.spi.framework.commands.FrameworkCommand;
+import org.netbeans.modules.php.spi.framework.commands.FrameworkCommandSupport;
 
-public class EntityStatus extends CakePHP3GoToStatus {
+/**
+ *
+ * @author junichi11
+ */
+public final class CakePHP3FrameworkCommandSupport extends FrameworkCommandSupport {
 
-    public EntityStatus(FileObject fileObject, int offset) {
-        super(fileObject, offset);
+    public CakePHP3FrameworkCommandSupport(PhpModule phpModule) {
+        super(phpModule);
     }
 
     @Override
-    protected void scan(PhpModule phpModule, FileObject fileObject, int offset) {
+    public String getFrameworkName() {
+        return CakePHP3Constants.CAKEPHP3;
     }
 
     @Override
-    public List<GoToItem> getSmart() {
-        List<GoToItem> items = new ArrayList<>(getTables());
-        items.addAll(getTestCases());
-        return items;
-    }
-
-    @Override
-    public List<GoToItem> getTables() {
-        FileObject fileObject = getFileObject();
-        if (fileObject == null) {
-            return Collections.emptyList();
+    public void runCommand(CommandDescriptor commandDescriptor, Runnable postExecution) {
+        String[] commands = commandDescriptor.getFrameworkCommand().getCommands();
+        String[] commandParams = commandDescriptor.getCommandParams();
+        List<String> params = new ArrayList<>(commands.length + commandParams.length);
+        params.addAll(Arrays.asList(commands));
+        params.addAll(Arrays.asList(commandParams));
+        try {
+            Cake3Script.forPhpModule(phpModule, false).runCommand(phpModule, params, postExecution);
+        } catch (InvalidPhpExecutableException ex) {
+            UiUtils.invalidScriptProvided(ex.getLocalizedMessage(), getOptionsPath());
         }
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
-        ModuleInfo info = cakeModule.createModuleInfo(fileObject);
-        String name = fileObject.getName();
-        Inflector inflector = Inflector.getInstance();
-        String pluralizedName = inflector.pluralize(name);
-        String relativePath = cakeModule.toPhpFileName(Category.TABLE, pluralizedName);
-        FileObject file = cakeModule.getFile(info.getBase(), Category.TABLE, relativePath, info.getPluginName());
-        if (file == null) {
-            return Collections.emptyList();
+    }
+
+    @Override
+    protected String getOptionsPath() {
+        return UiUtils.FRAMEWORKS_AND_TOOLS_OPTIONS_PATH;
+    }
+
+    @Override
+    protected File getPluginsDirectory() {
+        return null;
+    }
+
+    @Override
+    protected List<FrameworkCommand> getFrameworkCommandsInternal() {
+        try {
+            return Cake3Script.forPhpModule(phpModule, true).getCommands(phpModule);
+        } catch (InvalidPhpExecutableException ex) {
+            UiUtils.invalidScriptProvided(ex.getLocalizedMessage(), getOptionsPath());
         }
-        return Collections.singletonList(GoToItemFactory.create(Category.TABLE, file, DEFAULT_OFFSET));
+        return Collections.emptyList();
     }
 
 }

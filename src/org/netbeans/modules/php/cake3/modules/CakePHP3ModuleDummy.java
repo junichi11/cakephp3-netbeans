@@ -72,12 +72,17 @@ public class CakePHP3ModuleDummy extends CakePHP3ModuleImpl {
     }
 
     @Override
+    public FileObject getController(FileObject template, boolean fallback) {
+        return null;
+    }
+
+    @Override
     public FileObject getViewCell(FileObject template) {
         return null;
     }
 
     @Override
-    public FileObject getTemplate(String relativePath, FileObject controller) {
+    public FileObject getTemplate(String relativePath, FileObject controller, String themeName) {
         return null;
     }
 

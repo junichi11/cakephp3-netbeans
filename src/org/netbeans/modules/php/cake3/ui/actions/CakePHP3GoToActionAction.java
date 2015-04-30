@@ -39,54 +39,24 @@
  *
  * Portions Copyrighted 2015 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3.ui.actions.gotos.status;
+package org.netbeans.modules.php.cake3.ui.actions;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
-import org.netbeans.modules.php.cake3.modules.ModuleInfo;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
-import org.netbeans.modules.php.cake3.utils.Inflector;
-import org.openide.filesystems.FileObject;
+import org.netbeans.modules.php.cake3.ui.actions.gotos.CakePHP3SmartGoToAction;
+import org.netbeans.modules.php.spi.framework.actions.GoToActionAction;
 
-public class EntityStatus extends CakePHP3GoToStatus {
+/**
+ *
+ * @author junichi11
+ */
+public class CakePHP3GoToActionAction extends GoToActionAction {
 
-    public EntityStatus(FileObject fileObject, int offset) {
-        super(fileObject, offset);
-    }
+    private static final long serialVersionUID = -5042861266295175782L;
 
     @Override
-    protected void scan(PhpModule phpModule, FileObject fileObject, int offset) {
-    }
-
-    @Override
-    public List<GoToItem> getSmart() {
-        List<GoToItem> items = new ArrayList<>(getTables());
-        items.addAll(getTestCases());
-        return items;
-    }
-
-    @Override
-    public List<GoToItem> getTables() {
-        FileObject fileObject = getFileObject();
-        if (fileObject == null) {
-            return Collections.emptyList();
-        }
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
-        ModuleInfo info = cakeModule.createModuleInfo(fileObject);
-        String name = fileObject.getName();
-        Inflector inflector = Inflector.getInstance();
-        String pluralizedName = inflector.pluralize(name);
-        String relativePath = cakeModule.toPhpFileName(Category.TABLE, pluralizedName);
-        FileObject file = cakeModule.getFile(info.getBase(), Category.TABLE, relativePath, info.getPluginName());
-        if (file == null) {
-            return Collections.emptyList();
-        }
-        return Collections.singletonList(GoToItemFactory.create(Category.TABLE, file, DEFAULT_OFFSET));
+    public boolean goToAction() {
+        CakePHP3SmartGoToAction action = new CakePHP3SmartGoToAction();
+        action.actionPerformed(null);
+        return true;
     }
 
 }

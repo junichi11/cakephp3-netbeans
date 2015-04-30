@@ -79,11 +79,20 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
     }
 
     @Override
+    public FileObject getController(FileObject template, boolean forceApp) {
+        return getControllerOrViewCell(template, true, true);
+    }
+
+    @Override
     public FileObject getViewCell(FileObject template) {
         return getControllerOrViewCell(template, false);
     }
 
     private FileObject getControllerOrViewCell(FileObject template, boolean isController) {
+        return getControllerOrViewCell(template, isController, false);
+    }
+
+    private FileObject getControllerOrViewCell(FileObject template, boolean isController, boolean forceApp) {
         if (template == null || template.isFolder()) {
             return null;
         }
@@ -100,11 +109,12 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
 
         Base base = getBase(template);
         // plugin
-        String puluginName = ""; // NOI18N
+        String pluginName = ""; // NOI18N
         if (base == Base.PLUGIN) {
-            puluginName = getPluginName(template);
+            pluginName = getPluginName(template);
         }
-        List<FileObject> directories = getDirectories(base, category, puluginName);
+
+        List<FileObject> directories = getDirectories(base, category, pluginName);
         for (FileObject directory : directories) {
             String relativeFilePath = FileUtil.getRelativePath(directory, template);
             if (StringUtils.isEmpty(relativeFilePath)) {
@@ -116,7 +126,11 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
             }
             Category c = category == Category.TEMPLATE ? Category.CONTROLLER : Category.VIEW_CELL;
             String controllerFilePath = toPhpFileName(c, relativeSubpath);
-            FileObject controllerOrViewCell = getFile(base, c, controllerFilePath, puluginName);
+            if (forceApp) {
+                base = Base.APP;
+                pluginName = null;
+            }
+            FileObject controllerOrViewCell = getFile(base, c, controllerFilePath, pluginName);
             if (controllerOrViewCell != null) {
                 return controllerOrViewCell;
             }
@@ -126,19 +140,32 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
     }
 
     @Override
-    public FileObject getTemplate(String relativePath, FileObject controllerOrViewCell) {
+    public FileObject getTemplate(String relativePath, FileObject controllerOrViewCell, String themeName) {
         if (controllerOrViewCell.isFolder()) {
             return null;
         }
-        Base base = getBase(controllerOrViewCell);
+        boolean isTheme = !StringUtils.isEmpty(themeName);
+        Base base;
+        if (isTheme) {
+            base = Base.PLUGIN;
+        } else {
+            base = getBase(controllerOrViewCell);
+        }
+
         Category category = getCategory(controllerOrViewCell);
         if (category != Category.CONTROLLER && category != Category.VIEW_CELL) {
             return null;
         }
+
         String pluginName = null;
         if (base == Base.PLUGIN) {
-            pluginName = getPluginName(controllerOrViewCell);
+            if (isTheme) {
+                pluginName = themeName;
+            } else {
+                pluginName = getPluginName(controllerOrViewCell);
+            }
         }
+
         String name = controllerOrViewCell.getName();
         StringBuilder sb = new StringBuilder();
         if (!relativePath.startsWith("/")) {
@@ -227,7 +254,7 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
         }
         FileObject defaultPlugins = rootDirectory.getFileObject("plugins"); // NOI18N
         if (defaultPlugins != null) {
-            Collections.singletonList(defaultPlugins);
+            return Collections.singletonList(defaultPlugins);
         }
         return Collections.emptyList();
     }

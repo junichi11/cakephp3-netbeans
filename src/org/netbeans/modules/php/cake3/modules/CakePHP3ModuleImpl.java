@@ -58,6 +58,7 @@ import org.netbeans.modules.parsing.api.UserTask;
 import org.netbeans.modules.parsing.spi.ParseException;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
+import org.netbeans.modules.php.cake3.CakeVersion;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
 import org.netbeans.modules.php.cake3.preferences.CakePHP3Preferences;
@@ -486,21 +487,21 @@ public abstract class CakePHP3ModuleImpl {
      */
     public String getNamespace(FileObject fileObject) {
         if (fileObject == null) {
-            return "";
+            return ""; // NOI18N
         }
         Base base = getBase(fileObject);
         StringBuilder sb = new StringBuilder();
         String pluginName = null;
         if (base == Base.APP) {
-            sb.append(getAppNamespace()).append("\\");
+            sb.append(getAppNamespace()).append("\\"); // NOI18N
         } else if (base == Base.CORE) {
-            sb.append("Cake\\");
+            sb.append("Cake\\"); // NOI18N
         } else if (base == Base.PLUGIN) {
             pluginName = getPluginName(fileObject);
             if (StringUtils.isEmpty(pluginName)) {
                 return sb.toString();
             }
-            sb.append(pluginName).append("\\");
+            sb.append(pluginName).append("\\"); // NOI18N
         } else {
             return sb.toString();
         }
@@ -508,21 +509,21 @@ public abstract class CakePHP3ModuleImpl {
         // XXX not default directory structure
         FileObject srcDir = getSrcDir(base, pluginName);
         if (srcDir == null) {
-            return "";
+            return ""; // NOI18N
         }
         FileObject target = fileObject;
         if (!fileObject.isFolder()) {
             target = fileObject.getParent();
             if (target == null) {
-                return "";
+                return ""; // NOI18N
             }
         }
 
         String relativePath = FileUtil.getRelativePath(srcDir, target);
         if (relativePath == null) {
-            return "";
+            return ""; // NOI18N
         }
-        sb.append(relativePath);
+        sb.append(relativePath.replace("/", "\\")); // NOI18N
         return sb.toString();
     }
 
@@ -539,6 +540,27 @@ public abstract class CakePHP3ModuleImpl {
             }
         }
         return null;
+    }
+
+    public ModuleInfo createModuleInfo(FileObject fileObject) {
+        Base base = getBase(fileObject);
+        Category category = getCategory(fileObject);
+        String pluginName = null;
+        if (base == Base.PLUGIN) {
+            pluginName = getPluginName(fileObject);
+        }
+        return new ModuleInfoImpl(fileObject, base, category, pluginName);
+    }
+
+    @CheckForNull
+    public CakeVersion createVersion() {
+        List<FileObject> directories = getDirectories(Base.CORE);
+        FileObject versionFile = null;
+        for (FileObject directory : directories) {
+            versionFile = directory.getFileObject("VERSION.txt"); // NOI18N
+            break; // core directoy is only one
+        }
+        return CakeVersion.create(versionFile);
     }
 
     /**
@@ -577,6 +599,16 @@ public abstract class CakePHP3ModuleImpl {
     public abstract FileObject getController(FileObject template);
 
     /**
+     * Get a controller for a template file.
+     *
+     * @param template a template file
+     * @param fallback whether fallback to App
+     * @return a file if the controller exists, otherwise {@code null}
+     */
+    @CheckForNull
+    public abstract FileObject getController(FileObject template, boolean fallback);
+
+    /**
      * Get a view cell for a template file.
      *
      * @param template a template file
@@ -591,10 +623,11 @@ public abstract class CakePHP3ModuleImpl {
      * @param relativePath a relative path for a template file from a controller
      * directory.
      * @param controller a controller file
+     * @param themeName a themeName
      * @return a template file if it exists, otherwise {@code null}
      */
     @CheckForNull
-    public abstract FileObject getTemplate(String relativePath, FileObject controller);
+    public abstract FileObject getTemplate(String relativePath, FileObject controller, String themeName);
 
     /**
      * Get an entity file for a table.
@@ -659,6 +692,48 @@ public abstract class CakePHP3ModuleImpl {
         public List<Pair<String, String>> getPlugins() {
             return plugins;
         }
+    }
+
+    private static class ModuleInfoImpl implements ModuleInfo {
+
+        private final FileObject fileObject;
+        private final String pluginName;
+        private final Base base;
+        private final Category category;
+
+        private ModuleInfoImpl(FileObject fileObject, Base base, Category category, String pluginName) {
+            this.fileObject = fileObject;
+            this.base = base;
+            this.category = category;
+            this.pluginName = pluginName;
+        }
+
+        @Override
+        public FileObject getFileObject() {
+            return fileObject;
+        }
+
+        @Override
+        public Base getBase() {
+            if (base == null) {
+                return Base.UNKNOWN;
+            }
+            return base;
+        }
+
+        @Override
+        public Category getCategory() {
+            if (category == null) {
+                return Category.UNKNOWN;
+            }
+            return category;
+        }
+
+        @Override
+        public String getPluginName() {
+            return pluginName;
+        }
+
     }
 
 }

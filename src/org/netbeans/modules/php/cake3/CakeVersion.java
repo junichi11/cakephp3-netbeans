@@ -39,54 +39,92 @@
  *
  * Portions Copyrighted 2015 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3.ui.actions.gotos.status;
+package org.netbeans.modules.php.cake3;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.io.IOException;
 import java.util.List;
-import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
-import org.netbeans.modules.php.cake3.modules.ModuleInfo;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
-import org.netbeans.modules.php.cake3.utils.Inflector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.openide.filesystems.FileObject;
+import org.openide.util.Exceptions;
 
-public class EntityStatus extends CakePHP3GoToStatus {
+public class CakeVersion implements Versionable {
 
-    public EntityStatus(FileObject fileObject, int offset) {
-        super(fileObject, offset);
+    private static final Pattern VERSION_PATTERN = Pattern.compile("^(?<major>\\d)\\.(?<minor>\\d)\\.(?<patch>\\d)(?<dev>.*)$"); // NOI18N
+
+    private String version = UNNKOWN;
+    private int major = -1;
+    private int minor = -1;
+    private int patch = -1;
+
+    private CakeVersion() {
     }
 
-    @Override
-    protected void scan(PhpModule phpModule, FileObject fileObject, int offset) {
+    private CakeVersion major(int major) {
+        this.major = major;
+        return this;
     }
 
-    @Override
-    public List<GoToItem> getSmart() {
-        List<GoToItem> items = new ArrayList<>(getTables());
-        items.addAll(getTestCases());
-        return items;
+    private CakeVersion minor(int minor) {
+        this.minor = minor;
+        return this;
     }
 
-    @Override
-    public List<GoToItem> getTables() {
-        FileObject fileObject = getFileObject();
-        if (fileObject == null) {
-            return Collections.emptyList();
+    private CakeVersion patch(int patch) {
+        this.patch = patch;
+        return this;
+    }
+
+    private CakeVersion version(String version) {
+        this.version = version;
+        return this;
+    }
+
+    public static CakeVersion create(FileObject file) {
+        CakeVersion version = new CakeVersion();
+        if (file == null || file.isFolder()) {
+            return version;
         }
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
-        ModuleInfo info = cakeModule.createModuleInfo(fileObject);
-        String name = fileObject.getName();
-        Inflector inflector = Inflector.getInstance();
-        String pluralizedName = inflector.pluralize(name);
-        String relativePath = cakeModule.toPhpFileName(Category.TABLE, pluralizedName);
-        FileObject file = cakeModule.getFile(info.getBase(), Category.TABLE, relativePath, info.getPluginName());
-        if (file == null) {
-            return Collections.emptyList();
+        try {
+            List<String> lines = file.asLines(CakePHP3Constants.UTF8);
+            for (String line : lines) {
+                Matcher matcher = VERSION_PATTERN.matcher(line);
+                if (!matcher.matches()) {
+                    continue;
+                }
+                int major = Integer.parseInt(matcher.group(MAJOR));
+                int minor = Integer.parseInt(matcher.group(MINOR));
+                int patch = Integer.parseInt(matcher.group(PATCH));
+                version.major(major)
+                        .minor(minor)
+                        .patch(patch)
+                        .version(line);
+                break;
+            }
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
         }
-        return Collections.singletonList(GoToItemFactory.create(Category.TABLE, file, DEFAULT_OFFSET));
+        return version;
+    }
+
+    @Override
+    public String getVersionNumber() {
+        return version;
+    }
+
+    @Override
+    public int getMajor() {
+        return major;
+    }
+
+    @Override
+    public int getMinor() {
+        return minor;
+    }
+
+    @Override
+    public int getPatch() {
+        return patch;
     }
 
 }

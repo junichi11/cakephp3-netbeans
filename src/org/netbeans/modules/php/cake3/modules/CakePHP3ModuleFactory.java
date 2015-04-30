@@ -45,6 +45,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
+import org.netbeans.modules.php.cake3.CakeVersion;
 
 /**
  *
@@ -52,7 +53,7 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
  */
 public final class CakePHP3ModuleFactory {
 
-    public static final CakePHP3Module DUMMY_MODULE = new CakePHP3Module(new CakePHP3ModuleDummy());
+    public static final CakePHP3Module DUMMY_MODULE = new CakePHP3Module(new CakePHP3ModuleDummy(), CakeVersion.create(null));
     private static final CakePHP3ModuleFactory INSTANCE = new CakePHP3ModuleFactory();
     private static final Map<PhpModule, CakePHP3Module> MODULES = Collections.synchronizedMap(new HashMap<PhpModule, CakePHP3Module>());
 
@@ -66,9 +67,10 @@ public final class CakePHP3ModuleFactory {
     public CakePHP3Module create(PhpModule phpModule) {
         CakePHP3Module module = MODULES.get(phpModule);
         if (module == null) {
-            // TODO get version number
+            // get version number
             CakePHP3ModuleDefault impl = new CakePHP3ModuleDefault(phpModule);
-            module = new CakePHP3Module(impl);
+            CakeVersion version = impl.createVersion();
+            module = new CakePHP3Module(impl, version);
             MODULES.put(phpModule, module);
         }
         return module;

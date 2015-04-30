@@ -1,7 +1,7 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 2015 Oracle and/or its affiliates. All rights reserved.
+ * Copyright 2012 Oracle and/or its affiliates. All rights reserved.
  *
  * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
  * Other names may be trademarks of their respective owners.
@@ -37,56 +37,48 @@
  *
  * Contributor(s):
  *
- * Portions Copyrighted 2015 Sun Microsystems, Inc.
+ * Portions Copyrighted 2012 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3.ui.actions.gotos.status;
+package org.netbeans.modules.php.cake3.commands;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.lang.ref.WeakReference;
+import org.netbeans.modules.php.api.executable.InvalidPhpExecutableException;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
-import org.netbeans.modules.php.cake3.modules.ModuleInfo;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
-import org.netbeans.modules.php.cake3.utils.Inflector;
-import org.openide.filesystems.FileObject;
+import org.netbeans.modules.php.api.util.UiUtils;
+import org.netbeans.modules.php.spi.framework.commands.FrameworkCommand;
 
-public class EntityStatus extends CakePHP3GoToStatus {
+/**
+ *
+ * @author junichi11
+ */
+public class Cake3Command extends FrameworkCommand {
 
-    public EntityStatus(FileObject fileObject, int offset) {
-        super(fileObject, offset);
+    private final WeakReference<PhpModule> phpModule;
+
+    public Cake3Command(PhpModule phpModule, String command, String description, String displayName) {
+        super(command, description, displayName);
+        assert phpModule != null;
+        this.phpModule = new WeakReference<>(phpModule);
+    }
+
+    public Cake3Command(PhpModule phpModule, String[] command, String description, String displayName) {
+        super(command, description, displayName);
+        assert phpModule != null;
+        this.phpModule = new WeakReference<>(phpModule);
     }
 
     @Override
-    protected void scan(PhpModule phpModule, FileObject fileObject, int offset) {
-    }
-
-    @Override
-    public List<GoToItem> getSmart() {
-        List<GoToItem> items = new ArrayList<>(getTables());
-        items.addAll(getTestCases());
-        return items;
-    }
-
-    @Override
-    public List<GoToItem> getTables() {
-        FileObject fileObject = getFileObject();
-        if (fileObject == null) {
-            return Collections.emptyList();
+    protected String getHelpInternal() {
+        PhpModule module = phpModule.get();
+        if (module == null) {
+            return ""; // NOI18N
         }
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
-        ModuleInfo info = cakeModule.createModuleInfo(fileObject);
-        String name = fileObject.getName();
-        Inflector inflector = Inflector.getInstance();
-        String pluralizedName = inflector.pluralize(name);
-        String relativePath = cakeModule.toPhpFileName(Category.TABLE, pluralizedName);
-        FileObject file = cakeModule.getFile(info.getBase(), Category.TABLE, relativePath, info.getPluginName());
-        if (file == null) {
-            return Collections.emptyList();
+        try {
+            return Cake3Script.forPhpModule(module, false).getHelp(module, getCommands());
+        } catch (InvalidPhpExecutableException ex) {
+            UiUtils.invalidScriptProvided(ex.getLocalizedMessage(), UiUtils.FRAMEWORKS_AND_TOOLS_OPTIONS_PATH);
         }
-        return Collections.singletonList(GoToItemFactory.create(Category.TABLE, file, DEFAULT_OFFSET));
+        return ""; // NOI18N
     }
 
 }

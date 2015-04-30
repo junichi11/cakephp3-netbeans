@@ -39,54 +39,59 @@
  *
  * Portions Copyrighted 2015 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3.ui.actions.gotos.status;
+package org.netbeans.modules.php.cake3.editor;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
+import org.netbeans.modules.php.cake3.CakePHP3Constants;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
-import org.netbeans.modules.php.cake3.modules.ModuleInfo;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
-import org.netbeans.modules.php.cake3.utils.Inflector;
 import org.openide.filesystems.FileObject;
+import org.openide.loaders.CreateFromTemplateAttributesProvider;
+import org.openide.loaders.DataFolder;
+import org.openide.loaders.DataObject;
+import org.openide.util.lookup.ServiceProvider;
 
-public class EntityStatus extends CakePHP3GoToStatus {
+/**
+ *
+ * @author junichi11
+ */
+@ServiceProvider(service = CreateFromTemplateAttributesProvider.class)
+public class CakePHP3TemplateAttributesProvider implements CreateFromTemplateAttributesProvider {
 
-    public EntityStatus(FileObject fileObject, int offset) {
-        super(fileObject, offset);
-    }
-
-    @Override
-    protected void scan(PhpModule phpModule, FileObject fileObject, int offset) {
-    }
-
-    @Override
-    public List<GoToItem> getSmart() {
-        List<GoToItem> items = new ArrayList<>(getTables());
-        items.addAll(getTestCases());
-        return items;
-    }
+    private static final String NAMESPACE = "namespace"; // NOI18N
 
     @Override
-    public List<GoToItem> getTables() {
-        FileObject fileObject = getFileObject();
-        if (fileObject == null) {
-            return Collections.emptyList();
+    public Map<String, ?> attributesFor(DataObject template, DataFolder target, String name) {
+        FileObject targetDirectory = target.getPrimaryFile();
+        if (targetDirectory == null) {
+            return Collections.emptyMap();
         }
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
-        ModuleInfo info = cakeModule.createModuleInfo(fileObject);
-        String name = fileObject.getName();
-        Inflector inflector = Inflector.getInstance();
-        String pluralizedName = inflector.pluralize(name);
-        String relativePath = cakeModule.toPhpFileName(Category.TABLE, pluralizedName);
-        FileObject file = cakeModule.getFile(info.getBase(), Category.TABLE, relativePath, info.getPluginName());
-        if (file == null) {
-            return Collections.emptyList();
+        PhpModule phpModule = PhpModule.Factory.forFileObject(targetDirectory);
+        if (phpModule == null) {
+            return Collections.emptyMap();
         }
-        return Collections.singletonList(GoToItemFactory.create(Category.TABLE, file, DEFAULT_OFFSET));
+        if (!CakePHP3Module.isCakePHP(phpModule)) {
+            return Collections.emptyMap();
+        }
+        Map<String, String> attributes = new HashMap<>();
+        FileObject primaryFile = template.getPrimaryFile();
+        if (primaryFile == null) {
+            return Collections.emptyMap();
+        }
+
+        FileObject parent = primaryFile.getParent();
+        if (parent == null) {
+            return Collections.emptyMap();
+        }
+        if (parent.isFolder() && parent.getNameExt().equals(CakePHP3Constants.CAKEPHP3_FRAMEWORK)) {
+            CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+            String namespace = cakeModule.getNamespace(targetDirectory);
+            attributes.put(NAMESPACE, namespace);
+        }
+
+        return attributes;
     }
 
 }

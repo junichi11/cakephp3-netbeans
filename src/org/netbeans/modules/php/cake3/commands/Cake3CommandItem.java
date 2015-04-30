@@ -1,7 +1,7 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 2015 Oracle and/or its affiliates. All rights reserved.
+ * Copyright 2012 Oracle and/or its affiliates. All rights reserved.
  *
  * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
  * Other names may be trademarks of their respective owners.
@@ -37,56 +37,46 @@
  *
  * Contributor(s):
  *
- * Portions Copyrighted 2015 Sun Microsystems, Inc.
+ * Portions Copyrighted 2012 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3.ui.actions.gotos.status;
+package org.netbeans.modules.php.cake3.commands;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
-import org.netbeans.modules.php.cake3.modules.ModuleInfo;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
-import org.netbeans.modules.php.cake3.utils.Inflector;
-import org.openide.filesystems.FileObject;
 
-public class EntityStatus extends CakePHP3GoToStatus {
+/**
+ * @author junichi11
+ */
+public class Cake3CommandItem {
 
-    public EntityStatus(FileObject fileObject, int offset) {
-        super(fileObject, offset);
+    private final String command;
+    private final String description;
+    private final String displayName;
+    private final List<Cake3CommandItem> subcommands = new ArrayList<>();
+
+    public Cake3CommandItem(String command, String description, String displayName) {
+        this.command = command;
+        this.description = description;
+        this.displayName = displayName;
     }
 
-    @Override
-    protected void scan(PhpModule phpModule, FileObject fileObject, int offset) {
+    public String getCommand() {
+        return command;
     }
 
-    @Override
-    public List<GoToItem> getSmart() {
-        List<GoToItem> items = new ArrayList<>(getTables());
-        items.addAll(getTestCases());
-        return items;
+    public String getDescription() {
+        return description;
     }
 
-    @Override
-    public List<GoToItem> getTables() {
-        FileObject fileObject = getFileObject();
-        if (fileObject == null) {
-            return Collections.emptyList();
-        }
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
-        ModuleInfo info = cakeModule.createModuleInfo(fileObject);
-        String name = fileObject.getName();
-        Inflector inflector = Inflector.getInstance();
-        String pluralizedName = inflector.pluralize(name);
-        String relativePath = cakeModule.toPhpFileName(Category.TABLE, pluralizedName);
-        FileObject file = cakeModule.getFile(info.getBase(), Category.TABLE, relativePath, info.getPluginName());
-        if (file == null) {
-            return Collections.emptyList();
-        }
-        return Collections.singletonList(GoToItemFactory.create(Category.TABLE, file, DEFAULT_OFFSET));
+    public String getDisplayName() {
+        return displayName;
     }
 
+    public List<Cake3CommandItem> getSubcommands() {
+        return subcommands;
+    }
+
+    public void addSubcommand(Cake3CommandItem subcommand) {
+        this.subcommands.add(subcommand);
+    }
 }

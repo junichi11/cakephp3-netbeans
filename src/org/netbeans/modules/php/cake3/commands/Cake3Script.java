@@ -42,12 +42,15 @@
 package org.netbeans.modules.php.cake3.commands;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,6 +67,7 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.UiUtils;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
+import org.netbeans.modules.php.spi.framework.commands.FrameworkCommand;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.HtmlBrowser;
@@ -72,6 +76,8 @@ import org.openide.filesystems.FileUtil;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle;
 import org.openide.util.Utilities;
+import org.openide.windows.InputOutput;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -83,7 +89,15 @@ public final class Cake3Script {
     public static final String SCRIPT_NAME_BAT = SCRIPT_NAME + ".bat"; // NOI18N
     public static final String SCRIPT_NAME_LONG = SCRIPT_NAME + ".php"; // NOI18N
 
+    // commands
+    private static final String COMMAND_LIST_COMMAND = "command_list"; // NOI18N
     private static final String SERVER_COMMAND = "server"; // NOI18N
+
+    // params
+    private static final String HELP_PARAM = "--help"; // NOI18N
+    private static final String XML_PARAM = "--xml"; // NOI18N
+
+    private static final List<String> COMMAND_LIST_XML_COMMAND = Arrays.asList(COMMAND_LIST_COMMAND, XML_PARAM);
     private static final List<String> DEFAULT_PARAMS = Collections.emptyList();
     private static final Logger LOGGER = Logger.getLogger(Cake3Script.class.getName());
 
@@ -170,6 +184,160 @@ public final class Cake3Script {
                 .run(getDescriptor(postExecution), getOutProcessorFactory(lineProcessor));
     }
 
+    public String getHelp(PhpModule phpModule, String[] params) {
+        assert phpModule != null;
+
+        List<String> allParams;
+        allParams = new ArrayList<>();
+        // #116 cakephp-netbeans
+//        allParams.addAll(getAppParam(phpModule));
+        allParams.addAll(Arrays.asList(params));
+        allParams.add(HELP_PARAM);
+
+        HelpLineProcessor lineProcessor = new HelpLineProcessor();
+        Future<Integer> result = createPhpExecutable(phpModule)
+                .displayName(getDisplayName(phpModule, allParams.get(0)))
+                .additionalParameters(getAllParams(allParams))
+                .run(getSilentDescriptor(), getOutProcessorFactory(lineProcessor));
+        try {
+            if (result != null) {
+                result.get();
+            }
+        } catch (CancellationException ex) {
+            // canceled
+        } catch (ExecutionException ex) {
+            UiUtils.processExecutionException(ex, getOptionsPath());
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        return lineProcessor.getHelp();
+    }
+
+    public List<FrameworkCommand> getCommands(PhpModule phpModule) {
+        List<FrameworkCommand> freshCommands = getFrameworkCommandsInternalXml(phpModule);
+        if (freshCommands != null) {
+            return freshCommands;
+        }
+        // XXX some error => rerun command with console
+        runCommand(phpModule, Collections.singletonList(COMMAND_LIST_COMMAND), null);
+        return Collections.emptyList();
+    }
+
+    @NbBundle.Messages({
+        "Cake3Script.redirect.xml.error=error is occurred when xml file is created for command list."
+    })
+    private List<FrameworkCommand> getFrameworkCommandsInternalXml(PhpModule phpModule) {
+        File tmpFile;
+        try {
+            tmpFile = File.createTempFile("nb-cake-commands-", ".xml"); // NOI18N
+            tmpFile.deleteOnExit();
+        } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, null, ex);
+            return null;
+        }
+
+        // #116 cakephp-netbeans
+//        List<String> appParam = getAppParam(phpModule);
+        ArrayList<String> listXmlParams = new ArrayList<>();
+//        listXmlParams.addAll(appParam);
+        listXmlParams.addAll(COMMAND_LIST_XML_COMMAND);
+        if (!redirectToFile(phpModule, tmpFile, listXmlParams)) {
+            LOGGER.log(Level.WARNING, Bundle.Cake3Script_redirect_xml_error());
+            return null;
+        }
+        List<Cake3CommandItem> commandsItem = new ArrayList<>();
+        try {
+            CakePHP3CommandXmlParser.parse(tmpFile, commandsItem);
+        } catch (SAXException ex) {
+            // incorrect xml provided by cakephp?
+            LOGGER.log(Level.INFO, null, ex);
+        }
+        if (commandsItem.isEmpty()) {
+            // error
+            tmpFile.delete();
+            return null;
+        }
+        // parse each command
+
+        List<FrameworkCommand> commands = new ArrayList<>();
+        for (Cake3CommandItem item : commandsItem) {
+            ArrayList<String> commandParams = new ArrayList<>();
+//            commandParams.addAll(appParam);
+            commandParams.addAll(Arrays.asList(item.getCommand(), HELP_PARAM, "xml")); // NOI18N
+            if (!redirectToFile(phpModule, tmpFile, commandParams)) {
+                commands.add(new Cake3Command(phpModule,
+                        item.getCommand(), item.getDescription(), item.getDisplayName()));
+                continue;
+            }
+            List<Cake3CommandItem> mainCommandsItem = new ArrayList<>();
+            try {
+                CakePHP3CommandXmlParser.parse(tmpFile, mainCommandsItem);
+            } catch (SAXException ex) {
+                LOGGER.log(Level.WARNING, "Xml file Error:{0}", ex.getMessage());
+                commands.add(new Cake3Command(phpModule,
+                        item.getCommand(), item.getDescription(), item.getDisplayName()));
+                continue;
+            }
+            if (mainCommandsItem.isEmpty()) {
+                tmpFile.delete();
+                return null;
+            }
+            // add main command
+            Cake3CommandItem main = mainCommandsItem.get(0);
+            String mainCommand = main.getCommand();
+            String provider = item.getDescription();
+            commands.add(new Cake3Command(phpModule,
+                    mainCommand, "[" + provider + "] " + main.getDescription(), main.getDisplayName())); // NOI18N
+
+            // add subcommands
+            List<Cake3CommandItem> subcommands = main.getSubcommands();
+            for (Cake3CommandItem subcommand : subcommands) {
+                String[] command = {mainCommand, subcommand.getCommand()};
+                commands.add(new Cake3Command(phpModule,
+                        command, "[" + provider + "] " + subcommand.getDescription(), main.getCommand() + " " + subcommand.getDisplayName())); // NOI18N
+            }
+        }
+        tmpFile.delete();
+        return commands;
+    }
+
+    @NbBundle.Messages({
+        "# {0} - exitValue",
+        "Cake3Script.redirect.error=exitValue:{0} There may be some errors when redirect command result to file"
+    })
+    private boolean redirectToFile(PhpModule phpModule, File file, List<String> commands) {
+        Future<Integer> result = createPhpExecutable(phpModule)
+                .fileOutput(file, "UTF-8", true) // NOI18N
+                .warnUser(false)
+                .additionalParameters(commands)
+                .run(getSilentDescriptor());
+        try {
+            if (result == null) {
+                // error
+                return false;
+            }
+            // CakePHP 3.x uses exit() in cake script, so, return value is not 0
+            Integer exitValue = result.get();
+            if (exitValue != 0) {
+                if (exitValue != 1) {
+                    LOGGER.log(Level.WARNING, Bundle.Cake3Script_redirect_error(exitValue));
+                    return false;
+                }
+            }
+        } catch (CancellationException | ExecutionException ex) {
+            return false;
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            return false;
+        }
+        return true;
+    }
+
+    private ExecutionDescriptor getSilentDescriptor() {
+        return new ExecutionDescriptor()
+                .inputOutput(InputOutput.NULL);
+    }
+
     private PhpExecutable createPhpExecutable(PhpModule phpModule) {
         CakePHP3Module module = CakePHP3Module.forPhpModule(phpModule);
         List<FileObject> directories = module.getDirectories(Base.APP);
@@ -193,10 +361,10 @@ public final class Cake3Script {
     @NbBundle.Messages({
         "# {0} - project name",
         "# {1} - command",
-        "CakeScript.command.title={0} ({1})"
+        "Cake3Script.command.title={0} ({1})"
     })
     private String getDisplayName(PhpModule phpModule, String command) {
-        return Bundle.CakeScript_command_title(phpModule.getDisplayName(), command);
+        return Bundle.Cake3Script_command_title(phpModule.getDisplayName(), command);
     }
 
     private ExecutionDescriptor getDescriptor(Runnable postExecution) {
@@ -252,5 +420,28 @@ public final class Cake3Script {
         public void close() {
         }
 
+    }
+
+    private static class HelpLineProcessor implements LineProcessor {
+
+        private final StringBuilder sb = new StringBuilder();
+
+        @Override
+        public void processLine(String line) {
+            sb.append(line);
+            sb.append("\n"); // NOI18N
+        }
+
+        @Override
+        public void reset() {
+        }
+
+        @Override
+        public void close() {
+        }
+
+        public String getHelp() {
+            return sb.toString();
+        }
     }
 }

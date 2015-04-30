@@ -52,6 +52,10 @@ public final class CakePHP3Constants {
     @StaticResource
     public static final String CAKE_ICON_16 = "org/netbeans/modules/php/cake3/resources/cakephp_icon_16.png"; // NOI18N
     @StaticResource
+    public static final String PHP_ICON = "org/netbeans/modules/php/cake3/resources/php_icon.png"; // NOI18N
+    @StaticResource
+    public static final String CTP_ICON = "org/netbeans/modules/php/cake3/resources/ctp_icon.png"; // NOI18N
+    @StaticResource
     public static final String GOTO_BEHAVIOR_ICON = "org/netbeans/modules/php/cake3/resources/goto-behavior.png"; // NOI18N
     @StaticResource
     public static final String GOTO_TEMPLATE_CELL_ICON = "org/netbeans/modules/php/cake3/resources/goto-cell.png"; // NOI18N
@@ -75,6 +79,10 @@ public final class CakePHP3Constants {
     public static final String GOTO_HELPER_ICON = "org/netbeans/modules/php/cake3/resources/goto-helper.png"; // NOI18N
     @StaticResource
     public static final String GOTO_VIEW_CELL_ICON = "org/netbeans/modules/php/cake3/resources/goto-view-cell.png"; // NOI18N
+
+    public static final String CAKEPHP3 = "CakePHP3"; // NOI18N
+    public static final String CAKEPHP3_FRAMEWORK = "CakePHP3 Framework"; // NOI18N
+    public static final String UTF8 = "UTF-8"; // NOI18N
 
     private CakePHP3Constants() {
     }

@@ -2,5 +2,5 @@ Manifest-Version: 1.0
 AutoUpdate-Show-In-Client: true
 OpenIDE-Module: org.netbeans.modules.php.cake3
 OpenIDE-Module-Localizing-Bundle: org/netbeans/modules/php/cake3/Bundle.properties
-OpenIDE-Module-Specification-Version: 0.0.1
+OpenIDE-Module-Specification-Version: 0.0.2
 

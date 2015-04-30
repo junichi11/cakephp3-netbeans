@@ -44,8 +44,17 @@ package org.netbeans.modules.php.cake3;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.Action;
+import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
+import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.ui.actions.CakePHP3GoToActionAction;
+import org.netbeans.modules.php.cake3.ui.actions.CakePHP3GoToViewAction;
+import org.netbeans.modules.php.cake3.ui.actions.CakePHP3RunCommandAction;
 import org.netbeans.modules.php.cake3.ui.actions.CakeServerAction;
 import org.netbeans.modules.php.spi.framework.PhpModuleActionsExtender;
+import org.netbeans.modules.php.spi.framework.actions.GoToActionAction;
+import org.netbeans.modules.php.spi.framework.actions.GoToViewAction;
+import org.netbeans.modules.php.spi.framework.actions.RunCommandAction;
+import org.openide.filesystems.FileObject;
 import org.openide.util.NbBundle;
 
 /**
@@ -65,6 +74,34 @@ public class CakePHP3ActionsExtender extends PhpModuleActionsExtender {
     @Override
     public List<? extends Action> getActions() {
         return Arrays.asList(new CakeServerAction());
+    }
+
+    @Override
+    public GoToViewAction getGoToViewAction(FileObject fo, int offset) {
+        return new CakePHP3GoToViewAction();
+    }
+
+    @Override
+    public GoToActionAction getGoToActionAction(FileObject fo, int offset) {
+        return new CakePHP3GoToActionAction();
+    }
+
+    @Override
+    public boolean isActionWithView(FileObject fo) {
+        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fo);
+        CakePHP3Module.Category category = cakeModule.getCategory(fo);
+        return category == Category.CONTROLLER;
+    }
+
+    @Override
+    public boolean isViewWithAction(FileObject fo) {
+        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fo);
+        return cakeModule.isTemplateFile(fo);
+    }
+
+    @Override
+    public RunCommandAction getRunCommandAction() {
+        return CakePHP3RunCommandAction.getInstance();
     }
 
 }

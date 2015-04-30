@@ -39,54 +39,71 @@
  *
  * Portions Copyrighted 2015 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3.ui.actions.gotos.status;
+package org.netbeans.modules.php.cake3;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
-import org.netbeans.modules.php.cake3.modules.ModuleInfo;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
-import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
-import org.netbeans.modules.php.cake3.utils.Inflector;
+import java.io.File;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.netbeans.junit.NbTestCase;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 
-public class EntityStatus extends CakePHP3GoToStatus {
+/**
+ *
+ * @author junichi11
+ */
+public class CakeVersionTest extends NbTestCase {
 
-    public EntityStatus(FileObject fileObject, int offset) {
-        super(fileObject, offset);
+    private FileObject versionsDirectory;
+
+    public CakeVersionTest(String name) {
+        super(name);
     }
 
-    @Override
-    protected void scan(PhpModule phpModule, FileObject fileObject, int offset) {
+    @BeforeClass
+    public static void setUpClass() {
     }
 
-    @Override
-    public List<GoToItem> getSmart() {
-        List<GoToItem> items = new ArrayList<>(getTables());
-        items.addAll(getTestCases());
-        return items;
+    @AfterClass
+    public static void tearDownClass() {
     }
 
+    @Before
     @Override
-    public List<GoToItem> getTables() {
-        FileObject fileObject = getFileObject();
-        if (fileObject == null) {
-            return Collections.emptyList();
+    public void setUp() {
+        if (versionsDirectory == null) {
+            File dataDir = getDataDir();
+            FileObject dataDirectory = FileUtil.toFileObject(dataDir);
+            versionsDirectory = dataDirectory.getFileObject("versions");
         }
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
-        ModuleInfo info = cakeModule.createModuleInfo(fileObject);
-        String name = fileObject.getName();
-        Inflector inflector = Inflector.getInstance();
-        String pluralizedName = inflector.pluralize(name);
-        String relativePath = cakeModule.toPhpFileName(Category.TABLE, pluralizedName);
-        FileObject file = cakeModule.getFile(info.getBase(), Category.TABLE, relativePath, info.getPluginName());
-        if (file == null) {
-            return Collections.emptyList();
-        }
-        return Collections.singletonList(GoToItemFactory.create(Category.TABLE, file, DEFAULT_OFFSET));
+    }
+
+    @After
+    @Override
+    public void tearDown() {
+        versionsDirectory = null;
+    }
+
+    /**
+     * Test of create method, of class CakeVersion.
+     */
+    @Test
+    public void testVersionFile() {
+        testVersionFile("VERSION-3.0.0.txt", new int[]{3, 0, 0}, "3.0.0");
+        testVersionFile("VERSION-3.1.0-dev.txt", new int[]{3, 1, 0}, "3.1.0-dev");
+        testVersionFile("VERSION-none.txt", new int[]{-1, -1, -1}, "UNKNOWN");
+    }
+
+    private void testVersionFile(String fileName, int[] numbers, String fullVersion) {
+        FileObject versionFile = versionsDirectory.getFileObject(fileName);
+        CakeVersion version = CakeVersion.create(versionFile);
+        assertEquals(numbers[0], version.getMajor());
+        assertEquals(numbers[1], version.getMinor());
+        assertEquals(numbers[2], version.getPatch());
+        assertEquals(fullVersion, version.getVersionNumber());
     }
 
 }

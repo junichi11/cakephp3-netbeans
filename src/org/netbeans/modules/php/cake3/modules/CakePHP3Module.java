@@ -48,6 +48,7 @@ import org.netbeans.api.annotations.common.CheckForNull;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.CakePHP3FrameworkProvider;
+import org.netbeans.modules.php.cake3.CakeVersion;
 import static org.netbeans.modules.php.cake3.modules.CakePHP3ModuleFactory.DUMMY_MODULE;
 import org.openide.filesystems.FileObject;
 
@@ -111,9 +112,11 @@ public class CakePHP3Module {
     }
 
     private final CakePHP3ModuleImpl impl;
+    private final CakeVersion version;
 
-    CakePHP3Module(CakePHP3ModuleImpl impl) {
+    CakePHP3Module(CakePHP3ModuleImpl impl, CakeVersion version) {
         this.impl = impl;
+        this.version = version;
     }
 
     public static boolean isCakePHP(PhpModule phpmodule) {
@@ -137,6 +140,10 @@ public class CakePHP3Module {
         }
         PhpModule phpModule = PhpModule.Factory.forFileObject(fileObject);
         return forPhpModule(phpModule);
+    }
+
+    public boolean isTemplateFile(FileObject fo) {
+        return impl.isTemplateFile(fo);
     }
 
     public List<FileObject> getDirectories(Base base) {
@@ -175,14 +182,18 @@ public class CakePHP3Module {
         return impl.getController(template);
     }
 
+    public FileObject getController(FileObject template, boolean forceApp) {
+        return impl.getController(template, forceApp);
+    }
+
     @CheckForNull
     public FileObject getViewCell(FileObject template) {
         return impl.getViewCell(template);
     }
 
     @CheckForNull
-    public FileObject getTemplate(String relativePath, FileObject controller) {
-        return impl.getTemplate(relativePath, controller);
+    public FileObject getTemplate(String relativePath, FileObject controller, String themeName) {
+        return impl.getTemplate(relativePath, controller, themeName);
     }
 
     public FileObject getEntity(FileObject table) {
@@ -203,6 +214,14 @@ public class CakePHP3Module {
 
     public String getNamespace(FileObject fileObject) {
         return impl.getNamespace(fileObject);
+    }
+
+    public ModuleInfo createModuleInfo(FileObject fileObject) {
+        return impl.createModuleInfo(fileObject);
+    }
+
+    public CakeVersion getVersion() {
+        return version;
     }
 
 }

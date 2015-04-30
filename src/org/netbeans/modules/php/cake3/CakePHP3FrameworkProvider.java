@@ -42,11 +42,18 @@
 package org.netbeans.modules.php.cake3;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import org.netbeans.api.annotations.common.StaticResource;
 import org.netbeans.modules.php.api.framework.BadgeIcon;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.phpmodule.PhpModuleProperties;
+import org.netbeans.modules.php.cake3.commands.CakePHP3FrameworkCommandSupport;
 import org.netbeans.modules.php.cake3.editor.CakePHP3EditorExtender;
+import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
+import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
+import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHP3ModuleFactory;
 import org.netbeans.modules.php.cake3.preferences.CakePHP3Preferences;
 import org.netbeans.modules.php.spi.editor.EditorExtender;
 import org.netbeans.modules.php.spi.framework.PhpFrameworkProvider;
@@ -55,6 +62,8 @@ import org.netbeans.modules.php.spi.framework.PhpModuleCustomizerExtender;
 import org.netbeans.modules.php.spi.framework.PhpModuleExtender;
 import org.netbeans.modules.php.spi.framework.PhpModuleIgnoredFilesExtender;
 import org.netbeans.modules.php.spi.framework.commands.FrameworkCommandSupport;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 
@@ -100,9 +109,20 @@ public class CakePHP3FrameworkProvider extends PhpFrameworkProvider {
 
     @Override
     public File[] getConfigurationFiles(PhpModule phpModule) {
-        // TODO
         // XXX this method will be deprecated in the next stable version
-        return new File[0];
+        CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+        List<FileObject> directories = cakeModule.getDirectories(Base.APP, Category.CONFIG, null);
+        List<File> files = new ArrayList<>();
+        for (FileObject directory : directories) {
+            FileObject[] children = directory.getChildren();
+            for (FileObject child : children) {
+                if (child.isFolder()) {
+                    continue;
+                }
+                files.add(FileUtil.toFile(child));
+            }
+        }
+        return files.toArray(new File[0]);
     }
 
     @Override
@@ -129,8 +149,7 @@ public class CakePHP3FrameworkProvider extends PhpFrameworkProvider {
 
     @Override
     public FrameworkCommandSupport getFrameworkCommandSupport(PhpModule phpModule) {
-        // TODO
-        return null;
+        return new CakePHP3FrameworkCommandSupport(phpModule);
     }
 
     @Override
@@ -141,6 +160,13 @@ public class CakePHP3FrameworkProvider extends PhpFrameworkProvider {
     @Override
     public EditorExtender getEditorExtender(PhpModule phpModule) {
         return new CakePHP3EditorExtender(phpModule);
+    }
+
+    @Override
+    public void phpModuleClosed(PhpModule phpModule) {
+        // release CakePHP3Module
+        CakePHP3ModuleFactory factory = CakePHP3ModuleFactory.getInstance();
+        factory.remove(phpModule);
     }
 
 }

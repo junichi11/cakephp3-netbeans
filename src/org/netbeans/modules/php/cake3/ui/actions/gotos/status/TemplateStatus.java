@@ -94,6 +94,17 @@ class TemplateStatus extends CakePHP3GoToStatus {
             addControllers(controller, fileObject.getName());
         }
 
+        // fallback App?
+        if (cakeModule.getBase(fileObject) == Base.PLUGIN) {
+            FileObject appController = cakeModule.getController(fileObject, true);
+            if (appController != null) {
+                if (controller == null) {
+                    target = appController;
+                }
+                addControllers(appController, fileObject.getName());
+            }
+        }
+
         FileObject viewCell = cakeModule.getViewCell(fileObject);
         if (viewCell != null) {
             target = viewCell;
@@ -280,7 +291,7 @@ class TemplateStatus extends CakePHP3GoToStatus {
     private FileObject getTemplate(String name, FileObject controller) {
         CakePHP3Module cakeModule = CakePHP3Module.forFileObject(controller);
         String relativePath = cakeModule.toPhpFileName(Category.TEMPLATE, name);
-        return cakeModule.getTemplate(relativePath, controller);
+        return cakeModule.getTemplate(relativePath, controller, ""); // NOI18N
     }
 
     private void addHelpers(List<Pair<String, PhpClass>> helperClasses) {
