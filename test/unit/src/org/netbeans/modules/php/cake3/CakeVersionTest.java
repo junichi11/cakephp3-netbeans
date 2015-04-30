@@ -39,45 +39,71 @@
  *
  * Portions Copyrighted 2015 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3.modules;
+package org.netbeans.modules.php.cake3;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.CakeVersion;
+import java.io.File;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.netbeans.junit.NbTestCase;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 
 /**
  *
  * @author junichi11
  */
-public final class CakePHP3ModuleFactory {
+public class CakeVersionTest extends NbTestCase {
 
-    public static final CakePHP3Module DUMMY_MODULE = new CakePHP3Module(new CakePHP3ModuleDummy(), CakeVersion.create(null));
-    private static final CakePHP3ModuleFactory INSTANCE = new CakePHP3ModuleFactory();
-    private static final Map<PhpModule, CakePHP3Module> MODULES = Collections.synchronizedMap(new HashMap<PhpModule, CakePHP3Module>());
+    private FileObject versionsDirectory;
 
-    private CakePHP3ModuleFactory() {
+    public CakeVersionTest(String name) {
+        super(name);
     }
 
-    public static CakePHP3ModuleFactory getInstance() {
-        return INSTANCE;
+    @BeforeClass
+    public static void setUpClass() {
     }
 
-    public CakePHP3Module create(PhpModule phpModule) {
-        CakePHP3Module module = MODULES.get(phpModule);
-        if (module == null) {
-            // get version number
-            CakePHP3ModuleDefault impl = new CakePHP3ModuleDefault(phpModule);
-            CakeVersion version = impl.createVersion();
-            module = new CakePHP3Module(impl, version);
-            MODULES.put(phpModule, module);
+    @AfterClass
+    public static void tearDownClass() {
+    }
+
+    @Before
+    @Override
+    public void setUp() {
+        if (versionsDirectory == null) {
+            File dataDir = getDataDir();
+            FileObject dataDirectory = FileUtil.toFileObject(dataDir);
+            versionsDirectory = dataDirectory.getFileObject("versions");
         }
-        return module;
     }
 
-    public void remove(PhpModule phpModule) {
-        MODULES.remove(phpModule);
+    @After
+    @Override
+    public void tearDown() {
+        versionsDirectory = null;
+    }
+
+    /**
+     * Test of create method, of class CakeVersion.
+     */
+    @Test
+    public void testVersionFile() {
+        testVersionFile("VERSION-3.0.0.txt", new int[]{3, 0, 0}, "3.0.0");
+        testVersionFile("VERSION-3.1.0-dev.txt", new int[]{3, 1, 0}, "3.1.0-dev");
+        testVersionFile("VERSION-none.txt", new int[]{-1, -1, -1}, "UNKNOWN");
+    }
+
+    private void testVersionFile(String fileName, int[] numbers, String fullVersion) {
+        FileObject versionFile = versionsDirectory.getFileObject(fileName);
+        CakeVersion version = CakeVersion.create(versionFile);
+        assertEquals(numbers[0], version.getMajor());
+        assertEquals(numbers[1], version.getMinor());
+        assertEquals(numbers[2], version.getPatch());
+        assertEquals(fullVersion, version.getVersionNumber());
     }
 
 }

@@ -58,6 +58,7 @@ import org.netbeans.modules.parsing.api.UserTask;
 import org.netbeans.modules.parsing.spi.ParseException;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
+import org.netbeans.modules.php.cake3.CakeVersion;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
 import org.netbeans.modules.php.cake3.preferences.CakePHP3Preferences;
@@ -520,7 +521,7 @@ public abstract class CakePHP3ModuleImpl {
 
         String relativePath = FileUtil.getRelativePath(srcDir, target);
         if (relativePath == null) {
-            return "";
+            return ""; // NOI18N
         }
         sb.append(relativePath.replace("/", "\\")); // NOI18N
         return sb.toString();
@@ -549,6 +550,17 @@ public abstract class CakePHP3ModuleImpl {
             pluginName = getPluginName(fileObject);
         }
         return new ModuleInfoImpl(fileObject, base, category, pluginName);
+    }
+
+    @CheckForNull
+    public CakeVersion createVersion() {
+        List<FileObject> directories = getDirectories(Base.CORE);
+        FileObject versionFile = null;
+        for (FileObject directory : directories) {
+            versionFile = directory.getFileObject("VERSION.txt"); // NOI18N
+            break; // core directoy is only one
+        }
+        return CakeVersion.create(versionFile);
     }
 
     /**
