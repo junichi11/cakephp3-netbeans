@@ -82,6 +82,7 @@ public final class CakePHP3Constants {
 
     public static final String CAKEPHP3 = "CakePHP3"; // NOI18N
     public static final String CAKEPHP3_FRAMEWORK = "CakePHP3 Framework"; // NOI18N
+    public static final String UTF8 = "UTF-8"; // NOI18N
 
     private CakePHP3Constants() {
     }

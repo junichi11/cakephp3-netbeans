@@ -48,6 +48,7 @@ import org.netbeans.api.annotations.common.CheckForNull;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.CakePHP3FrameworkProvider;
+import org.netbeans.modules.php.cake3.CakeVersion;
 import static org.netbeans.modules.php.cake3.modules.CakePHP3ModuleFactory.DUMMY_MODULE;
 import org.openide.filesystems.FileObject;
 
@@ -111,9 +112,11 @@ public class CakePHP3Module {
     }
 
     private final CakePHP3ModuleImpl impl;
+    private final CakeVersion version;
 
-    CakePHP3Module(CakePHP3ModuleImpl impl) {
+    CakePHP3Module(CakePHP3ModuleImpl impl, CakeVersion version) {
         this.impl = impl;
+        this.version = version;
     }
 
     public static boolean isCakePHP(PhpModule phpmodule) {
@@ -215,6 +218,10 @@ public class CakePHP3Module {
 
     public ModuleInfo createModuleInfo(FileObject fileObject) {
         return impl.createModuleInfo(fileObject);
+    }
+
+    public CakeVersion getVersion() {
+        return version;
     }
 
 }

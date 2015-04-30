@@ -39,45 +39,44 @@
  *
  * Portions Copyrighted 2015 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3.modules;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.CakeVersion;
+package org.netbeans.modules.php.cake3;
 
 /**
  *
  * @author junichi11
  */
-public final class CakePHP3ModuleFactory {
+public interface Versionable {
 
-    public static final CakePHP3Module DUMMY_MODULE = new CakePHP3Module(new CakePHP3ModuleDummy(), CakeVersion.create(null));
-    private static final CakePHP3ModuleFactory INSTANCE = new CakePHP3ModuleFactory();
-    private static final Map<PhpModule, CakePHP3Module> MODULES = Collections.synchronizedMap(new HashMap<PhpModule, CakePHP3Module>());
+    public static final String UNNKOWN = "UNKNOWN"; // NOI18N
+    public static final String MAJOR = "major"; // NOI18N
+    public static final String MINOR = "minor"; // NOI18N
+    public static final String PATCH = "patch"; // NOI18N
 
-    private CakePHP3ModuleFactory() {
-    }
+    /**
+     * Get a full version number.
+     *
+     * @return a full version number
+     */
+    public String getVersionNumber();
 
-    public static CakePHP3ModuleFactory getInstance() {
-        return INSTANCE;
-    }
+    /**
+     * Get a major version number.
+     *
+     * @return a major version number
+     */
+    public int getMajor();
 
-    public CakePHP3Module create(PhpModule phpModule) {
-        CakePHP3Module module = MODULES.get(phpModule);
-        if (module == null) {
-            // get version number
-            CakePHP3ModuleDefault impl = new CakePHP3ModuleDefault(phpModule);
-            CakeVersion version = impl.createVersion();
-            module = new CakePHP3Module(impl, version);
-            MODULES.put(phpModule, module);
-        }
-        return module;
-    }
+    /**
+     * Get a minor version number.
+     *
+     * @return a minor version number
+     */
+    public int getMinor();
 
-    public void remove(PhpModule phpModule) {
-        MODULES.remove(phpModule);
-    }
-
+    /**
+     * Get a patch version number.
+     *
+     * @return a patch version number
+     */
+    public int getPatch();
 }
