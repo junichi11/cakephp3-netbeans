@@ -44,8 +44,13 @@ package org.netbeans.modules.php.cake3.modules;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.netbeans.api.annotations.common.CheckForNull;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
+import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.CakeVersion;
+import org.netbeans.modules.php.cake3.dotcake.Dotcake;
+import org.netbeans.modules.php.cake3.preferences.CakePHP3Preferences;
+import org.openide.filesystems.FileObject;
 
 /**
  *
@@ -68,7 +73,9 @@ public final class CakePHP3ModuleFactory {
         CakePHP3Module module = MODULES.get(phpModule);
         if (module == null) {
             CakePHP3ModuleDefault impl = new CakePHP3ModuleDefault(phpModule);
-            // TODO add Dotcake
+            // add Dotcake
+            Dotcake dotcake = createDotcake(phpModule);
+            impl.dotcake(dotcake);
             CakeVersion version = impl.createVersion();
             module = new CakePHP3Module(impl, version);
             MODULES.put(phpModule, module);
@@ -78,6 +85,20 @@ public final class CakePHP3ModuleFactory {
 
     public void remove(PhpModule phpModule) {
         MODULES.remove(phpModule);
+    }
+
+    @CheckForNull
+    private Dotcake createDotcake(PhpModule phpModule) {
+        String dotcakePath = CakePHP3Preferences.getDotcakePath(phpModule);
+        FileObject sourceDirectory = phpModule.getSourceDirectory();
+        if (sourceDirectory == null) {
+            return null;
+        }
+        if (!StringUtils.isEmpty(dotcakePath)) {
+            FileObject dotcakeFile = sourceDirectory.getFileObject(dotcakePath);
+            return Dotcake.fromJson(dotcakeFile);
+        }
+        return null;
     }
 
 }
