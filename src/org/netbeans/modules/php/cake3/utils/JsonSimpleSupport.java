@@ -39,66 +39,73 @@
  *
  * Portions Copyrighted 2015 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3.modules;
+package org.netbeans.modules.php.cake3.utils;
 
-import java.util.Collections;
-import java.util.HashMap;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
-import org.netbeans.api.annotations.common.CheckForNull;
-import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.api.util.StringUtils;
-import org.netbeans.modules.php.cake3.CakeVersion;
-import org.netbeans.modules.php.cake3.dotcake.Dotcake;
-import org.netbeans.modules.php.cake3.preferences.CakePHP3Preferences;
-import org.openide.filesystems.FileObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
  * @author junichi11
  */
-public final class CakePHP3ModuleFactory {
+public final class JsonSimpleSupport {
 
-    public static final CakePHP3Module DUMMY_MODULE = new CakePHP3Module(new CakePHP3ModuleDummy(), CakeVersion.create(null));
-    private static final CakePHP3ModuleFactory INSTANCE = new CakePHP3ModuleFactory();
-    private static final Map<PhpModule, CakePHP3Module> MODULES = Collections.synchronizedMap(new HashMap<PhpModule, CakePHP3Module>());
+    private static final Logger LOGGER = Logger.getLogger(JsonSimpleSupport.class.getName());
 
-    private CakePHP3ModuleFactory() {
+    private JsonSimpleSupport() {
     }
 
-    public static CakePHP3ModuleFactory getInstance() {
-        return INSTANCE;
-    }
-
-    public CakePHP3Module create(PhpModule phpModule) {
-        CakePHP3Module module = MODULES.get(phpModule);
-        if (module == null) {
-            CakePHP3ModuleDefault impl = new CakePHP3ModuleDefault(phpModule);
-            // add Dotcake
-            Dotcake dotcake = createDotcake(phpModule);
-            impl.dotcake(dotcake);
-            CakeVersion version = impl.createVersion();
-            module = new CakePHP3Module(impl, version);
-            MODULES.put(phpModule, module);
-        }
-        return module;
-    }
-
-    public void remove(PhpModule phpModule) {
-        MODULES.remove(phpModule);
-    }
-
-    @CheckForNull
-    private Dotcake createDotcake(PhpModule phpModule) {
-        String dotcakePath = CakePHP3Preferences.getDotcakePath(phpModule);
-        FileObject sourceDirectory = phpModule.getSourceDirectory();
-        if (sourceDirectory == null) {
+    public static <T> T fromJson(Reader reader, Class<T> type) throws IOException {
+        JSONParser parser = new JSONParser();
+        if (reader == null || type == null) {
             return null;
         }
-        if (!StringUtils.isEmpty(dotcakePath)) {
-            FileObject dotcakeFile = sourceDirectory.getFileObject(dotcakePath);
-            return Dotcake.fromJson(dotcakeFile);
+        Object object = null;
+        try {
+            object = parser.parse(reader);
+        } catch (ParseException ex) {
+            LOGGER.log(Level.INFO, "Can't parse json file");
         }
-        return null;
+        if (object == null) {
+            return null;
+        }
+        return fromJson(object, type);
+    }
+
+    private static <T> T fromJson(Object o, Class<T> type) {
+        if (type == String.class
+                || type == Integer.class
+                || type == Map.class
+                || type == Long.class
+                || type == List.class) {
+            return type.cast(o);
+        }
+        JSONObject jsonObject = (JSONObject) o;
+        T instance = null;
+        try {
+            instance = type.newInstance();
+            for (Object key : jsonObject.keySet()) {
+                try {
+                    Field field = type.getDeclaredField((String) key);
+                    Object value = fromJson(jsonObject.get(key), field.getType());
+                    field.setAccessible(true);
+                    field.set(instance, value);
+                } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+                    LOGGER.log(Level.WARNING, ex.getMessage());
+                }
+            }
+        } catch (InstantiationException | IllegalAccessException ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage());
+        }
+        return instance;
     }
 
 }

@@ -59,6 +59,7 @@ import org.netbeans.modules.parsing.spi.ParseException;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.CakeVersion;
+import org.netbeans.modules.php.cake3.dotcake.Dotcake;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
 import org.netbeans.modules.php.cake3.preferences.CakePHP3Preferences;
@@ -104,9 +105,19 @@ public abstract class CakePHP3ModuleImpl {
             Category.CSS, Category.IMG, Category.JS, Category.WEBROOT
     );
     private final PhpModule phpModule;
+    private Dotcake dotcake;
 
     CakePHP3ModuleImpl(PhpModule phpModule) {
         this.phpModule = phpModule;
+    }
+
+    public CakePHP3ModuleImpl dotcake(Dotcake dotcake) {
+        this.dotcake = dotcake;
+        return this;
+    }
+
+    public Dotcake getDotcake() {
+        return dotcake;
     }
 
     public PhpModule getPhpModule() {
