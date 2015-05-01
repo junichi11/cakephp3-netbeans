@@ -39,45 +39,73 @@
  *
  * Portions Copyrighted 2015 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3.modules;
+package org.netbeans.modules.php.cake3.utils;
 
-import java.util.Collections;
-import java.util.HashMap;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
-import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.CakeVersion;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
  * @author junichi11
  */
-public final class CakePHP3ModuleFactory {
+public final class JsonSimpleSupport {
 
-    public static final CakePHP3Module DUMMY_MODULE = new CakePHP3Module(new CakePHP3ModuleDummy(), CakeVersion.create(null));
-    private static final CakePHP3ModuleFactory INSTANCE = new CakePHP3ModuleFactory();
-    private static final Map<PhpModule, CakePHP3Module> MODULES = Collections.synchronizedMap(new HashMap<PhpModule, CakePHP3Module>());
+    private static final Logger LOGGER = Logger.getLogger(JsonSimpleSupport.class.getName());
 
-    private CakePHP3ModuleFactory() {
+    private JsonSimpleSupport() {
     }
 
-    public static CakePHP3ModuleFactory getInstance() {
-        return INSTANCE;
-    }
-
-    public CakePHP3Module create(PhpModule phpModule) {
-        CakePHP3Module module = MODULES.get(phpModule);
-        if (module == null) {
-            CakePHP3ModuleDefault impl = new CakePHP3ModuleDefault(phpModule);
-            // TODO add Dotcake
-            CakeVersion version = impl.createVersion();
-            module = new CakePHP3Module(impl, version);
-            MODULES.put(phpModule, module);
+    public static <T> T fromJson(Reader reader, Class<T> type) throws IOException {
+        JSONParser parser = new JSONParser();
+        if (reader == null || type == null) {
+            return null;
         }
-        return module;
+        Object object = null;
+        try {
+            object = parser.parse(reader);
+        } catch (ParseException ex) {
+            LOGGER.log(Level.INFO, "Can't parse json file");
+        }
+        if (object == null) {
+            return null;
+        }
+        return fromJson(object, type);
     }
 
-    public void remove(PhpModule phpModule) {
-        MODULES.remove(phpModule);
+    private static <T> T fromJson(Object o, Class<T> type) {
+        if (type == String.class
+                || type == Integer.class
+                || type == Map.class
+                || type == Long.class
+                || type == List.class) {
+            return type.cast(o);
+        }
+        JSONObject jsonObject = (JSONObject) o;
+        T instance = null;
+        try {
+            instance = type.newInstance();
+            for (Object key : jsonObject.keySet()) {
+                try {
+                    Field field = type.getDeclaredField((String) key);
+                    Object value = fromJson(jsonObject.get(key), field.getType());
+                    field.setAccessible(true);
+                    field.set(instance, value);
+                } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+                    LOGGER.log(Level.WARNING, ex.getMessage());
+                }
+            }
+        } catch (InstantiationException | IllegalAccessException ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage());
+        }
+        return instance;
     }
 
 }
