@@ -147,7 +147,7 @@ You can use the [.cake](https://github.com/dotcake/dotcake) if you want to use t
 The file format is the following:
 ```json
 {
-    "cake": "..\/vendor\/cakephp\/cakephp",
+    "cake": ".\/vendor\/cakephp\/cakephp",
     "build_path": {
         "entities": [
             ".\/src\/Model\/Entity\/"
