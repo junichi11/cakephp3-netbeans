@@ -41,9 +41,20 @@
  */
 package org.netbeans.modules.php.cake3.validators;
 
+import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.netbeans.api.annotations.common.NonNull;
+import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.api.validation.ValidationResult;
+import org.netbeans.modules.php.cake3.CakePHP3Constants;
+import org.netbeans.modules.php.cake3.dotcake.Dotcake;
 import org.openide.filesystems.FileObject;
+import org.openide.util.Exceptions;
 import org.openide.util.NbBundle;
 
 /**
@@ -112,6 +123,50 @@ public class CakePHP3CustomizerValidator {
             String error = String.format("Js %s ", path); // NOI18N
             addNotFoundError("js", error); // NOI18N
         }
+        return this;
+    }
+
+    @NbBundle.Messages({
+        "CakePHP3CustomizerValidator.invalid.dotcake.fileName=It's not a .cake file",
+        "CakePHP3CustomizerValidator.invalid.jsonFile=It's a invalid json file"
+    })
+    public CakePHP3CustomizerValidator validateDotcake(FileObject baseDirectory, String path) {
+        if (StringUtils.isEmpty(path)) {
+            return this;
+        }
+
+        FileObject file = baseDirectory.getFileObject(path);
+        if (file == null) {
+            String error = String.format(".cake %s ", path); // NOI18N
+            addNotFoundError(".cake", error); // NOI18N
+            return this;
+        }
+
+        if (!path.endsWith(Dotcake.DOTCAKE_NAME) || !Dotcake.isDotcake(file)) {
+            ValidationResult.Message message = new ValidationResult.Message("dotcake", Bundle.CakePHP3CustomizerValidator_invalid_dotcake_fileName());
+            result.addError(message);
+            return this;
+        }
+
+        boolean isParserError = false;
+        try (InputStream inputStream = new BufferedInputStream(file.getInputStream())) {
+            try (InputStreamReader reader = new InputStreamReader(inputStream, CakePHP3Constants.UTF8)) {
+                JSONParser parser = new JSONParser();
+                parser.parse(reader);
+            } catch (ParseException ex) {
+                isParserError = true;
+            }
+        } catch (FileNotFoundException ex) {
+            Exceptions.printStackTrace(ex);
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        if (isParserError) {
+            ValidationResult.Message message = new ValidationResult.Message("dotcake", Bundle.CakePHP3CustomizerValidator_invalid_jsonFile());
+            result.addError(message);
+            return this;
+        }
+
         return this;
     }
 

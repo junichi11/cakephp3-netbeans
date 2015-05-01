@@ -89,7 +89,7 @@ public final class Dotcake {
     private String cake;
     private Map<String, List<String>> build_path;
     private File dotcakeFile;
-    private static final String DOTCAKE_NAME = ".cake"; // NOI18N
+    public static final String DOTCAKE_NAME = ".cake"; // NOI18N
     private static final Logger LOGGER = Logger.getLogger(Dotcake.class.getName());
 
     public enum BuildPathCategory {

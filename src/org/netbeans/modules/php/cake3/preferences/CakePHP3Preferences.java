@@ -59,6 +59,7 @@ public final class CakePHP3Preferences {
     private static final String WWW_ROOT = "www-root"; // NOI18N
     private static final String NAMESPACE = "namespace"; // NOI18N
     private static final String CTP_EXT = "ctp-ext"; // NOI18N
+    private static final String DOTCAKE = "dotcake"; // NOI18N
 
     public static boolean isEnabled(PhpModule phpModule) {
         return getPreferences(phpModule).getBoolean(ENABLED, false);
@@ -130,6 +131,14 @@ public final class CakePHP3Preferences {
 
     public static void setWWWRootPath(PhpModule phpModule, String path) {
         getPreferences(phpModule).put(WWW_ROOT, path);
+    }
+
+    public static String getDotcakePath(PhpModule phpModule) {
+        return getPreferences(phpModule).get(DOTCAKE, ""); // NOI18N
+    }
+
+    public static void setDotcakePath(PhpModule phpModule, String path) {
+        getPreferences(phpModule).put(DOTCAKE, path);
     }
 
     private static Preferences getPreferences(PhpModule phpModule) {
