@@ -203,6 +203,7 @@ Right-click a project > CakePHP3
 
 - Run Command
 - Run server
+- Refresh
 
 ### Run Command
 
@@ -212,6 +213,10 @@ All commands will be shown as a list in the command dialog. Then you can run a c
 
 Just run `cake server`. If you want to set details, please use `Run Configuration` of project properties.
 
+### Refresh
+
+Please run this action after you changed the `.cake` file or you updated the version of CakePHP.
+Refresh the version number and category paths.
 
 ## License
 [Common Development and Distribution License (CDDL) v1.0 and GNU General Public License (GPL) v2](http://netbeans.org/cddl-gplv2.html)
