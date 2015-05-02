@@ -41,12 +41,10 @@
  */
 package org.netbeans.modules.php.cake3.modules;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import org.netbeans.api.annotations.common.CheckForNull;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.CakePHP3FrameworkProvider;
 import org.netbeans.modules.php.cake3.CakeVersion;
 import static org.netbeans.modules.php.cake3.modules.CakePHP3ModuleFactory.DUMMY_MODULE;
@@ -151,9 +149,6 @@ public class CakePHP3Module {
     }
 
     public List<FileObject> getDirectories(Base base, Category category, String pluginName) {
-        if (base == Base.PLUGIN && StringUtils.isEmpty(pluginName)) {
-            return Collections.emptyList();
-        }
         return impl.getDirectories(base, category, pluginName);
     }
 
