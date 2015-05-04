@@ -44,11 +44,14 @@ package org.netbeans.modules.php.cake3.ui.actions.gotos;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
+import org.netbeans.api.progress.ProgressUtils;
 import org.netbeans.editor.BaseAction;
 import org.netbeans.modules.editor.NbEditorUtilities;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
@@ -61,7 +64,6 @@ import org.netbeans.modules.php.cake3.ui.actions.gotos.status.CakePHP3GoToStatus
 import org.netbeans.modules.php.cake3.ui.actions.gotos.status.CakePHP3GoToStatusFactory;
 import org.openide.filesystems.FileObject;
 import org.openide.util.Exceptions;
-import org.openide.util.RequestProcessor;
 
 /**
  *
@@ -70,7 +72,6 @@ import org.openide.util.RequestProcessor;
 public abstract class CakePHP3GoToAction extends BaseAction {
 
     private static final long serialVersionUID = 7403447287856842348L;
-    private static final RequestProcessor RP = new RequestProcessor(CakePHP3GoToAction.class); // NOI18N
 
     @Override
     public final void actionPerformed(ActionEvent event, final JTextComponent textComponent) {
@@ -94,35 +95,37 @@ public abstract class CakePHP3GoToAction extends BaseAction {
         if (!FileUtils.PHP_MIME_TYPE.equals(mimeType)) {
             return;
         }
-        RP.execute(new Runnable() {
+        final AtomicBoolean cancel = new AtomicBoolean();
+        CakePHP3GoToStatusFactory factory = CakePHP3GoToStatusFactory.getInstance();
+        final CakePHP3GoToStatus status = factory.create(fileObject, textComponent.getCaretPosition());
+        final List<GoToItem> defaultItems = new ArrayList<>();
+        ProgressUtils.runOffEventDispatchThread(new Runnable() {
 
             @Override
             public void run() {
-                CakePHP3GoToStatusFactory factory = CakePHP3GoToStatusFactory.getInstance();
-                final CakePHP3GoToStatus status = factory.create(fileObject, textComponent.getCaretPosition());
                 status.scan();
-                final List<GoToItem> defaultItems = getGoToItems(status);
-
-                // show popup
-                try {
-                    Rectangle rectangle = textComponent.modelToView(textComponent.getCaretPosition());
-                    final Point point = new Point(rectangle.x, rectangle.y + rectangle.height);
-                    SwingUtilities.convertPointToScreen(point, textComponent);
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            String title = getPopupTitle();
-                            if (title == null) {
-                                title = ""; // NOI18N
-                            }
-                            PopupUtil.showPopup(new GoToPopup(title, defaultItems, status), title, point.x, point.y, true, 0);
-                        }
-                    });
-                } catch (BadLocationException ex) {
-                    Exceptions.printStackTrace(ex);
-                }
+                defaultItems.addAll(getGoToItems(status));
             }
-        });
+        }, "CakePHP3 Go To", cancel, true);
+
+        // show popup
+        try {
+            Rectangle rectangle = textComponent.modelToView(textComponent.getCaretPosition());
+            final Point point = new Point(rectangle.x, rectangle.y + rectangle.height);
+            SwingUtilities.convertPointToScreen(point, textComponent);
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    String title = getPopupTitle();
+                    if (title == null) {
+                        title = ""; // NOI18N
+                    }
+                    PopupUtil.showPopup(new GoToPopup(title, defaultItems, status), title, point.x, point.y, true, 0);
+                }
+            });
+        } catch (BadLocationException ex) {
+            Exceptions.printStackTrace(ex);
+        }
     }
 
     protected String getPopupTitle() {

@@ -64,7 +64,7 @@ import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
 import org.netbeans.modules.php.cake3.preferences.CakePHP3Preferences;
 import org.netbeans.modules.php.cake3.utils.CakePHPCodeUtils;
-import org.netbeans.modules.php.editor.parser.api.Utils;
+import org.netbeans.modules.php.editor.parser.PHPParseResult;
 import org.netbeans.modules.php.editor.parser.astnodes.ArrayCreation;
 import org.netbeans.modules.php.editor.parser.astnodes.ArrayElement;
 import org.netbeans.modules.php.editor.parser.astnodes.Expression;
@@ -106,6 +106,7 @@ public abstract class CakePHP3ModuleImpl {
     );
     private final PhpModule phpModule;
     private Dotcake dotcake;
+    private List<Pair<String, FileObject>> vendorPluginsCache;
 
     CakePHP3ModuleImpl(PhpModule phpModule) {
         this.phpModule = phpModule;
@@ -328,32 +329,34 @@ public abstract class CakePHP3ModuleImpl {
      */
     protected List<Pair<String, FileObject>> getVendorPlugins() {
         // XXX use cache?
-        List<FileObject> directories = getDirectories(Base.VENDOR);
-        List<Pair<String, FileObject>> vendorPlugins = new ArrayList<>();
-        for (FileObject directory : directories) {
-            FileObject cakephpPlugins = directory.getFileObject("cakephp-plugins.php"); // NOI18N
-            if (cakephpPlugins == null) {
-                continue;
-            }
-            final PluginsVisitor pluginsVisitor = new PluginsVisitor();
-            scan(cakephpPlugins, pluginsVisitor);
-            List<Pair<String, String>> plugins = pluginsVisitor.getPlugins();
-            FileObject rootDirectory = getRootDirectory();
-            if (rootDirectory != null) {
-                for (Pair<String, String> plugin : plugins) {
-                    String path = plugin.second();
-                    FileObject pluginDirectory = rootDirectory.getFileObject(path);
-                    if (pluginDirectory == null) {
-                        continue;
+        if (vendorPluginsCache == null) {
+            vendorPluginsCache = new ArrayList<>();
+            List<FileObject> directories = getDirectories(Base.VENDOR);
+            for (FileObject directory : directories) {
+                FileObject cakephpPlugins = directory.getFileObject("cakephp-plugins.php"); // NOI18N
+                if (cakephpPlugins == null) {
+                    continue;
+                }
+                final PluginsVisitor pluginsVisitor = new PluginsVisitor();
+                scan(cakephpPlugins, pluginsVisitor);
+                List<Pair<String, String>> plugins = pluginsVisitor.getPlugins();
+                FileObject rootDirectory = getRootDirectory();
+                if (rootDirectory != null) {
+                    for (Pair<String, String> plugin : plugins) {
+                        String path = plugin.second();
+                        FileObject pluginDirectory = rootDirectory.getFileObject(path);
+                        if (pluginDirectory == null) {
+                            continue;
+                        }
+                        vendorPluginsCache.add(Pair.of(plugin.first(), pluginDirectory));
                     }
-                    vendorPlugins.add(Pair.of(plugin.first(), pluginDirectory));
                 }
             }
         }
-        return vendorPlugins;
+        return vendorPluginsCache;
     }
 
-    private void scan(FileObject cakephpPlugins, final PluginsVisitor visitor) {
+    private void scan(final FileObject cakephpPlugins, final PluginsVisitor visitor) {
         try {
             ParserManager.parse(Collections.singleton(Source.create(cakephpPlugins)), new UserTask() {
                 @Override
@@ -362,7 +365,11 @@ public abstract class CakePHP3ModuleImpl {
                     if (result == null) {
                         return;
                     }
-                    visitor.scan(Utils.getRoot(result));
+                    if (result instanceof PHPParseResult) {
+                        PHPParseResult pr = (PHPParseResult) result;
+                        pr.getProgram().accept(visitor);
+//                        visitor.scan(Utils.getRoot(result));
+                    }
                 }
             });
         } catch (ParseException ex) {
