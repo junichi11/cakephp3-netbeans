@@ -65,7 +65,7 @@ import org.netbeans.modules.php.editor.api.ElementQueryFactory;
 import org.netbeans.modules.php.editor.api.NameKind;
 import org.netbeans.modules.php.editor.api.QuerySupportFactory;
 import org.netbeans.modules.php.editor.api.elements.ClassElement;
-import org.netbeans.modules.php.editor.parser.api.Utils;
+import org.netbeans.modules.php.editor.parser.PHPParseResult;
 import org.netbeans.modules.php.editor.parser.astnodes.visitors.DefaultVisitor;
 import org.openide.filesystems.FileObject;
 
@@ -275,8 +275,14 @@ public abstract class CakePHP3GoToStatus {
         ParserManager.parse(Collections.singleton(Source.create(targetFile)), new UserTask() {
             @Override
             public void run(ResultIterator resultIterator) throws Exception {
-                ParserResult parseResult = (ParserResult) resultIterator.getParserResult();
-                visitor.scan(Utils.getRoot(parseResult));
+                ParserResult result = (ParserResult) resultIterator.getParserResult();
+                if (result == null) {
+                    return;
+                }
+                if (result instanceof PHPParseResult) {
+                    PHPParseResult pr = (PHPParseResult) result;
+                    pr.getProgram().accept(visitor);
+                }
             }
         });
     }
