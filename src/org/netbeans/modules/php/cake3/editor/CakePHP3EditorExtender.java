@@ -93,7 +93,12 @@ public class CakePHP3EditorExtender extends EditorExtender {
         if (!ext.equals("php") && !ext.equals(cakeModule.getCtpExt())) { // NOI18N
             return Collections.emptyList();
         }
-        category = cakeModule.getCategory(fo);
+        if (cakeModule.isTemplateFile(fo)) {
+            category = Category.TEMPLATE;
+        } else {
+            category = cakeModule.getCategory(fo);
+        }
+
         if (!isEnabledCategory(category)) {
             return Collections.emptyList();
         }
@@ -253,10 +258,12 @@ public class CakePHP3EditorExtender extends EditorExtender {
                 fullyQualifiedName = "\\Cake\\View\\Helper"; // NOI18N
                 break;
             case TEMPLATE: // fallthrough
+            case TEMPLATE_CELL:
             case ELEMENT:
             case EMAIL:
             case ERROR:
             case PAGES:
+            case LAYOUT:
                 // XXX use AppView?
                 className = "View"; // NOI18N
                 fullyQualifiedName = "\\Cake\\View\\View"; // NOI18N
@@ -275,6 +282,7 @@ public class CakePHP3EditorExtender extends EditorExtender {
                 || category == Category.ELEMENT
                 || category == Category.EMAIL
                 || category == Category.ERROR
+                || category == Category.LAYOUT
                 || category == Category.PAGES
                 || category == Category.HELPER;
     }

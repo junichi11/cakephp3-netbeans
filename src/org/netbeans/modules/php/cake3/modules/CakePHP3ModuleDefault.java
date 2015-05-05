@@ -47,6 +47,8 @@ import java.util.List;
 import org.netbeans.api.annotations.common.CheckForNull;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
+import org.netbeans.modules.php.cake3.dotcake.Dotcake;
+import org.netbeans.modules.php.cake3.dotcake.DotcakeSupport;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
 import org.netbeans.modules.php.cake3.utils.Inflector;
@@ -225,7 +227,14 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
 
     @CheckForNull
     private FileObject getCoreDirecotry() {
-        // TODO add Dotcake support
+        // Dotcake support
+        Dotcake dotcake = getDotcake();
+        if (dotcake != null) {
+            FileObject coreDirectory = DotcakeSupport.getCoreDirectory(dotcake);
+            if (coreDirectory != null) {
+                return coreDirectory;
+            }
+        }
 
         // default
         FileObject rootDirectory = getRootDirectory();
@@ -245,18 +254,25 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
     }
 
     private List<FileObject> getPluignDirectories() {
-        // TODO custom directories
+        // custom directories from .cake file
+        List<FileObject> plugins = new ArrayList<>();
+        Dotcake dotcake = getDotcake();
+        if (dotcake != null) {
+            plugins.addAll(DotcakeSupport.getPluignsDirectories(dotcake));
+        }
 
         // default
         FileObject rootDirectory = getRootDirectory();
         if (rootDirectory == null) {
-            return Collections.emptyList();
+            return plugins;
         }
         FileObject defaultPlugins = rootDirectory.getFileObject("plugins"); // NOI18N
         if (defaultPlugins != null) {
-            return Collections.singletonList(defaultPlugins);
+            if (!plugins.contains(defaultPlugins)) {
+                plugins.add(defaultPlugins);
+            }
         }
-        return Collections.emptyList();
+        return plugins;
     }
 
     @Override
@@ -304,18 +320,26 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
     }
 
     private List<FileObject> getAppDirectories(Category category) {
-        List<FileObject> directories = getDirectories(Base.APP);
         List<FileObject> targets = new ArrayList<>();
 
+        // Dotcake
+        Dotcake dotcake = getDotcake();
+        if (dotcake != null) {
+            List<FileObject> directories = DotcakeSupport.getDirectories(dotcake, category);
+            targets.addAll(directories);
+        }
+
         // default
-        for (FileObject directory : directories) {
+        List<FileObject> appDirectories = getDirectories(Base.APP);
+        for (FileObject directory : appDirectories) {
             FileObject target = getDirectory(directory, Base.APP, category);
             if (target != null) {
-                targets.add(target);
+                if (!targets.contains(target)) {
+                    targets.add(target);
+                }
             }
         }
 
-        // TODO Dotcake
         return targets;
     }
 
@@ -347,7 +371,7 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
             }
         }
 
-        // TODO Dotcake
+        // TODO Dotcake?
         return targets;
     }
 

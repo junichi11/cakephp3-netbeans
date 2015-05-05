@@ -47,6 +47,7 @@ import javax.swing.JComponent;
 import javax.swing.event.ChangeListener;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.validation.ValidationResult;
+import org.netbeans.modules.php.cake3.modules.CakePHP3ModuleFactory;
 import org.netbeans.modules.php.cake3.preferences.CakePHP3Preferences;
 import org.netbeans.modules.php.cake3.ui.customizer.CakePHP3CustomizerPanel;
 import org.netbeans.modules.php.cake3.validators.CakePHP3CustomizerValidator;
@@ -72,6 +73,7 @@ public class CakePHP3ModuleCustomizerExtender extends PhpModuleCustomizerExtende
     private final String css;
     private final String img;
     private final String js;
+    private final String dotcake;
     private final File sourceDirectory;
 
     public CakePHP3ModuleCustomizerExtender(PhpModule phpModule) {
@@ -83,6 +85,7 @@ public class CakePHP3ModuleCustomizerExtender extends PhpModuleCustomizerExtende
         css = CakePHP3Preferences.getCssUrl(phpModule);
         img = CakePHP3Preferences.getImageUrl(phpModule);
         js = CakePHP3Preferences.getJsUrl(phpModule);
+        dotcake = CakePHP3Preferences.getDotcakePath(phpModule);
         FileObject srcDir = phpModule.getSourceDirectory();
         sourceDirectory = srcDir != null ? FileUtil.toFile(srcDir) : null;
     }
@@ -135,12 +138,14 @@ public class CakePHP3ModuleCustomizerExtender extends PhpModuleCustomizerExtende
         String cssPath = String.format("%s/%s", wwwRootPath, getPanel().getCss()).replaceAll("/+", "/");
         String imgPath = String.format("%s/%s", wwwRootPath, getPanel().getImg()).replaceAll("/+", "/");
         String jsPath = String.format("%s/%s", wwwRootPath, getPanel().getJs()).replaceAll("/+", "/");
+        String dotcakePath = getPanel().getDotcakePath();
         ValidationResult result = validator.validateRootPath(srcDir, rootPath)
                 .validateSrc(srcDir, srcPath)
                 .validateWWWRoot(srcDir, wwwRootPath)
                 .validateCss(srcDir, cssPath)
                 .validateImg(srcDir, imgPath)
                 .validateJs(srcDir, jsPath)
+                .validateDotcake(srcDir, dotcakePath)
                 .getResult();
         if (result.hasErrors()) {
             errorMessage = result.getErrors().get(0).getMessage();
@@ -166,6 +171,9 @@ public class CakePHP3ModuleCustomizerExtender extends PhpModuleCustomizerExtende
         CakePHP3Preferences.setCssUrl(phpModule, p.getCss());
         CakePHP3Preferences.setImageUrl(phpModule, p.getImg());
         CakePHP3Preferences.setJsUrl(phpModule, p.getJs());
+        CakePHP3Preferences.setDotcakePath(phpModule, p.getDotcakePath());
+        // release CakePHP3Module
+        CakePHP3ModuleFactory.getInstance().remove(phpModule);
         return EnumSet.of(Change.FRAMEWORK_CHANGE);
     }
 
@@ -180,6 +188,7 @@ public class CakePHP3ModuleCustomizerExtender extends PhpModuleCustomizerExtende
             panel.setCss(css);
             panel.setImg(img);
             panel.setJs(js);
+            panel.setDotcakePath(dotcake);
         }
         return panel;
     }

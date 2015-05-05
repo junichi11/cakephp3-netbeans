@@ -73,6 +73,7 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
         cssTextField.getDocument().addDocumentListener(documentListener);
         imgTextField.getDocument().addDocumentListener(documentListener);
         jsTextField.getDocument().addDocumentListener(documentListener);
+        dotcakeTextField.getDocument().addDocumentListener(documentListener);
     }
 
     public void setCakePHP3Enabled(boolean isEnabled) {
@@ -139,6 +140,14 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
         imgTextField.setText(img);
     }
 
+    public String getDotcakePath() {
+        return dotcakeTextField.getText().trim();
+    }
+
+    public void setDotcakePath(String path) {
+        dotcakeTextField.setText(path);
+    }
+
     public void addChangeListener(ChangeListener listener) {
         changeSupport.addChangeListener(listener);
     }
@@ -178,6 +187,8 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
         srcTextField = new javax.swing.JTextField();
         namespaceLabel = new javax.swing.JLabel();
         namespaceTextField = new javax.swing.JTextField();
+        dotcakeLabel = new javax.swing.JLabel();
+        dotcakeTextField = new javax.swing.JTextField();
 
         org.openide.awt.Mnemonics.setLocalizedText(generalLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.generalLabel.text")); // NOI18N
 
@@ -214,6 +225,10 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
         org.openide.awt.Mnemonics.setLocalizedText(namespaceLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.namespaceLabel.text")); // NOI18N
 
         namespaceTextField.setText(org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.namespaceTextField.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(dotcakeLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.dotcakeLabel.text")); // NOI18N
+
+        dotcakeTextField.setText(org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.dotcakeTextField.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -258,7 +273,12 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
                             .addComponent(srcTextField)
                             .addComponent(namespaceTextField)
                             .addComponent(imgTextField)
-                            .addComponent(jsTextField))))
+                            .addComponent(jsTextField)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(dotcakeLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dotcakeTextField)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -300,6 +320,10 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jsLabel)
                     .addComponent(jsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dotcakeLabel)
+                    .addComponent(dotcakeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -307,6 +331,8 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel cssLabel;
     private javax.swing.JTextField cssTextField;
+    private javax.swing.JLabel dotcakeLabel;
+    private javax.swing.JTextField dotcakeTextField;
     private javax.swing.JCheckBox enabledCheckBox;
     private javax.swing.JLabel enabledMessageLabel;
     private javax.swing.JLabel generalLabel;

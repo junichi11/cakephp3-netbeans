@@ -58,7 +58,7 @@ The same as App settings of config/app.php
 
 #### Templates, plugins, locales, e.t.c.
 
-I'll support them using `.cake` file.
+Support them using `.cake` file.
 
 ## Features
 
@@ -66,6 +66,7 @@ I'll support them using `.cake` file.
 - Smart Go To
 - Run Actions (Run Command)
 - Template files(Controller, Table, Helper, e.t.c.)
+- Support for a `.cake` file
 - Resolve mime-types for a ctp extension and a `.cake` file
 
 ### Code Completion
@@ -140,12 +141,69 @@ You can change a list to specific category's one like the following.
 
 **NOTE** Core files are not shown (e.g. HtmlHelper, AuthComponent, e.t.c.)
 
+### Support for a .cake file
+
+You can use the [.cake](https://github.com/dotcake/dotcake) if you want to use the specified directories for Controller, Table, Template, e.t.c..
+The file format is the following:
+```json
+{
+    "cake": ".\/vendor\/cakephp\/cakephp",
+    "build_path": {
+        "entities": [
+            ".\/src\/Model\/Entity\/"
+        ],
+        "tables": [
+            ".\/src\/Model\/Table\/"
+        ],
+        "behaviors": [
+            ".\/src\/Model\/Behavior\/"
+        ],
+        "controllers": [
+            ".\/src\/Controller\/"
+        ],
+        "components": [
+            ".\/src\/Controller\/Component\/"
+        ],
+        "templates": [
+            ".\/src\/Template\/"
+        ],
+        "views": [
+            ".\/src\/View\/"
+        ],
+        "helpers": [
+            ".\/src\/View\/Helper\/"
+        ],
+        "consoles": [
+            ".\/src\/Console\/"
+        ],
+        "shells": [
+            ".\/src\/Shell\/"
+        ],
+        "tasks": [
+            ".\/src\/Shell\/Task\/"
+        ],
+        "locales": [
+            ".\/src\/Locale\/"
+        ],
+        "vendors": [
+            ".\/vendor\/"
+        ],
+        "plugins": [
+            ".\/plugins\/"
+        ]
+    }
+}
+```
+
+**NOTE** It is not available in any categories.
+
 ## Actions
 
 Right-click a project > CakePHP3
 
 - Run Command
 - Run server
+- Refresh
 
 ### Run Command
 
@@ -155,6 +213,10 @@ All commands will be shown as a list in the command dialog. Then you can run a c
 
 Just run `cake server`. If you want to set details, please use `Run Configuration` of project properties.
 
+### Refresh
+
+Please run this action after you changed the `.cake` file or you updated the version of CakePHP.
+Refresh the version number and category paths.
 
 ## License
 [Common Development and Distribution License (CDDL) v1.0 and GNU General Public License (GPL) v2](http://netbeans.org/cddl-gplv2.html)
