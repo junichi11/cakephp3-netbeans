@@ -106,7 +106,7 @@ public abstract class CakePHP3GoToAction extends BaseAction {
                 status.scan();
                 defaultItems.addAll(getGoToItems(status));
             }
-        }, "CakePHP3 Go To", cancel, true);
+        }, "CakePHP3 Go To", cancel, false);
 
         // show popup
         try {
