@@ -1,0 +1,319 @@
+{
+    "FormHelper": {
+        "create": {
+            "1": [
+                "type",
+                "action",
+                "url",
+                "encoding",
+                "templates",
+                "context",
+                "idPrefix"
+            ]
+        },
+        "error": {
+            "2": [
+                "escape"
+            ]
+        },
+        "label": {
+            "2": [
+                "for"
+            ]
+        },
+        "dateTime": {
+            "1": [
+                "empty",
+                "value",
+                "monthNames",
+                "minYear",
+                "maxYear",
+                "orderYear",
+                "timeFormat",
+                "interval",
+                "round",
+                "second"
+            ]
+        },
+        "date": {
+            "1": [
+                "empty",
+                "value",
+                "monthNames",
+                "minYear",
+                "maxYear",
+                "orderYear"
+            ]
+        },
+        "time": {
+            "1": [
+                "empty",
+                "value",
+                "timeFormat",
+                "interval",
+                "round",
+                "second"
+            ]
+        }
+    },
+    "HtmlHelper": {
+        "charset": {
+            "0": [
+                "utf-8"
+            ]
+        },
+        "docType": {
+            "0": [
+                "html4-strict",
+                "html4-trans",
+                "html4-frame",
+                "html5",
+                "xhtml-strict",
+                "xhtml-trans",
+                "xhtml-frame",
+                "xhtml11"
+            ]
+        },
+        "meta": {
+            "0": [
+                "icon"
+            ],
+            "2": [
+                "block"
+            ]
+        },
+        "link": {
+            "2": [
+                "escape",
+                "escapeTitle",
+                "confirm"
+            ]
+        },
+        "css": {
+            "1": [
+                "block",
+                "once",
+                "plugin",
+                "rel",
+                "fullBase"
+            ]
+        },
+        "script": {
+            "1": [
+                "block",
+                "once",
+                "plugin",
+                "rel",
+                "fullBase"
+            ]
+        },
+        "scriptBlock": {
+            "1": [
+                "safe",
+                "block"
+            ]
+        },
+        "scriptStart": {
+            "1": [
+                "safe",
+                "block"
+            ]
+        },
+        "getCrumbs": {
+            "1": [
+                "text",
+                "url"
+            ]
+        },
+        "getCrumbList": {
+            "0": [
+                "separator",
+                "firstClass",
+                "lastClass"
+            ]
+        },
+        "image": {
+            "1": [
+                "url",
+                "fullBase",
+                "plugin"
+            ]
+        },
+        "tag": {
+            "2": [
+                "escape"
+            ]
+        },
+        "div": {
+            "2": [
+                "escape"
+            ]
+        },
+        "para": {
+            "2": [
+                "escape"
+            ]
+        },
+        "media": {
+            "1": [
+                "tag",
+                "text",
+                "pathPrefix",
+                "fullBase"
+            ]
+        },
+        "nestedList": {
+            "1": [
+                "tag"
+            ],
+            "2": [
+                "even",
+                "odd"
+            ]
+        }
+    },
+    "NumberHelper": {
+        "toPercentage": {
+            "2": [
+                "multiply"
+            ]
+        },
+        "format": {
+            "1": [
+                "places",
+                "precision",
+                "locale",
+                "before",
+                "after",
+                "escape"
+            ]
+        },
+        "currency": {
+            "2": [
+                "locale",
+                "fractionSymbol",
+                "fractionPosition",
+                "before",
+                "after",
+                "zero",
+                "places",
+                "precision",
+                "pattern",
+                "useIntCode",
+                "escape"
+            ]
+        },
+        "formatDelta": {
+            "1": [
+                "places",
+                "precision",
+                "locale",
+                "before",
+                "after",
+                "escape"
+            ]
+        }
+    },
+    "PaginatorHelper" : {
+        "prev" : {
+            "1" : [
+                "disabledTitle",
+                "escape",
+                "model",
+                "url"
+            ]
+        },
+        "next" : {
+            "1" : [
+                "disabledTitle",
+                "escape",
+                "model",
+                "url"
+            ]
+        },
+        "sort" : {
+            "2" : [
+                "escape",
+                "model",
+                "direction",
+                "lock"
+            ]
+        },
+        "counter" : {
+            "0" : [
+                "model",
+                "format"
+            ]
+        },
+        "numbers" : {
+            "0" : [
+                "before",
+                "after",
+                "model",
+                "modulus",
+                "first",
+                "links",
+                "last",
+                "templates"
+            ]
+        },
+        "first" : {
+            "1" : [
+                "model",
+                "format"
+            ]
+        },
+        "last" : {
+            "1" : [
+                "model",
+                "format"
+            ]
+        },
+        "meta" : {
+            "0" : [
+                "model",
+                "block"
+            ]
+        }
+    },
+    "TextHelper": {
+        "autoLinkUrls": {
+            "1": [
+                "escape"
+            ]
+        },
+        "autoLinkEmails": {
+            "1": [
+                "escape"
+            ]
+        },
+        "autoLink": {
+            "1": [
+                "escape"
+            ]
+        },
+        "truncate": {
+            "2": [
+                "ellipsis",
+                "exact",
+                "html"
+            ]
+        },
+        "tail": {
+            "2": [
+                "ellipsis",
+                "exact"
+            ]
+        }
+    },
+    "TimeHelper": {
+        "timeAgoInWords": {
+            "1": [
+                "element",
+                "tag",
+                "class",
+                "title"
+            ]
+        }
+    }
+}

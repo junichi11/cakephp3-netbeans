@@ -1,0 +1,41 @@
+{
+    "HtmlHelper": {
+        "css": {
+            "0": [
+                "css"
+            ]
+        },
+        "script": {
+            "0": [
+                "js"
+            ]
+        },
+        "image": {
+            "0": [
+                "img"
+            ]
+        }
+    },
+    "Controller": {
+        "render": {
+            "0": [
+                "template"
+            ],
+            "1": [
+                "layout"
+            ]
+        }
+    },
+    "View": {
+        "element": {
+            "0": [
+                "element"
+            ]
+        },
+        "extend": {
+            "0": [
+                "template"
+            ]
+        }
+    }
+}
