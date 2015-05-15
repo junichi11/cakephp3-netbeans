@@ -1,0 +1,58 @@
+{
+    "HtmlHelper": {
+        "css": {
+            "0": [
+                "css"
+            ]
+        },
+        "script": {
+            "0": [
+                "js"
+            ]
+        },
+        "image": {
+            "0": [
+                "img"
+            ]
+        }
+    },
+    "Controller": {
+        "render": {
+            "0": [
+                "template"
+            ],
+            "1": [
+                "layout"
+            ]
+        },
+        "loadComponent" : {
+            "0": [
+                "component"
+            ]
+        }
+    },
+    "ModelAwareTrait": {
+        "loadModel" : {
+            "0": [
+                "table"
+            ]
+        }
+    },
+    "View": {
+        "element": {
+            "0": [
+                "element"
+            ]
+        },
+        "extend": {
+            "0": [
+                "template"
+            ]
+        },
+        "loadHelper": {
+            "0": [
+                "helper"
+            ]
+        }
+    }
+}

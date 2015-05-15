@@ -295,6 +295,9 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
                         return Collections.singletonList(vendorPlugin.second());
                     }
                 }
+                if (!StringUtils.isEmpty(pluginName)) {
+                    return Collections.emptyList();
+                }
             }
         }
         if (category == null) {
@@ -364,7 +367,7 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
             if (pluginName.equals(name)) {
                 FileObject baseDirectory = vendorPlugin.second();
                 FileObject target = getDirectory(baseDirectory, Base.PLUGIN, category);
-                if (target != null) {
+                if (target != null && !targets.contains(target)) {
                     targets.add(target);
                     break;
                 }
