@@ -45,6 +45,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
@@ -54,6 +56,7 @@ import org.netbeans.modules.php.cake3.CakePHP3Constants;
 import org.netbeans.spi.editor.completion.CompletionItem;
 import org.netbeans.spi.editor.completion.CompletionTask;
 import org.netbeans.spi.editor.completion.support.CompletionUtilities;
+import org.openide.text.NbDocument;
 import org.openide.util.Exceptions;
 import org.openide.util.ImageUtilities;
 
@@ -67,6 +70,7 @@ public class CakePHP3CompletionItem implements CompletionItem {
     private final String filter;
     private final int startOffset;
     private static final ImageIcon ICON = ImageUtilities.loadImageIcon(CakePHP3Constants.CAKE_ICON_16, true);
+    private static final Logger LOGGER = Logger.getLogger(CakePHP3CompletionItem.class.getName());
 
     public CakePHP3CompletionItem(String text, String filter, int startOffset) {
         this.text = text;
@@ -77,10 +81,33 @@ public class CakePHP3CompletionItem implements CompletionItem {
     @Override
     public void defaultAction(JTextComponent jtc) {
         try {
-            StyledDocument doc = (StyledDocument) jtc.getDocument();
-            String insertString = text.replace(filter, ""); // NOI18N
-            doc.insertString(startOffset, insertString, null);
-            Completion.get().hideAll();
+            final StyledDocument doc = (StyledDocument) jtc.getDocument();
+            NbDocument.runAtomicAsUser(doc, new Runnable() {
+
+                @Override
+                public void run() {
+                    try {
+                        String insertString;
+                        if (text.startsWith(filter)) {
+                            insertString = text.replace(filter, ""); // NOI18N
+                            doc.insertString(startOffset, insertString, null);
+                        } else {
+                            insertString = text;
+                            int removeLength = filter.length();
+                            int removeStart = startOffset - removeLength;
+                            if (removeStart >= 0) {
+                                doc.remove(removeStart, removeLength);
+                                doc.insertString(removeStart, insertString, null);
+                            } else {
+                                LOGGER.log(Level.WARNING, "Invalid start position[text: {0}, filter: {1}]", new Object[]{text, filter}); // NOI18N
+                            }
+                        }
+                    } catch (BadLocationException ex) {
+                        Exceptions.printStackTrace(ex);
+                    }
+                    Completion.get().hideAll();
+                }
+            });
         } catch (BadLocationException ex) {
             Exceptions.printStackTrace(ex);
         }
