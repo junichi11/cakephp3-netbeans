@@ -116,6 +116,19 @@ class BookmarksTable extends Table {
 $this->Bookmarks->Tags->[Ctrl+Space]
 ```
 
+**Method Parameters**
+```php
+// e.g. path/to/your/template/index.ctp
+// file path completion
+$this->Html->css('[Ctrl+Space]');
+
+// constants
+$this->Html->docType('[Ctrl+Space]');
+```
+
+**NOTE**
+At first, add a semicolon(;) if you want to use code completions for parameters. Tips: You can add it like the following: `Ctrl+;`
+
 ### Smart Go To
 
 This feature is not enabled by default. If you want to use it, please set the KeyMap to it.
