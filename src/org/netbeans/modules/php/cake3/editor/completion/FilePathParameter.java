@@ -42,6 +42,7 @@
 package org.netbeans.modules.php.cake3.editor.completion;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -80,7 +81,7 @@ public class FilePathParameter extends Parameter {
         if (indexOfDot == -1) {
             Set<String> allPluginNames = cakeModule.getAllPluginNames();
             for (String name : allPluginNames) {
-                if (name.startsWith(filter)) {
+                if (name.toLowerCase().startsWith(filter.toLowerCase())) {
                     elements.add(name.concat(".")); // NOI18N
                 }
             }
@@ -125,6 +126,10 @@ public class FilePathParameter extends Parameter {
             case LAYOUT:
             case TEMPLATE:
                 return getTemplates(cakeModule, info, subpath, filter, pluginName, category);
+            case COMPONENT: // fallthrough
+            case HELPER:
+            case TABLE:
+                return getCategoryElements(cakeModule, info, subpath, filter, pluginName, category);
             default:
                 break;
         }
@@ -246,6 +251,46 @@ public class FilePathParameter extends Parameter {
                             name = name.concat("/"); // NOI18N
                         }
                         elements.add(name);
+                    }
+                }
+            }
+        }
+        return elements;
+    }
+
+    private List<String> getCategoryElements(CakePHP3Module cakeModule, ModuleInfo info, String subpath, String filter, String pluginName, Category category) {
+        Base base = info.getBase();
+        if (StringUtils.isEmpty(pluginName)) {
+            if (base == Base.PLUGIN) {
+                pluginName = info.getPluginName();
+            }
+        } else {
+            if (base != Base.PLUGIN) {
+                base = Base.PLUGIN;
+            }
+        }
+        // app or plugin
+        List<FileObject> directories = cakeModule.getDirectories(base, category, pluginName);
+        List<FileObject> coreDirectories;
+        if (!StringUtils.isEmpty(pluginName)) {
+            coreDirectories = Collections.emptyList();
+        } else {
+            coreDirectories = cakeModule.getDirectories(Base.CORE, category, null);
+        }
+        List<String> elements = new ArrayList<>();
+        for (List<FileObject> targets : Arrays.asList(directories, coreDirectories)) {
+            for (FileObject directory : targets) {
+                FileObject baseDirectory = directory.getFileObject(subpath);
+                if (baseDirectory != null) {
+                    for (FileObject child : baseDirectory.getChildren()) {
+                        if (child.isFolder()) {
+                            continue;
+                        }
+                        String name = child.getName();
+                        name = ModuleUtils.toCommonName(name, category);
+                        if (!elements.contains(name) && name.toLowerCase().startsWith(filter.toLowerCase())) {
+                            elements.add(name);
+                        }
                     }
                 }
             }

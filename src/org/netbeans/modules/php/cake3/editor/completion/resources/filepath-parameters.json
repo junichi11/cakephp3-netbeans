@@ -24,6 +24,18 @@
             "1": [
                 "layout"
             ]
+        },
+        "loadComponent" : {
+            "0": [
+                "component"
+            ]
+        }
+    },
+    "ModelAwareTrait": {
+        "loadModel" : {
+            "0": [
+                "table"
+            ]
         }
     },
     "View": {
@@ -35,6 +47,11 @@
         "extend": {
             "0": [
                 "template"
+            ]
+        },
+        "loadHelper": {
+            "0": [
+                "helper"
             ]
         }
     }
