@@ -128,7 +128,7 @@ public class ParameterCompletionProvider extends CakePHP3CompletionProvider {
      */
     private Parameter getParameter(FileObject fileObject, int caretOffset, int offset) throws ParseException {
         int parameterIndex;
-        Model model = ModelUtils.getModel(Source.create(fileObject), 3000);
+        Model model = ModelUtils.getModel(Source.create(fileObject), 300);
         if (model != null) {
             ParameterInfoSupport parameterInfoSupport = model.getParameterInfoSupport(caretOffset);
             ParameterInfo parameterInfo = parameterInfoSupport.getParameterInfo();

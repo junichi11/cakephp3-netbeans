@@ -42,7 +42,6 @@ source directory
             ├── config
             ├── index.php
             ├── logs
-            ├── nbproject
             ├── phpunit.xml.dist
             ├── plugins
             ├── src
