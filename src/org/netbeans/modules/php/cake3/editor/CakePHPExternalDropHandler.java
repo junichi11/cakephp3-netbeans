@@ -204,7 +204,7 @@ public class CakePHPExternalDropHandler extends ExternalDropHandler {
                 List<FileObject> jss = cakeModule.getDirectories(base, Category.JS, pluginName);
                 relativePath = getRelativePath(jss, target);
                 relativePath = ModuleUtils.appendPluignName(pluginName, relativePath);
-                sb.append("<?= $this->Html->js('").append(relativePath).append("') ?>"); // NOI18N
+                sb.append("<?= $this->Html->script('").append(relativePath).append("') ?>"); // NOI18N
                 break;
             case "image/png":
             case "image/jpeg":
