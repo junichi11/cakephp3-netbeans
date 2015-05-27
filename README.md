@@ -13,6 +13,12 @@ This plugin provides support for CakePHP3.
 - Select the nbm
 - Click Install
 
+## How To Update
+
+You can update to the new version by the same way as the install. You don't have to uninstall the old version.
+
+Currently, this plugin is not available on NetBeans Plugin Portal. But you can update directly from NetBeans IDE when it's available on it later.
+
 ## How To Enable
 
 - Open the project properties dialog (Right-Click your project > properties)

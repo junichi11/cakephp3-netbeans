@@ -45,13 +45,20 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledDocument;
 import org.netbeans.api.editor.completion.Completion;
+import org.netbeans.lib.editor.codetemplates.api.CodeTemplate;
+import org.netbeans.lib.editor.codetemplates.api.CodeTemplateManager;
+import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.CakePHP3Constants;
 import org.netbeans.spi.editor.completion.CompletionItem;
 import org.netbeans.spi.editor.completion.CompletionTask;
@@ -76,6 +83,18 @@ public class CakePHP3CompletionItem implements CompletionItem {
         this.text = text;
         this.filter = filter;
         this.startOffset = startOffset;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public int getStartOffset() {
+        return startOffset;
     }
 
     @Override
@@ -124,7 +143,19 @@ public class CakePHP3CompletionItem implements CompletionItem {
 
     @Override
     public void render(Graphics grphcs, Font font, Color defaultColor, Color backgroundColor, int width, int height, boolean selected) {
-        CompletionUtilities.renderHtml(ICON, text, null, grphcs, font, defaultColor, width, height, selected);
+        CompletionUtilities.renderHtml(getIcon(), getLeftHtmlText(), getRightHtmlText(), grphcs, font, defaultColor, width, height, selected);
+    }
+
+    public ImageIcon getIcon() {
+        return ICON;
+    }
+
+    public String getLeftHtmlText() {
+        return text;
+    }
+
+    public String getRightHtmlText() {
+        return null;
     }
 
     @Override
@@ -155,5 +186,66 @@ public class CakePHP3CompletionItem implements CompletionItem {
     @Override
     public CharSequence getInsertPrefix() {
         return text;
+    }
+
+    static class FlashMethodCompletionItem extends CakePHP3CompletionItem {
+
+        private static final String METHOD_FORMAT1 = "%s($name)"; // NOI18N
+        private static final String METHOD_FORMAT2 = "%s($name, $options = [])"; // NOI18N
+        private final int paramCount;
+
+        FlashMethodCompletionItem(String text, String filter, int startOffset, int paramCount) {
+            super(text, filter, startOffset);
+            this.paramCount = paramCount;
+        }
+
+        @Override
+        public void defaultAction(JTextComponent jtc) {
+            Document document = jtc.getDocument();
+            if (document == null) {
+                return;
+            }
+            CodeTemplateManager manager = CodeTemplateManager.get(document);
+            String text = getText();
+            if (text.startsWith(getFilter())) {
+                text = text.replace(getFilter(), ""); // NOI18N
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.append(text).append("(") // NOI18N
+                    .append("${$name}"); // NOI18N
+            if (paramCount >= 2) {
+                sb.append(", ${$options}"); // NOI18N
+            }
+            sb.append(")"); // NOI18N
+            CodeTemplate template = manager.createTemporary(sb.toString());
+            template.insert(jtc);
+        }
+
+        @Override
+        public String getLeftHtmlText() {
+            String format;
+            switch (paramCount) {
+                case 1:
+                    format = METHOD_FORMAT1;
+                    break;
+                case 2:
+                    format = METHOD_FORMAT2;
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+            return String.format(format, getText());
+        }
+
+        public static List<CakePHP3CompletionItem> createItems(String text, String filter, int startOffset) {
+            if (StringUtils.isEmpty(text)) {
+                Collections.emptyList();
+            }
+            return Arrays.<CakePHP3CompletionItem>asList(
+                    new FlashMethodCompletionItem(text, filter, startOffset, 1),
+                    new FlashMethodCompletionItem(text, filter, startOffset, 2)
+            );
+        }
+
     }
 }
