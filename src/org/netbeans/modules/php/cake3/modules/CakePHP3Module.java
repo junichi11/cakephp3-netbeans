@@ -47,6 +47,7 @@ import org.netbeans.api.annotations.common.CheckForNull;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.CakePHP3FrameworkProvider;
 import org.netbeans.modules.php.cake3.CakeVersion;
+import org.netbeans.modules.php.cake3.dotcake.Dotcake;
 import static org.netbeans.modules.php.cake3.modules.CakePHP3ModuleFactory.DUMMY_MODULE;
 import org.openide.filesystems.FileObject;
 
@@ -217,6 +218,11 @@ public class CakePHP3Module {
 
     public CakeVersion getVersion() {
         return version;
+    }
+
+    @CheckForNull
+    public Dotcake getDotcake() {
+        return impl.getDotcake();
     }
 
 }
