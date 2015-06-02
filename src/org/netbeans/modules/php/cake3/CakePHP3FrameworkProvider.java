@@ -138,7 +138,7 @@ public class CakePHP3FrameworkProvider extends PhpFrameworkProvider {
 
     @Override
     public PhpModuleActionsExtender getActionsExtender(PhpModule phpModule) {
-        return new CakePHP3ActionsExtender();
+        return new CakePHP3ActionsExtender(phpModule);
     }
 
     @Override

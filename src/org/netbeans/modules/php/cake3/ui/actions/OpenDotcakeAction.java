@@ -39,90 +39,60 @@
  *
  * Portions Copyrighted 2015 Sun Microsystems, Inc.
  */
-package org.netbeans.modules.php.cake3;
+package org.netbeans.modules.php.cake3.ui.actions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import javax.swing.Action;
+import java.io.File;
+import javax.swing.SwingUtilities;
+import org.netbeans.modules.csl.api.UiUtils;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.dotcake.Dotcake;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
-import org.netbeans.modules.php.cake3.ui.actions.CakePHP3GoToActionAction;
-import org.netbeans.modules.php.cake3.ui.actions.CakePHP3GoToViewAction;
-import org.netbeans.modules.php.cake3.ui.actions.CakePHP3RefreshModuleAction;
-import org.netbeans.modules.php.cake3.ui.actions.CakePHP3RunCommandAction;
-import org.netbeans.modules.php.cake3.ui.actions.CakeServerAction;
-import org.netbeans.modules.php.cake3.ui.actions.OpenDotcakeAction;
-import org.netbeans.modules.php.spi.framework.PhpModuleActionsExtender;
-import org.netbeans.modules.php.spi.framework.actions.GoToActionAction;
-import org.netbeans.modules.php.spi.framework.actions.GoToViewAction;
-import org.netbeans.modules.php.spi.framework.actions.RunCommandAction;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 import org.openide.util.NbBundle;
 
 /**
  *
  * @author junichi11
  */
-public class CakePHP3ActionsExtender extends PhpModuleActionsExtender {
+public class OpenDotcakeAction extends CakePHP3BaseAction {
 
-    private final PhpModule phpModule;
+    private static final long serialVersionUID = -516324482137680128L;
 
-    public CakePHP3ActionsExtender(PhpModule phpModule) {
-        this.phpModule = phpModule;
+    @Override
+    protected String getFullName() {
+        return Bundle.CakePHPBaseAction_fullName(getPureName());
     }
 
     @NbBundle.Messages({
-        "CakePHP3ActionsExtender.menuName=CakePHP3"
+        "OpenDotcakeAction.displayName=Open .cake"
     })
     @Override
-    public String getMenuName() {
-        return Bundle.CakePHP3ActionsExtender_menuName();
+    protected String getPureName() {
+        return Bundle.OpenDotcakeAction_displayName();
     }
 
     @Override
-    public List<? extends Action> getActions() {
-        List<? extends Action> defaultActions = Arrays.asList(
-                new CakeServerAction(),
-                new CakePHP3RefreshModuleAction()
-        );
-        List<Action> actions = new ArrayList<>(defaultActions);
+    protected void actionPerformed(PhpModule phpModule) {
         CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
         Dotcake dotcake = cakeModule.getDotcake();
-        if (dotcake != null) {
-            actions.add(new OpenDotcakeAction());
+        if (dotcake == null) {
+            return;
         }
-        return actions;
-    }
-
-    @Override
-    public GoToViewAction getGoToViewAction(FileObject fo, int offset) {
-        return new CakePHP3GoToViewAction();
-    }
-
-    @Override
-    public GoToActionAction getGoToActionAction(FileObject fo, int offset) {
-        return new CakePHP3GoToActionAction();
-    }
-
-    @Override
-    public boolean isActionWithView(FileObject fo) {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fo);
-        CakePHP3Module.Category category = cakeModule.getCategory(fo);
-        return category == Category.CONTROLLER;
-    }
-
-    @Override
-    public boolean isViewWithAction(FileObject fo) {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fo);
-        return cakeModule.isTemplateFile(fo);
-    }
-
-    @Override
-    public RunCommandAction getRunCommandAction() {
-        return CakePHP3RunCommandAction.getInstance();
+        File file = dotcake.getDotcakeFile();
+        if (file == null) {
+            return;
+        }
+        final FileObject dotcakeFile = FileUtil.toFileObject(file);
+        if (dotcakeFile == null) {
+            return;
+        }
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                UiUtils.open(dotcakeFile, 0);
+            }
+        });
     }
 
 }
