@@ -104,6 +104,10 @@ public class CakePHP3FrameworkProvider extends PhpFrameworkProvider {
 
     @Override
     public boolean isInPhpModule(PhpModule phpModule) {
+        // #25
+        if (phpModule == null) {
+            return false;
+        }
         return CakePHP3Preferences.isEnabled(phpModule);
     }
 
@@ -138,7 +142,7 @@ public class CakePHP3FrameworkProvider extends PhpFrameworkProvider {
 
     @Override
     public PhpModuleActionsExtender getActionsExtender(PhpModule phpModule) {
-        return new CakePHP3ActionsExtender();
+        return new CakePHP3ActionsExtender(phpModule);
     }
 
     @Override

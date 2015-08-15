@@ -60,6 +60,7 @@ public final class CakePHP3ProjectGenerator {
 
     private final String composerPath;
     private static final String CREATE_PROJECT_COMMAND = "create-project"; // NOI18N
+    private static final String NO_INTERACTION_PARAM = "--no-interaction"; // NOI18N
     private static final String PREFER_DIST_PARAM = "--prefer-dist"; // NOI18N
     private static final String CAKEPHP_APP = "cakephp/app"; // NOI18N
 
@@ -95,7 +96,7 @@ public final class CakePHP3ProjectGenerator {
         File workDir = projectDirectory.getParentFile();
         PhpExecutable phpExecutable = new PhpExecutable(composerPath)
                 .workDir(workDir)
-                .additionalParameters(Arrays.asList(CREATE_PROJECT_COMMAND, PREFER_DIST_PARAM, CAKEPHP_APP, projectName)); // NOI18N
+                .additionalParameters(Arrays.asList(CREATE_PROJECT_COMMAND, NO_INTERACTION_PARAM, PREFER_DIST_PARAM, CAKEPHP_APP, projectName)); // NOI18N
         Future<Integer> result = phpExecutable.run();
         if (result != null) {
             try {

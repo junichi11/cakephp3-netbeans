@@ -130,30 +130,32 @@ public class CakePHP3ModuleCustomizerExtender extends PhpModuleCustomizerExtende
     }
 
     private void validate() {
-        CakePHP3CustomizerValidator validator = new CakePHP3CustomizerValidator();
-        FileObject srcDir = FileUtil.toFileObject(sourceDirectory);
-        String rootPath = getPanel().getRoot();
-        String srcPath = String.format("%s/%s", rootPath, getPanel().getSrc()).replaceAll("/+", "/");
-        String wwwRootPath = String.format("%s/%s", rootPath, getPanel().getWWWRoot()).replaceAll("/+", "/");
-        String cssPath = String.format("%s/%s", wwwRootPath, getPanel().getCss()).replaceAll("/+", "/");
-        String imgPath = String.format("%s/%s", wwwRootPath, getPanel().getImg()).replaceAll("/+", "/");
-        String jsPath = String.format("%s/%s", wwwRootPath, getPanel().getJs()).replaceAll("/+", "/");
-        String dotcakePath = getPanel().getDotcakePath();
-        ValidationResult result = validator.validateRootPath(srcDir, rootPath)
-                .validateSrc(srcDir, srcPath)
-                .validateWWWRoot(srcDir, wwwRootPath)
-                .validateCss(srcDir, cssPath)
-                .validateImg(srcDir, imgPath)
-                .validateJs(srcDir, jsPath)
-                .validateDotcake(srcDir, dotcakePath)
-                .getResult();
-        if (result.hasErrors()) {
-            errorMessage = result.getErrors().get(0).getMessage();
-            return;
-        }
-        if (result.hasWarnings()) {
-            errorMessage = result.getWarnings().get(0).getMessage();
-            return;
+        if (getPanel().isCakePHP3Enabled()) {
+            CakePHP3CustomizerValidator validator = new CakePHP3CustomizerValidator();
+            FileObject srcDir = FileUtil.toFileObject(sourceDirectory);
+            String rootPath = getPanel().getRoot();
+            String srcPath = String.format("%s/%s", rootPath, getPanel().getSrc()).replaceAll("/+", "/");
+            String wwwRootPath = String.format("%s/%s", rootPath, getPanel().getWWWRoot()).replaceAll("/+", "/");
+            String cssPath = String.format("%s/%s", wwwRootPath, getPanel().getCss()).replaceAll("/+", "/");
+            String imgPath = String.format("%s/%s", wwwRootPath, getPanel().getImg()).replaceAll("/+", "/");
+            String jsPath = String.format("%s/%s", wwwRootPath, getPanel().getJs()).replaceAll("/+", "/");
+            String dotcakePath = getPanel().getDotcakePath();
+            ValidationResult result = validator.validateRootPath(srcDir, rootPath)
+                    .validateSrc(srcDir, srcPath)
+                    .validateWWWRoot(srcDir, wwwRootPath)
+                    .validateCss(srcDir, cssPath)
+                    .validateImg(srcDir, imgPath)
+                    .validateJs(srcDir, jsPath)
+                    .validateDotcake(srcDir, dotcakePath)
+                    .getResult();
+            if (result.hasErrors()) {
+                errorMessage = result.getErrors().get(0).getMessage();
+                return;
+            }
+            if (result.hasWarnings()) {
+                errorMessage = result.getWarnings().get(0).getMessage();
+                return;
+            }
         }
 
         // everything ok

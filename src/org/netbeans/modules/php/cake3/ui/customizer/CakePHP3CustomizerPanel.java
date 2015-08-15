@@ -41,6 +41,9 @@
  */
 package org.netbeans.modules.php.cake3.ui.customizer;
 
+import java.awt.Component;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -74,10 +77,17 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
         imgTextField.getDocument().addDocumentListener(documentListener);
         jsTextField.getDocument().addDocumentListener(documentListener);
         dotcakeTextField.getDocument().addDocumentListener(documentListener);
+        enabledCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                fireChange();
+            }
+        });
     }
 
     public void setCakePHP3Enabled(boolean isEnabled) {
         enabledCheckBox.setSelected(isEnabled);
+        setAllComponentsEnabled(isEnabled);
     }
 
     public boolean isCakePHP3Enabled() {
@@ -148,6 +158,16 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
         dotcakeTextField.setText(path);
     }
 
+    private void setAllComponentsEnabled(boolean isEnabled) {
+        Component[] components = getComponents();
+        for (Component component : components) {
+            if (component == enabledCheckBox || component == enabledMessageLabel || component == generalLabel) {
+                continue;
+            }
+            component.setEnabled(isEnabled);
+        }
+    }
+
     public void addChangeListener(ChangeListener listener) {
         changeSupport.addChangeListener(listener);
     }
@@ -193,6 +213,11 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
         org.openide.awt.Mnemonics.setLocalizedText(generalLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.generalLabel.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(enabledCheckBox, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.enabledCheckBox.text")); // NOI18N
+        enabledCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enabledCheckBoxActionPerformed(evt);
+            }
+        });
 
         org.openide.awt.Mnemonics.setLocalizedText(enabledMessageLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.enabledMessageLabel.text")); // NOI18N
 
@@ -327,6 +352,10 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void enabledCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enabledCheckBoxActionPerformed
+        setAllComponentsEnabled(isCakePHP3Enabled());
+    }//GEN-LAST:event_enabledCheckBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel cssLabel;
