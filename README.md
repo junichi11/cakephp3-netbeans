@@ -2,6 +2,10 @@
 
 This plugin provides support for CakePHP3.
 
+## Requirements
+
+- NetBeans 8.1+
+
 ## Downloads
 
 - https://github.com/junichi11/cakephp3-netbeans/releases
@@ -132,30 +136,30 @@ $this->Html->docType('[Ctrl+Space]');
 ```
 
 **NOTE**
-At first, add a semicolon(;) if you want to use code completions for parameters. Tips: You can add it like the following: `Ctrl+;`
+At first, add a semicolon(<kbd>;</kbd>) if you want to use code completions for parameters. Tips: You can add it like the following: <kbd>Ctrl</kbd>+<kbd>;</kbd>
 
 ### Smart Go To
 
 This feature is not enabled by default. If you want to use it, please set the KeyMap to it.
-(Tools > Options > Keymap > Search `CakePHP` > CakePHP3: Smart Go To > e.g. set `Ctrl + Shift + J`) 
+(Tools > Options > Keymap > Search `CakePHP` > CakePHP3: Smart Go To > e.g. set <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>J</kbd>) 
 
 Files related to the current editor are shown when you run this action.
 e.g. If your current file is a Controller, template, table, entity, testcase, conponent and helper file(s) will be shown.
 
 You can change a list to specific category's one like the following.
-(`Ctrl` is a Ctrl or Command key)
+(<kbd>Ctrl</kbd> is a Ctrl or Command key)
 
-- Controller(All) : `Ctrl + C` (`Ctrl + Shift + C`)
-- Component : `Ctrl + P` (`Ctrl + Shift + P`)
-- Table : `Ctrl + M` (`Ctrl + Shift + M`)
-- Entity : `Ctrl + E` (`Ctrl + Shift + E`)
-- Behavior : `Ctrl + B` (`Ctrl + Shift + B`)
-- Templates : `Ctrl + V` (`Ctrl + Shift + V`)
-- View Cell : `Ctrl + L` (`Ctrl + Shift + L`)
-- Helper : `Ctrl + H` (`Ctrl + Shift + H`)
-- Fixture : `Ctrl + F` (`Ctrl + Shift + F`)
-- TestCase : `Ctrl + T`
-- Config : `Ctrl + I` or `Ctrl + Shift + I`
+- Controller(All) : <kbd>Ctrl</kbd> + <kbd>C</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>)
+- Component : <kbd>Ctrl</kbd> + <kbd>P</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>)
+- Table : <kbd>Ctrl</kbd> + <kbd>M</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd>)
+- Entity : <kbd>Ctrl</kbd> + <kbd>E</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>E</kbd>)
+- Behavior : <kbd>Ctrl</kbd> + <kbd>B</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>)
+- Templates : <kbd>Ctrl</kbd> + <kbd>V</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd>)
+- View Cell : <kbd>Ctrl</kbd> + L (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd>)
+- Helper : <kbd>Ctrl</kbd> + <kbd>H</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd>)
+- Fixture : <kbd>Ctrl</kbd> + <kbd>F</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd>)
+- TestCase : <kbd>Ctrl</kbd> + <kbd>T</kbd>
+- Config : <kbd>Ctrl</kbd> + <kbd>I</kbd> or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>I</kbd>
 
 **NOTE** Core files are not shown (e.g. HtmlHelper, AuthComponent, e.t.c.)
 

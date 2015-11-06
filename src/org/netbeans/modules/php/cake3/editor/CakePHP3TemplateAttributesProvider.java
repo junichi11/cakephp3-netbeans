@@ -44,30 +44,27 @@ package org.netbeans.modules.php.cake3.editor;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.netbeans.api.templates.CreateDescriptor;
+import org.netbeans.api.templates.CreateFromTemplateAttributes;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.CakePHP3Constants;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
 import org.openide.filesystems.FileObject;
-import org.openide.loaders.CreateFromTemplateAttributesProvider;
-import org.openide.loaders.DataFolder;
-import org.openide.loaders.DataObject;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
  * @author junichi11
  */
-@ServiceProvider(service = CreateFromTemplateAttributesProvider.class)
-public class CakePHP3TemplateAttributesProvider implements CreateFromTemplateAttributesProvider {
+@ServiceProvider(service = CreateFromTemplateAttributes.class)
+public class CakePHP3TemplateAttributesProvider implements CreateFromTemplateAttributes {
 
     private static final String NAMESPACE = "namespace"; // NOI18N
 
     @Override
-    public Map<String, ?> attributesFor(DataObject template, DataFolder target, String name) {
-        FileObject targetDirectory = target.getPrimaryFile();
-        if (targetDirectory == null) {
-            return Collections.emptyMap();
-        }
+    public Map<String, ?> attributesFor(CreateDescriptor desc) {
+        // target
+        FileObject targetDirectory = desc.getTarget();
         PhpModule phpModule = PhpModule.Factory.forFileObject(targetDirectory);
         if (phpModule == null) {
             return Collections.emptyMap();
@@ -75,16 +72,16 @@ public class CakePHP3TemplateAttributesProvider implements CreateFromTemplateAtt
         if (!CakePHP3Module.isCakePHP(phpModule)) {
             return Collections.emptyMap();
         }
-        Map<String, String> attributes = new HashMap<>();
-        FileObject primaryFile = template.getPrimaryFile();
-        if (primaryFile == null) {
-            return Collections.emptyMap();
-        }
 
-        FileObject parent = primaryFile.getParent();
+        // template
+        Map<String, String> attributes = new HashMap<>();
+        FileObject template = desc.getTemplate();
+        FileObject parent = template.getParent();
         if (parent == null) {
             return Collections.emptyMap();
         }
+
+        // set attributes
         if (parent.isFolder() && parent.getNameExt().equals(CakePHP3Constants.CAKEPHP3_FRAMEWORK)) {
             CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
             String namespace = cakeModule.getNamespace(targetDirectory);

@@ -51,7 +51,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
-import org.netbeans.api.progress.ProgressUtils;
+import org.netbeans.api.progress.BaseProgressUtils;
 import org.netbeans.editor.BaseAction;
 import org.netbeans.modules.editor.NbEditorUtilities;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
@@ -99,7 +99,7 @@ public abstract class CakePHP3GoToAction extends BaseAction {
         CakePHP3GoToStatusFactory factory = CakePHP3GoToStatusFactory.getInstance();
         final CakePHP3GoToStatus status = factory.create(fileObject, textComponent.getCaretPosition());
         final List<GoToItem> defaultItems = new ArrayList<>();
-        ProgressUtils.runOffEventDispatchThread(new Runnable() {
+        BaseProgressUtils.runOffEventDispatchThread(new Runnable() {
 
             @Override
             public void run() {

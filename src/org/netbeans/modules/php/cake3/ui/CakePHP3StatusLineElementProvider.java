@@ -116,13 +116,23 @@ public class CakePHP3StatusLineElementProvider implements StatusLineElementProvi
         return panel;
     }
 
-    private void setVersion(String version) {
-        assert SwingUtilities.isEventDispatchThread();
+    private void setVersion(final String version) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                versionLabel.setText(version);
+                versionLabel.setIcon(CAKE_ICON);
+            }
+        };
         if (CakeVersion.UNNKOWN.equals(version)) {
             clearLabel();
+            return;
+        }
+
+        if (SwingUtilities.isEventDispatchThread()) {
+            runnable.run();
         } else {
-            versionLabel.setText(version);
-            versionLabel.setIcon(CAKE_ICON);
+            SwingUtilities.invokeLater(runnable);
         }
     }
 
@@ -130,9 +140,18 @@ public class CakePHP3StatusLineElementProvider implements StatusLineElementProvi
      * Clear label
      */
     private void clearLabel() {
-        assert SwingUtilities.isEventDispatchThread();
-        versionLabel.setText(""); //NOI18N
-        versionLabel.setIcon(null);
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                versionLabel.setText(""); //NOI18N
+                versionLabel.setIcon(null);
+            }
+        };
+        if (SwingUtilities.isEventDispatchThread()) {
+            runnable.run();
+        } else {
+            SwingUtilities.invokeLater(runnable);
+        }
     }
 
     private class LookupListenerImpl implements LookupListener {
