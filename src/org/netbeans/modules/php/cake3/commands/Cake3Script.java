@@ -148,7 +148,8 @@ public final class Cake3Script {
         String cakeScriptPathFormat = "bin/%s"; // NOI18N
         String cakeScriptPath;
         if (Utilities.isWindows()) {
-            cakeScriptPath = String.format(cakeScriptPathFormat, SCRIPT_NAME_BAT);
+            // #35 the bat file outputs an empty line
+            cakeScriptPath = String.format(cakeScriptPathFormat, SCRIPT_NAME_LONG);
         } else {
             cakeScriptPath = String.format(cakeScriptPathFormat, SCRIPT_NAME);
         }
