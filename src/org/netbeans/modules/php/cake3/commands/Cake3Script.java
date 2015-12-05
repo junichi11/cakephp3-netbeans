@@ -343,8 +343,7 @@ public final class Cake3Script {
         CakePHP3Module module = CakePHP3Module.forPhpModule(phpModule);
         List<FileObject> directories = module.getDirectories(Base.APP);
         PhpExecutable phpExecutable = new PhpExecutable(cakePath)
-                .viaPhpInterpreter(false)
-                .viaAutodetection(false);
+                .viaAutodetection(true);
         if (!directories.isEmpty()) {
             File workDir = FileUtil.toFile(directories.get(0));
             phpExecutable = phpExecutable.workDir(workDir);
