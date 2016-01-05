@@ -41,9 +41,9 @@
  */
 package org.netbeans.modules.php.cake3.editor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -66,6 +66,7 @@ import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
 import org.netbeans.modules.php.cake3.modules.ModuleUtils;
+import org.netbeans.modules.php.editor.parser.PHPParseResult;
 import org.netbeans.modules.php.editor.parser.api.Utils;
 import org.netbeans.modules.php.spi.editor.EditorExtender;
 import org.openide.filesystems.FileObject;
@@ -103,7 +104,7 @@ public class CakePHP3EditorExtender extends EditorExtender {
             return Collections.emptyList();
         }
 
-        List<PhpBaseElement> elements = new LinkedList<>();
+        List<PhpBaseElement> elements = new ArrayList<>();
 
         Base base = cakeModule.getBase(fo);
         if (base == Base.UNKNOWN) {
@@ -116,6 +117,7 @@ public class CakePHP3EditorExtender extends EditorExtender {
             pluginName = cakeModule.getPluginName(fo);
         }
 
+        // XXX should not be parsed
         parseAppController(cakeModule, base, pluginName, elements);
 
         parseAppView(cakeModule, base, pluginName, elements);
@@ -150,7 +152,7 @@ public class CakePHP3EditorExtender extends EditorExtender {
     private void parseCurrentFile(FileObject fo, List<PhpBaseElement> elements) {
         Set<PhpClass> phpClasses = parseFields(fo, category);
         for (PhpClass phpClass : phpClasses) {
-            elements.add(new PhpVariable("$this", phpClass, null, 0)); // NOI18N
+            elements.add(new PhpVariable("$this", phpClass)); // NOI18N
         }
     }
 
@@ -175,7 +177,7 @@ public class CakePHP3EditorExtender extends EditorExtender {
             ParserManager.parse(Collections.singleton(Source.create(target)), new UserTask() {
                 @Override
                 public void run(ResultIterator resultIterator) throws Exception {
-                    ParserResult result = (ParserResult) resultIterator.getParserResult();
+                    PHPParseResult result = (PHPParseResult) resultIterator.getParserResult();
                     if (result == null) {
                         return;
                     }
