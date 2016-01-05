@@ -108,7 +108,7 @@ public class CakePHP3CompletionItem implements CompletionItem {
                     try {
                         String insertString;
                         if (text.startsWith(filter)) {
-                            insertString = text.replace(filter, ""); // NOI18N
+                            insertString = text.replaceFirst(filter, ""); // NOI18N
                             doc.insertString(startOffset, insertString, null);
                         } else {
                             insertString = text;
