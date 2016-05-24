@@ -77,6 +77,7 @@ Support them using `.cake` file.
 - Template files(Controller, Table, Helper, e.t.c.)
 - Support for a `.cake` file
 - Resolve mime-types for a ctp extension and a `.cake` file
+- Show a parent directory name of a ctp file in the multi-row tabs(see Tools > Options > Appearance > Document Tabs) e.g. `home.ctp [Pages]`
 
 ### Code Completion
 
