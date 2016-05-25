@@ -64,8 +64,8 @@ public class CakePHPTabDecorator extends TabDecorator {
         if (text.endsWith(".ctp")) { // NOI18N
             Component component = tab.getComponent();
             if (component instanceof TopComponent) {
-                TopComponent textComponent = (TopComponent) component;
-                Lookup lookup = textComponent.getLookup();
+                TopComponent topComponent = (TopComponent) component;
+                Lookup lookup = topComponent.getLookup();
                 if (lookup != null) {
                     FileObject fileObject = lookup.lookup(FileObject.class);
                     if (fileObject != null) {
