@@ -49,6 +49,7 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.dotcake.Dotcake;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.ui.actions.CakePHP3BaseAction;
 import org.netbeans.modules.php.cake3.ui.actions.CakePHP3GoToActionAction;
 import org.netbeans.modules.php.cake3.ui.actions.CakePHP3GoToViewAction;
 import org.netbeans.modules.php.cake3.ui.actions.CakePHP3RefreshModuleAction;
@@ -84,11 +85,11 @@ public class CakePHP3ActionsExtender extends PhpModuleActionsExtender {
 
     @Override
     public List<? extends Action> getActions() {
-        List<? extends Action> defaultActions = Arrays.asList(
+        List<CakePHP3BaseAction> defaultActions = Arrays.asList(
                 new CakeServerAction(),
                 new CakePHP3RefreshModuleAction()
         );
-        List<Action> actions = new ArrayList<>(defaultActions);
+        List<CakePHP3BaseAction> actions = new ArrayList<>(defaultActions);
         CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
         Dotcake dotcake = cakeModule.getDotcake();
         if (dotcake != null) {
