@@ -236,7 +236,7 @@ public class ParameterCompletionProvider extends CakePHP3CompletionProvider {
                         }
                         tokenSequence.moveNext();
                         Model model = parserResult.getModel();
-                        Collection<? extends TypeScope> types = ModelUtils.resolveTypeAfterReferenceToken(model, tokenSequence, methodOffset);
+                        Collection<? extends TypeScope> types = ModelUtils.resolveTypeAfterReferenceToken(model, tokenSequence, methodOffset, false);
                         for (TypeScope type : types) {
                             String typeName = type.getName();
                             return Parameter.create(parameterIndex, typeName, methodName, fileObject);
