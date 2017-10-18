@@ -65,6 +65,7 @@ import org.netbeans.modules.php.api.executable.PhpExecutable;
 import org.netbeans.modules.php.api.executable.PhpExecutableValidator;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.UiUtils;
+import org.netbeans.modules.php.cake3.CakeVersion;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
 import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
 import org.netbeans.modules.php.spi.framework.commands.FrameworkCommand;
@@ -98,6 +99,8 @@ public final class Cake3Script {
     private static final String XML_PARAM = "--xml"; // NOI18N
 
     private static final List<String> COMMAND_LIST_XML_COMMAND = Arrays.asList(COMMAND_LIST_COMMAND, XML_PARAM);
+    // get command list via help command since 3.5.0
+    private static final List<String> COMMAND_LIST_XML_COMMAND_350 = Arrays.asList(HELP_PARAM, XML_PARAM);
     private static final List<String> DEFAULT_PARAMS = Collections.emptyList();
     private static final Logger LOGGER = Logger.getLogger(Cake3Script.class.getName());
 
@@ -220,7 +223,7 @@ public final class Cake3Script {
             return freshCommands;
         }
         // XXX some error => rerun command with console
-        runCommand(phpModule, Collections.singletonList(COMMAND_LIST_COMMAND), null);
+        runCommand(phpModule, Collections.singletonList(HELP_PARAM), null);
         return Collections.emptyList();
     }
 
@@ -237,12 +240,7 @@ public final class Cake3Script {
             return null;
         }
 
-        // #116 cakephp-netbeans
-//        List<String> appParam = getAppParam(phpModule);
-        ArrayList<String> listXmlParams = new ArrayList<>();
-//        listXmlParams.addAll(appParam);
-        listXmlParams.addAll(COMMAND_LIST_XML_COMMAND);
-        if (!redirectToFile(phpModule, tmpFile, listXmlParams)) {
+        if (!redirectToFile(phpModule, tmpFile, getCommandListParams(phpModule))) {
             LOGGER.log(Level.WARNING, Bundle.Cake3Script_redirect_xml_error());
             return null;
         }
@@ -300,6 +298,20 @@ public final class Cake3Script {
         }
         tmpFile.delete();
         return commands;
+    }
+
+    private List<String> getCommandListParams(PhpModule phpModule) {
+        List<String> params = new ArrayList<>();
+        CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+        CakeVersion version = cakeModule.getVersion();
+        if (version != null) {
+            if (version.getMajor() >= 3 && version.getMinor() >= 5) {
+                params.addAll(COMMAND_LIST_XML_COMMAND_350);
+            } else {
+                params.addAll(COMMAND_LIST_XML_COMMAND);
+            }
+        }
+        return params;
     }
 
     @NbBundle.Messages({
