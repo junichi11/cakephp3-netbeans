@@ -390,12 +390,13 @@ public final class Cake3Script {
     }
 
     private ExecutionDescriptor.InputProcessorFactory2 getOutProcessorFactory(final LineProcessor lineProcessor) {
+        if (lineProcessor == null) {
+            // prevent to show results twice in output window
+            return null;
+        }
         return new ExecutionDescriptor.InputProcessorFactory2() {
             @Override
             public InputProcessor newInputProcessor(InputProcessor defaultProcessor) {
-                if (lineProcessor == null) {
-                    return defaultProcessor;
-                }
                 return InputProcessors.ansiStripping(InputProcessors.bridge(lineProcessor));
             }
         };
