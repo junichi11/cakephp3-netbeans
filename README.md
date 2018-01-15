@@ -78,6 +78,7 @@ Support them using `.cake` file.
 - Support for a `.cake` file
 - Resolve mime-types for a ctp extension and a `.cake` file
 - Show a parent directory name of a ctp file in the multi-row tabs(see Tools > Options > Appearance > Document Tabs) e.g. `home.ctp [Pages]`
+- Custom nodes
 
 ### Code Completion
 
@@ -240,6 +241,11 @@ Just run `cake server`. If you want to set details, please use `Run Configuratio
 
 Please run this action after you changed the `.cake` file or you updated the version of CakePHP.
 Refresh the version number and category paths.
+
+### Custom nodes
+
+You can add some directories(nodes) under the your project tree. Controller, Model, e.t.c. are shown by default.
+If you want to hide/show them, please change the options.(Tools > Options > PHP > Frameworks and Tools > CakePHP3 > Custom nodes)
 
 ## License
 [Common Development and Distribution License (CDDL) v1.0 and GNU General Public License (GPL) v2](http://netbeans.org/cddl-gplv2.html)

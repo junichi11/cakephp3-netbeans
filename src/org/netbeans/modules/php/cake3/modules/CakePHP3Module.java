@@ -41,8 +41,12 @@
  */
 package org.netbeans.modules.php.cake3.modules;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 import java.util.Set;
+import javax.swing.SwingUtilities;
 import org.netbeans.api.annotations.common.CheckForNull;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.CakePHP3FrameworkProvider;
@@ -56,6 +60,9 @@ import org.openide.filesystems.FileObject;
  * @author junichi11
  */
 public class CakePHP3Module {
+
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    public static String PROPERTY_CHANGE_CAKE3 = "property-change-cake3"; // NOI18N
 
     public enum Category {
 
@@ -223,6 +230,34 @@ public class CakePHP3Module {
     @CheckForNull
     public Dotcake getDotcake() {
         return impl.getDotcake();
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+
+    public void notifyPropertyChanged(PropertyChangeEvent event) {
+        if (PROPERTY_CHANGE_CAKE3.equals(event.getPropertyName())) {
+            SwingUtilities.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    refreshNodes();
+//                    reset();
+                }
+            });
+        }
+    }
+
+//    void reset() {
+//        CakePHP3ModuleFactory.getInstance().reset(this);
+//    }
+    void refreshNodes() {
+        propertyChangeSupport.firePropertyChange(PROPERTY_CHANGE_CAKE3, null, null);
     }
 
 }

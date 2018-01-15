@@ -41,7 +41,11 @@
  */
 package org.netbeans.modules.php.cake3.options;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.prefs.Preferences;
+import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.composer.api.Composer;
 import org.openide.util.NbPreferences;
 
@@ -53,8 +57,23 @@ public class CakePHP3Options {
 
     private static final String PREFERENCES_PATH = "cakephp3"; // NOI18N
     private static final String EXTERNAL_DRAG_AND_DROP = "external.drop"; // NOI18N
+    private static final String AVAILABLE_CUSTOM_NODES = "available-custom-nodes"; // NOI18N
     private static final String COMPOSER_PREFERENCES_PATH = "composer"; // NOI18N
     private static final CakePHP3Options INSTANCE = new CakePHP3Options();
+    public static final List<String> DEFAULT_AVAILABLE_NODES = Arrays.asList(
+            "Console", // NOI18N
+            "Controller", // NOI18N
+            "Component", // NOI18N
+            "Model", // NOI18N
+            "View", // NOI18N
+            "Helper", // NOI18N
+            "webroot" // NOI18N
+    );
+    public static final List<String> ALL_AVAILABLE_NODES = new ArrayList<>(DEFAULT_AVAILABLE_NODES);
+
+    static {
+        ALL_AVAILABLE_NODES.add("app/plugins"); // NOI18N
+    }
 
     private CakePHP3Options() {
     }
@@ -73,6 +92,18 @@ public class CakePHP3Options {
 
     public String getComposerPath() {
         return getComposerPreferences().get("composer.path", ""); // NOI18N
+    }
+
+    public List<String> getAvailableCustomNodes() {
+        String nodes = getPreferences().get(AVAILABLE_CUSTOM_NODES, null);
+        if (nodes == null) {
+            return DEFAULT_AVAILABLE_NODES;
+        }
+        return StringUtils.explode(nodes, "|"); // NOI18N
+    }
+
+    public void setAvailableCustomNodes(List<String> nodes) {
+        getPreferences().put(AVAILABLE_CUSTOM_NODES, StringUtils.implode(nodes, "|")); // NOI18N
     }
 
     private Preferences getPreferences() {
