@@ -43,6 +43,7 @@ package org.netbeans.modules.php.cake3.options;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.prefs.Preferences;
 import org.netbeans.modules.php.api.util.StringUtils;
@@ -72,7 +73,13 @@ public class CakePHP3Options {
     public static final List<String> ALL_AVAILABLE_NODES = new ArrayList<>(DEFAULT_AVAILABLE_NODES);
 
     static {
+        ALL_AVAILABLE_NODES.add("Element"); // NOI18N
+        ALL_AVAILABLE_NODES.add("Entity"); // NOI18N
+        ALL_AVAILABLE_NODES.add("Shell"); // NOI18N
+        ALL_AVAILABLE_NODES.add("Table"); // NOI18N
+        ALL_AVAILABLE_NODES.add("Template"); // NOI18N
         ALL_AVAILABLE_NODES.add("app/plugins"); // NOI18N
+        Collections.sort(ALL_AVAILABLE_NODES);
     }
 
     private CakePHP3Options() {
