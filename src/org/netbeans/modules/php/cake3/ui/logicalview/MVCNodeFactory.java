@@ -148,6 +148,21 @@ public class MVCNodeFactory implements NodeFactory {
                     case "Helper": // NOI18N
                         list.add(Category.HELPER);
                         break;
+                    case "Element": // NOI18N
+                        list.add(Category.ELEMENT);
+                        break;
+                    case "Entity": // NOI18N
+                        list.add(Category.ENTITY);
+                        break;
+                    case "Shell": // NOI18N
+                        list.add(Category.SHELL);
+                        break;
+                    case "Table": // NOI18N
+                        list.add(Category.TABLE);
+                        break;
+                    case "Template": // NOI18N
+                        list.add(Category.TEMPLATE);
+                        break;
                     case "app/plugins": // NOI18N
                         // XXX this is not proper
                         list.add(Base.PLUGIN);
