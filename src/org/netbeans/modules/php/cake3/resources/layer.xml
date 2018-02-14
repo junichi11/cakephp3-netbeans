@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
+<filesystem>
+    <folder name="OptionsExport">
+        <folder name="PHP">
+            <file name="CakePHP3">
+                <attr name="include" stringvalue="config/Preferences/org/netbeans/modules/php/cake3/.*"/>
+                <attr name="displayName" bundlevalue="org.netbeans.modules.php.cake3.resources.Bundle#LBL_CakePHP3ExportName"/>
+                <attr name="position" intvalue="1600"/>
+            </file>
+        </folder>
+    </folder>
+</filesystem>
