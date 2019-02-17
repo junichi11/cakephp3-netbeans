@@ -49,6 +49,7 @@ public class CakePHP3Options {
     static {
         ALL_AVAILABLE_NODES.add("Element"); // NOI18N
         ALL_AVAILABLE_NODES.add("Entity"); // NOI18N
+        ALL_AVAILABLE_NODES.add("Form"); // NOI18N
         ALL_AVAILABLE_NODES.add("Shell"); // NOI18N
         ALL_AVAILABLE_NODES.add("Table"); // NOI18N
         ALL_AVAILABLE_NODES.add("Template"); // NOI18N

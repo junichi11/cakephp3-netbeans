@@ -420,6 +420,10 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
             case FIXTURE:
                 sb.append("tests/Fixture"); // NOI18N
                 break;
+            case FORM:
+                sb.append(getSrcDirName(base));
+                sb.append("/Form"); // NOI18N
+                break;
             case HELPER:
                 sb.append(getSrcDirName(base));
                 sb.append("/View/Helper"); // NOI18N

@@ -52,6 +52,7 @@ public class CakePHP3Module {
         ENTITY(""), // NOI18N
         ERROR(""), // NOI18N
         FIXTURE("Fixture"), // NOI18N
+        FORM("Form"), // NOI18N
         HELPER("Helper"), // NOI18N
         IMG(""), // NOI18N
         JS(""), // NOI18N

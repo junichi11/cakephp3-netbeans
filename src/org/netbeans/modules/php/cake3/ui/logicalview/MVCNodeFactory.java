@@ -128,6 +128,9 @@ public class MVCNodeFactory implements NodeFactory {
                     case "Entity": // NOI18N
                         list.add(Category.ENTITY);
                         break;
+                    case "Form": // NOI18N
+                        list.add(Category.FORM);
+                        break;
                     case "Shell": // NOI18N
                         list.add(Category.SHELL);
                         break;
