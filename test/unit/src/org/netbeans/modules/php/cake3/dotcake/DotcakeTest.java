@@ -18,8 +18,6 @@ package org.netbeans.modules.php.cake3.dotcake;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
