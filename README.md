@@ -248,4 +248,5 @@ Please run this action after you changed the `.cake` file or you updated the ver
 Refresh the version number and category paths.
 
 ## License
-[Common Development and Distribution License (CDDL) v1.0 and GNU General Public License (GPL) v2](http://netbeans.org/cddl-gplv2.html)
+
+Apache License, Version 2.0
