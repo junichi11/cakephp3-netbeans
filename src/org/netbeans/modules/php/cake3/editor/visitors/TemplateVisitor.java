@@ -31,9 +31,9 @@ public class TemplateVisitor extends CakePHP3Visitor {
     private static final String ELEMENT_METHOD = "element"; // NOI18N
     private static final String EXTEND_METHOD = "extend"; // NOI18N
     private static final String CELL_METHOD = "cell"; // NOI18N
-    private final Set<String> elements = Collections.synchronizedSet(new HashSet<String>());
-    private final Set<String> extendz = Collections.synchronizedSet(new HashSet<String>());
-    private final Set<String> cells = Collections.synchronizedSet(new HashSet<String>());
+    private final Set<String> elements = Collections.synchronizedSet(new HashSet<>());
+    private final Set<String> extendz = Collections.synchronizedSet(new HashSet<>());
+    private final Set<String> cells = Collections.synchronizedSet(new HashSet<>());
 
     public TemplateVisitor(PhpModule phpModule) {
         super(phpModule);

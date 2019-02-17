@@ -73,8 +73,8 @@ public class TableVisitor extends CakePHP3Visitor {
     }
 
     // pair of alias name and PhpClass
-    private final Set<Pair<String, PhpClass>> tables = Collections.synchronizedSet(new HashSet<Pair<String, PhpClass>>());
-    private final Set<Pair<String, PhpClass>> behaviors = Collections.synchronizedSet(new HashSet<Pair<String, PhpClass>>());
+    private final Set<Pair<String, PhpClass>> tables = Collections.synchronizedSet(new HashSet<>());
+    private final Set<Pair<String, PhpClass>> behaviors = Collections.synchronizedSet(new HashSet<>());
     private static final String ADD_BEHABIOR_METHOD = "addBehavior"; // NOI18N
 
     public TableVisitor(PhpModule phpModule) {

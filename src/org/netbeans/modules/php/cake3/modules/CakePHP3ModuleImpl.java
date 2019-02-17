@@ -633,7 +633,7 @@ public abstract class CakePHP3ModuleImpl {
     //~ inner class
     private static class PluginsVisitor extends DefaultVisitor {
 
-        private final List<Pair<String, String>> plugins = Collections.synchronizedList(new ArrayList<Pair<String, String>>());
+        private final List<Pair<String, String>> plugins = Collections.synchronizedList(new ArrayList<>());
 
         @Override
         public void visit(ArrayCreation node) {

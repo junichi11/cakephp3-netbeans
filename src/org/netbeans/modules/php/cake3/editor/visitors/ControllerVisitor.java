@@ -57,10 +57,10 @@ public class ControllerVisitor extends FieldsVisitor {
     private final boolean isTemplate;
     private String currentMethodName = ""; // NOI18N
     private String templateName = ""; // NOI18N
-    private final Set<String> templateNames = Collections.synchronizedSet(new HashSet<String>());
-    private final Set<String> allTemplateNames = Collections.synchronizedSet(new HashSet<String>());
-    private final Set<String> themeNames = Collections.synchronizedSet(new HashSet<String>());
-    private final Set<String> allThemeNames = Collections.synchronizedSet(new HashSet<String>());
+    private final Set<String> templateNames = Collections.synchronizedSet(new HashSet<>());
+    private final Set<String> allTemplateNames = Collections.synchronizedSet(new HashSet<>());
+    private final Set<String> themeNames = Collections.synchronizedSet(new HashSet<>());
+    private final Set<String> allThemeNames = Collections.synchronizedSet(new HashSet<>());
 
     public ControllerVisitor(PhpModule phpModule) {
         this(phpModule, false);

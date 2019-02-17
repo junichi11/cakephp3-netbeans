@@ -43,9 +43,9 @@ import org.openide.util.Pair;
 public abstract class FieldsVisitor extends CakePHP3Visitor {
 
     // Pair of alias name and PhpClass
-    private final Set<Pair<String, PhpClass>> componentClasses = Collections.synchronizedSet(new HashSet<Pair<String, PhpClass>>());
-    private final Set<Pair<String, PhpClass>> helperClasses = Collections.synchronizedSet(new HashSet<Pair<String, PhpClass>>());
-    private final Set<Pair<String, PhpClass>> modelClasses = Collections.synchronizedSet(new HashSet<Pair<String, PhpClass>>());
+    private final Set<Pair<String, PhpClass>> componentClasses = Collections.synchronizedSet(new HashSet<>());
+    private final Set<Pair<String, PhpClass>> helperClasses = Collections.synchronizedSet(new HashSet<>());
+    private final Set<Pair<String, PhpClass>> modelClasses = Collections.synchronizedSet(new HashSet<>());
     private String themeName = ""; // NOI18N
 
     public static final String COMPONENTS = "$components"; // NOI18N

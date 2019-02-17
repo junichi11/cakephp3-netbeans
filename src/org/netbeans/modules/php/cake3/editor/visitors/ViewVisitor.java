@@ -37,7 +37,7 @@ import org.openide.util.Pair;
 public class ViewVisitor extends CakePHP3Visitor {
 
     // pair of alias name and PhpClass
-    private final Set<Pair<String, PhpClass>> phpClasses = Collections.synchronizedSet(new HashSet<Pair<String, PhpClass>>());
+    private final Set<Pair<String, PhpClass>> phpClasses = Collections.synchronizedSet(new HashSet<>());
     private static final String LOAD_HELPER_METHOD = "loadHelper"; // NOI18N
 
     public ViewVisitor(PhpModule phpModule) {
