@@ -56,6 +56,7 @@ import org.openide.util.Pair;
 public abstract class CakePHP3ModuleImpl {
 
     private static final Logger LOGGER = Logger.getLogger(CakePHP3ModuleImpl.class.getName());
+    protected static final String DEFAULT_PHP_EXT = "php";
     protected static final String DEFAULT_CTP_EXT = "ctp"; // NOI18N
     protected static final String DEFAULT_NAMESPACE = "App"; // NOI18N
     protected static final String DEFAULT_WEBROOT = "webroot"; // NOI18N
