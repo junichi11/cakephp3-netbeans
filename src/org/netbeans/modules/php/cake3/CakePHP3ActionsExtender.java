@@ -50,7 +50,7 @@ public class CakePHP3ActionsExtender extends PhpModuleActionsExtender {
     }
 
     @NbBundle.Messages({
-        "CakePHP3ActionsExtender.menuName=CakePHP3"
+        "CakePHP3ActionsExtender.menuName=CakePHP3/4"
     })
     @Override
     public String getMenuName() {

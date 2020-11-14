@@ -279,7 +279,8 @@ public final class Cake3Script {
         CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
         CakeVersion version = cakeModule.getVersion();
         if (version != null) {
-            if (version.getMajor() >= 3 && version.getMinor() >= 5) {
+            if ((version.getMajor() >= 3 && version.getMinor() >= 5)
+                    || version.getMajor() >= 4) { // cakephp 4
                 params.addAll(COMMAND_LIST_XML_COMMAND_350);
             } else {
                 params.addAll(COMMAND_LIST_XML_COMMAND);
