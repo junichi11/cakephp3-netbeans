@@ -44,9 +44,13 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
         }
         
         if(DEFAULT_PHP_EXT.equals(ext)){
-            String path = fileObject.getPath();
-            if(path.contains("/templates/")){
-                return true;
+            
+            FileObject parent = fileObject.getParent();
+            if(parent != null){
+                FileObject grandParent = parent.getParent();
+                if(grandParent != null && grandParent.getName().equals("templates")){
+                    return true;
+                }
             }
         }
         
