@@ -46,8 +46,8 @@ public class CakePHP3FrameworkProvider extends PhpFrameworkProvider {
     private final BadgeIcon badgeIcon;
 
     @NbBundle.Messages({
-        "CakePHP3FrameworkProvider.name=CakePHP3",
-        "CakePHP3FrameworkProvider.description=CakePHP3"
+        "CakePHP3FrameworkProvider.name=CakePHP3/4",
+        "CakePHP3FrameworkProvider.description=CakePHP3/4"
     })
     private CakePHP3FrameworkProvider() {
         super("cakephp3", // NOI18N
@@ -122,7 +122,7 @@ public class CakePHP3FrameworkProvider extends PhpFrameworkProvider {
 
     @Override
     public void phpModuleClosed(PhpModule phpModule) {
-        // release CakePHP3Module
+        // release CakePHPModule
         CakePHPModuleFactory factory = CakePHPModuleFactory.getInstance();
         factory.remove(phpModule);
     }

@@ -65,7 +65,7 @@ public class CakePHP3ModuleCustomizerExtender extends PhpModuleCustomizerExtende
     }
 
     @NbBundle.Messages({
-        "CakePHP3ModuleCustomizerExtender.displayName=CakePHP3"
+        "CakePHP3ModuleCustomizerExtender.displayName=CakePHP3/4"
     })
     @Override
     public String getDisplayName() {
