@@ -18,6 +18,8 @@ package org.netbeans.modules.php.cake3.modules;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.netbeans.api.annotations.common.CheckForNull;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
@@ -36,6 +38,7 @@ public final class CakePHPModuleFactory {
     public static final CakePHPModule DUMMY_MODULE = new CakePHPModule(new CakePHPModuleDummy(), CakeVersion.create(null));
     private static final CakePHPModuleFactory INSTANCE = new CakePHPModuleFactory();
     private static final Map<PhpModule, CakePHPModule> MODULES = Collections.synchronizedMap(new HashMap<PhpModule, CakePHPModule>());
+    private static final Logger LOGGER = Logger.getLogger(CakePHPModuleFactory.class.getName());
 
     private CakePHPModuleFactory() {
     }
@@ -47,11 +50,22 @@ public final class CakePHPModuleFactory {
     public CakePHPModule create(PhpModule phpModule) {
         CakePHPModule module = MODULES.get(phpModule);
         if (module == null) {
-            CakePHP3ModuleDefault impl = new CakePHP3ModuleDefault(phpModule);
-            // add Dotcake
             Dotcake dotcake = createDotcake(phpModule);
+            CakeVersion version = createVersion(dotcake, phpModule);
+            CakePHPModuleImpl impl;
+            switch (version.getMajor()) {
+                case 3:
+                    impl = new CakePHP3ModuleDefault(phpModule);
+                    break;
+                case 4:
+                    impl = new CakePHP4ModuleDefault(phpModule);
+                    break;
+                default:
+                    LOGGER.log(Level.WARNING, "Unsupported version: {0}", version.getVersionNumber()); // NOI18N
+                    impl = new CakePHP4ModuleDefault(phpModule);
+                    break;
+            }
             impl.dotcake(dotcake);
-            CakeVersion version = impl.createVersion();
             module = new CakePHPModule(impl, version);
             MODULES.put(phpModule, module);
         }
@@ -60,6 +74,46 @@ public final class CakePHPModuleFactory {
 
     public void remove(PhpModule phpModule) {
         MODULES.remove(phpModule);
+    }
+
+    private CakeVersion createVersion(Dotcake  dotcake, PhpModule phpModule) {
+        FileObject coreDirecotry = getCoreDirecotry(dotcake, phpModule);
+        FileObject versionFile = null;
+        if (coreDirecotry != null) {
+            versionFile = coreDirecotry.getFileObject("VERSION.txt"); // NOI18N
+        }
+        return CakeVersion.create(versionFile);
+    }
+
+    @CheckForNull
+    private FileObject getCoreDirecotry(Dotcake dotcake, PhpModule phpModule) {
+        // Dotcake support
+        if (dotcake != null) {
+            FileObject coreDirectory = DotcakeSupport.getCoreDirectory(dotcake);
+            if (coreDirectory != null) {
+                return coreDirectory;
+            }
+        }
+
+        // default
+        FileObject rootDirectory = getRootDirectory(phpModule);
+        if (rootDirectory == null) {
+            return null;
+        }
+        return rootDirectory.getFileObject("vendor/cakephp/cakephp"); // NOI18N
+    }
+
+    @CheckForNull
+    private FileObject getRootDirectory(PhpModule phpModule) {
+        if (phpModule == null) {
+            return null;
+        }
+        String rootPath = CakePHP3Preferences.getRootPath(phpModule);
+        FileObject sourceDirectory = phpModule.getSourceDirectory();
+        if (sourceDirectory != null) {
+            return sourceDirectory.getFileObject(rootPath);
+        }
+        return null;
     }
 
     @CheckForNull

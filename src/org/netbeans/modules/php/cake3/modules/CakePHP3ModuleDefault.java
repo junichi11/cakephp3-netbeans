@@ -364,7 +364,7 @@ public class CakePHP3ModuleDefault extends CakePHPModuleImpl {
         return Collections.emptyList();
     }
 
-    private FileObject getDirectory(FileObject baseDirectory, Base base, Category category) {
+    protected FileObject getDirectory(FileObject baseDirectory, Base base, Category category) {
         if (baseDirectory == null) {
             return null;
         }
@@ -498,7 +498,7 @@ public class CakePHP3ModuleDefault extends CakePHPModuleImpl {
         return baseDirectory.getFileObject(relativePath);
     }
 
-    private String getSrcDirName(Base base) {
+    protected String getSrcDirName(Base base) {
         switch (base) {
             case APP:
                 return getSrcDirName();
@@ -507,7 +507,7 @@ public class CakePHP3ModuleDefault extends CakePHPModuleImpl {
         }
     }
 
-    private String getWWWRootPath(Base base) {
+    protected String getWWWRootPath(Base base) {
         switch (base) {
             case APP:
                 return getAppWWWRoot();
@@ -516,7 +516,7 @@ public class CakePHP3ModuleDefault extends CakePHPModuleImpl {
         }
     }
 
-    private String getCssPath(Base base) {
+    protected String getCssPath(Base base) {
         switch (base) {
             case APP:
                 return getAppCssBaseUrl();
@@ -525,7 +525,7 @@ public class CakePHP3ModuleDefault extends CakePHPModuleImpl {
         }
     }
 
-    private String getJsPath(Base base) {
+    protected String getJsPath(Base base) {
         switch (base) {
             case APP:
                 return getAppJsBaseUrl();
@@ -534,7 +534,7 @@ public class CakePHP3ModuleDefault extends CakePHPModuleImpl {
         }
     }
 
-    private String getImagePath(Base base) {
+    protected String getImagePath(Base base) {
         switch (base) {
             case APP:
                 return getAppImageBaseUrl();
