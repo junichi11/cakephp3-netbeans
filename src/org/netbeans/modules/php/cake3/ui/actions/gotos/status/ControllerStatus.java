@@ -22,8 +22,8 @@ import org.netbeans.modules.php.api.editor.PhpClass;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.editor.visitors.ControllerVisitor;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
 import org.openide.filesystems.FileObject;
@@ -102,7 +102,7 @@ class ControllerStatus extends CakePHP3GoToStatus {
             return;
         }
         List<String> themeNames = visitor.getThemeNames();
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(controller);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(controller);
         for (String name : names) {
             // theme
             if (!StringUtils.isEmpty(themeName)) {
@@ -135,7 +135,7 @@ class ControllerStatus extends CakePHP3GoToStatus {
             return;
         }
         List<String> themeNames = visitor.getAllThemeNames();
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(controller);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(controller);
         for (String name : names) {
             // theme
             if (!StringUtils.isEmpty(themeName)) {
@@ -167,7 +167,7 @@ class ControllerStatus extends CakePHP3GoToStatus {
     }
 
     private FileObject getTemplate(String name, FileObject controller, String themeName) {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(controller);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(controller);
         String relativePath = cakeModule.toPhpFileName(Category.TEMPLATE, name);
         return cakeModule.getTemplate(relativePath, controller, themeName);
     }

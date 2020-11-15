@@ -15,8 +15,8 @@
  */
 package org.netbeans.modules.php.cake3.ui.actions.gotos.items;
 
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.openide.filesystems.FileObject;
 
 /**
@@ -33,8 +33,8 @@ public final class GoToItemFactory {
     }
 
     public static GoToItem create(Category category, FileObject fileObject, int offset, String offsetName) {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
-        CakePHP3Module.Base base = cakeModule.getBase(fileObject);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(fileObject);
+        CakePHPModule.Base base = cakeModule.getBase(fileObject);
         String baseName = ""; // NOI18N
         switch (base) {
             case APP:

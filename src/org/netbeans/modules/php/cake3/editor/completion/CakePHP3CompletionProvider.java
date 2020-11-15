@@ -19,7 +19,7 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import org.netbeans.modules.editor.NbEditorUtilities;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
 import org.netbeans.spi.editor.completion.CompletionProvider;
 import org.netbeans.spi.editor.completion.CompletionTask;
 import org.openide.filesystems.FileObject;
@@ -44,7 +44,7 @@ public abstract class CakePHP3CompletionProvider implements CompletionProvider {
             return null;
         }
         PhpModule phpModule = PhpModule.Factory.forFileObject(fo);
-        if (!CakePHP3Module.isCakePHP(phpModule)) {
+        if (!CakePHPModule.isCakePHP(phpModule)) {
             return null;
         }
         return createTask(queryType, textComponent, phpModule, fo);

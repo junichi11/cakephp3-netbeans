@@ -19,9 +19,9 @@ import java.util.Collections;
 import java.util.List;
 import org.openide.filesystems.FileObject;
 
-public class CakePHP3ModuleDummy extends CakePHP3ModuleImpl {
+public class CakePHPModuleDummy extends CakePHPModuleImpl {
 
-    CakePHP3ModuleDummy() {
+    CakePHPModuleDummy() {
         super(null);
     }
 
@@ -31,12 +31,12 @@ public class CakePHP3ModuleDummy extends CakePHP3ModuleImpl {
     }
 
     @Override
-    public List<FileObject> getDirectories(CakePHP3Module.Base base) {
+    public List<FileObject> getDirectories(CakePHPModule.Base base) {
         return Collections.emptyList();
     }
 
     @Override
-    public List<FileObject> getDirectories(CakePHP3Module.Base base, CakePHP3Module.Category category, String pluginName) {
+    public List<FileObject> getDirectories(CakePHPModule.Base base, CakePHPModule.Category category, String pluginName) {
         return Collections.emptyList();
     }
 

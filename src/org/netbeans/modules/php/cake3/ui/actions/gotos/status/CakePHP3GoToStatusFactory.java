@@ -15,8 +15,8 @@
  */
 package org.netbeans.modules.php.cake3.ui.actions.gotos.status;
 
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.openide.filesystems.FileObject;
 
 /**
@@ -36,7 +36,7 @@ public final class CakePHP3GoToStatusFactory {
     }
 
     public CakePHP3GoToStatus create(FileObject fileObject, int offset) {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(fileObject);
         Category category = cakeModule.getCategory(fileObject);
         CakePHP3GoToStatus status;
         switch (category) {

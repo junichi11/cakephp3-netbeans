@@ -40,8 +40,8 @@ import org.netbeans.editor.BaseDocument;
 import org.netbeans.modules.csl.api.DataLoadersBridge;
 import org.netbeans.modules.editor.NbEditorUtilities;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.modules.ModuleUtils;
 import org.netbeans.modules.php.cake3.options.CakePHP3Options;
 import org.openide.ErrorManager;
@@ -151,7 +151,7 @@ public class CakePHPExternalDropHandler extends ExternalDropHandler {
         if (phpModule == null) {
             return true;
         }
-        CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+        CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
 
         final StringBuilder sb = new StringBuilder();
 
@@ -161,9 +161,9 @@ public class CakePHPExternalDropHandler extends ExternalDropHandler {
         }
 
         // plugin
-        CakePHP3Module.Base base = cakeModule.getBase(target);
+        CakePHPModule.Base base = cakeModule.getBase(target);
         String pluginName = ""; // NOI18N
-        if (base == CakePHP3Module.Base.PLUGIN) {
+        if (base == CakePHPModule.Base.PLUGIN) {
             pluginName = cakeModule.getPluginName(target);
         }
         String relativePath;
@@ -288,7 +288,7 @@ public class CakePHPExternalDropHandler extends ExternalDropHandler {
         if (phpModule == null) {
             return false;
         }
-        return CakePHP3Module.isCakePHP(phpModule);
+        return CakePHPModule.isCakePHP(phpModule);
     }
 
     //copied from org.netbeans.modules.openfile.DefaultExternalDropHandler

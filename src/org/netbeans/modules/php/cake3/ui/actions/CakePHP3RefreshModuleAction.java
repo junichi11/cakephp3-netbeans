@@ -16,8 +16,8 @@
 package org.netbeans.modules.php.cake3.ui.actions;
 
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3ModuleFactory;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModuleFactory;
 import org.openide.util.NbBundle;
 
 /**
@@ -43,10 +43,10 @@ public class CakePHP3RefreshModuleAction extends CakePHP3BaseAction {
 
     @Override
     protected void actionPerformed(PhpModule phpModule) {
-        if (!CakePHP3Module.isCakePHP(phpModule)) {
+        if (!CakePHPModule.isCakePHP(phpModule)) {
             return;
         }
-        CakePHP3ModuleFactory.getInstance().remove(phpModule);
+        CakePHPModuleFactory.getInstance().remove(phpModule);
     }
 
 }

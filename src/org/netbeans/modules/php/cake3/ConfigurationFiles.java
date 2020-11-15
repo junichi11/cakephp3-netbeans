@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.swing.event.ChangeListener;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
 import org.netbeans.modules.php.spi.phpmodule.ImportantFilesImplementation;
 import org.openide.filesystems.FileChangeAdapter;
 import org.openide.filesystems.FileEvent;
@@ -64,8 +64,8 @@ public final class ConfigurationFiles extends FileChangeAdapter implements Impor
     }
 
     private synchronized List<FileObject> getConfigDirectories() {
-        CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
-        List<FileObject> directories = cakeModule.getDirectories(CakePHP3Module.Base.APP, CakePHP3Module.Category.CONFIG, null);
+        CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
+        List<FileObject> directories = cakeModule.getDirectories(CakePHPModule.Base.APP, CakePHPModule.Category.CONFIG, null);
         if (!isInitialized) {
             isInitialized = true;
             for (FileObject directory : directories) {

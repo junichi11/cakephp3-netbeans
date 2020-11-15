@@ -16,7 +16,7 @@
 package org.netbeans.modules.php.cake3.modules;
 
 import org.netbeans.modules.php.api.util.StringUtils;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.openide.filesystems.FileObject;
 import org.openide.util.Pair;
 
@@ -37,13 +37,13 @@ public final class ModuleUtils {
      * EMAIL, LAYOUT, PAGES, otherwise {@code false}
      */
     public static boolean isTemplate(Category category) {
-        return category == CakePHP3Module.Category.TEMPLATE
-                || category == CakePHP3Module.Category.TEMPLATE_CELL
-                || category == CakePHP3Module.Category.ELEMENT
-                || category == CakePHP3Module.Category.ERROR
-                || category == CakePHP3Module.Category.LAYOUT
-                || category == CakePHP3Module.Category.EMAIL
-                || category == CakePHP3Module.Category.PAGES;
+        return category == CakePHPModule.Category.TEMPLATE
+                || category == CakePHPModule.Category.TEMPLATE_CELL
+                || category == CakePHPModule.Category.ELEMENT
+                || category == CakePHPModule.Category.ERROR
+                || category == CakePHPModule.Category.LAYOUT
+                || category == CakePHPModule.Category.EMAIL
+                || category == CakePHPModule.Category.PAGES;
     }
 
     /**

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.FileUtils;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
 import org.netbeans.modules.php.editor.api.elements.ClassElement;
@@ -50,12 +50,12 @@ public class TestCaseStatus extends CakePHP3GoToStatus {
         if (lastIndexOfTest != -1) {
             testedClassName = name.substring(0, lastIndexOfTest);
         }
-        CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+        CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
         Set<ClassElement> classElements = getClassElements(sourceDirectory, testedClassName);
         for (ClassElement classElement : classElements) {
             FileObject fo = classElement.getFileObject();
             if (fo != null && fo != fileObject) {
-                CakePHP3Module.Category category = cakeModule.getCategory(fo);
+                CakePHPModule.Category category = cakeModule.getCategory(fo);
                 testeds.add(GoToItemFactory.create(category, fo, offset));
             }
         }

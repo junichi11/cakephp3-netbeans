@@ -23,8 +23,8 @@ import org.netbeans.modules.parsing.spi.ParseException;
 import org.netbeans.modules.php.api.editor.PhpClass;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.editor.visitors.TableVisitor;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
 import static org.netbeans.modules.php.cake3.ui.actions.gotos.status.CakePHP3GoToStatus.DEFAULT_OFFSET;
@@ -63,7 +63,7 @@ public class TableStatus extends CakePHP3GoToStatus {
         addItems(Category.BEHAVIOR, behaviors);
     }
 
-    private void addItems(CakePHP3Module.Category category, Collection<Pair<String, PhpClass>> phpClasses) {
+    private void addItems(CakePHPModule.Category category, Collection<Pair<String, PhpClass>> phpClasses) {
         for (Pair<String, PhpClass> clazz : phpClasses) {
             PhpClass phpClass = clazz.second();
             FileObject file = phpClass.getFile();
@@ -95,7 +95,7 @@ public class TableStatus extends CakePHP3GoToStatus {
     @Override
     public List<GoToItem> getEntities() {
         List<GoToItem> items = new ArrayList<>();
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(getFileObject());
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(getFileObject());
         FileObject entity = cakeModule.getEntity(getFileObject());
         if (entity != null) {
             items.add(GoToItemFactory.create(Category.ENTITY, entity, DEFAULT_OFFSET));

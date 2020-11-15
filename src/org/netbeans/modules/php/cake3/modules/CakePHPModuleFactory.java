@@ -23,6 +23,7 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.CakeVersion;
 import org.netbeans.modules.php.cake3.dotcake.Dotcake;
+import org.netbeans.modules.php.cake3.dotcake.DotcakeSupport;
 import org.netbeans.modules.php.cake3.preferences.CakePHP3Preferences;
 import org.openide.filesystems.FileObject;
 
@@ -30,28 +31,28 @@ import org.openide.filesystems.FileObject;
  *
  * @author junichi11
  */
-public final class CakePHP3ModuleFactory {
+public final class CakePHPModuleFactory {
 
-    public static final CakePHP3Module DUMMY_MODULE = new CakePHP3Module(new CakePHP3ModuleDummy(), CakeVersion.create(null));
-    private static final CakePHP3ModuleFactory INSTANCE = new CakePHP3ModuleFactory();
-    private static final Map<PhpModule, CakePHP3Module> MODULES = Collections.synchronizedMap(new HashMap<PhpModule, CakePHP3Module>());
+    public static final CakePHPModule DUMMY_MODULE = new CakePHPModule(new CakePHPModuleDummy(), CakeVersion.create(null));
+    private static final CakePHPModuleFactory INSTANCE = new CakePHPModuleFactory();
+    private static final Map<PhpModule, CakePHPModule> MODULES = Collections.synchronizedMap(new HashMap<PhpModule, CakePHPModule>());
 
-    private CakePHP3ModuleFactory() {
+    private CakePHPModuleFactory() {
     }
 
-    public static CakePHP3ModuleFactory getInstance() {
+    public static CakePHPModuleFactory getInstance() {
         return INSTANCE;
     }
 
-    public CakePHP3Module create(PhpModule phpModule) {
-        CakePHP3Module module = MODULES.get(phpModule);
+    public CakePHPModule create(PhpModule phpModule) {
+        CakePHPModule module = MODULES.get(phpModule);
         if (module == null) {
             CakePHP3ModuleDefault impl = new CakePHP3ModuleDefault(phpModule);
             // add Dotcake
             Dotcake dotcake = createDotcake(phpModule);
             impl.dotcake(dotcake);
             CakeVersion version = impl.createVersion();
-            module = new CakePHP3Module(impl, version);
+            module = new CakePHPModule(impl, version);
             MODULES.put(phpModule, module);
         }
         return module;

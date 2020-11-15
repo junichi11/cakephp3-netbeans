@@ -23,14 +23,14 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.dotcake.Dotcake;
 import org.netbeans.modules.php.cake3.dotcake.DotcakeSupport;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Base;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.utils.Inflector;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.util.Pair;
 
-public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
+public class CakePHP3ModuleDefault extends CakePHPModuleImpl {
 
     CakePHP3ModuleDefault(PhpModule phpModule) {
         super(phpModule);
@@ -159,7 +159,7 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
     @Override
     public FileObject getEntity(FileObject table) {
         String pluginName = null;
-        CakePHP3Module.Base base = getBase(table);
+        CakePHPModule.Base base = getBase(table);
         if (base == Base.PLUGIN) {
             pluginName = getPluginName(table);
         }
@@ -171,7 +171,7 @@ public class CakePHP3ModuleDefault extends CakePHP3ModuleImpl {
     }
 
     @Override
-    public List<FileObject> getDirectories(CakePHP3Module.Base base) {
+    public List<FileObject> getDirectories(CakePHPModule.Base base) {
         switch (base) {
             case APP:
                 FileObject rootDirectory = getRootDirectory();

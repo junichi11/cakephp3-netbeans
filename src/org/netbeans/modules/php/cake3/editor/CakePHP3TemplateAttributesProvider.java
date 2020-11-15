@@ -22,7 +22,7 @@ import org.netbeans.api.templates.CreateDescriptor;
 import org.netbeans.api.templates.CreateFromTemplateAttributes;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.CakePHP3Constants;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
 import org.openide.filesystems.FileObject;
 import org.openide.util.lookup.ServiceProvider;
 
@@ -43,7 +43,7 @@ public class CakePHP3TemplateAttributesProvider implements CreateFromTemplateAtt
         if (phpModule == null) {
             return Collections.emptyMap();
         }
-        if (!CakePHP3Module.isCakePHP(phpModule)) {
+        if (!CakePHPModule.isCakePHP(phpModule)) {
             return Collections.emptyMap();
         }
 
@@ -57,7 +57,7 @@ public class CakePHP3TemplateAttributesProvider implements CreateFromTemplateAtt
 
         // set attributes
         if (parent.isFolder() && parent.getNameExt().equals(CakePHP3Constants.CAKEPHP3_FRAMEWORK)) {
-            CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+            CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
             String namespace = cakeModule.getNamespace(targetDirectory);
             attributes.put(NAMESPACE, namespace);
         }

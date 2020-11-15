@@ -21,7 +21,7 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.phpmodule.PhpModuleProperties;
 import org.netbeans.modules.php.cake3.commands.CakePHP3FrameworkCommandSupport;
 import org.netbeans.modules.php.cake3.editor.CakePHP3EditorExtender;
-import org.netbeans.modules.php.cake3.modules.CakePHP3ModuleFactory;
+import org.netbeans.modules.php.cake3.modules.CakePHPModuleFactory;
 import org.netbeans.modules.php.cake3.preferences.CakePHP3Preferences;
 import org.netbeans.modules.php.spi.editor.EditorExtender;
 import org.netbeans.modules.php.spi.framework.PhpFrameworkProvider;
@@ -123,7 +123,7 @@ public class CakePHP3FrameworkProvider extends PhpFrameworkProvider {
     @Override
     public void phpModuleClosed(PhpModule phpModule) {
         // release CakePHP3Module
-        CakePHP3ModuleFactory factory = CakePHP3ModuleFactory.getInstance();
+        CakePHPModuleFactory factory = CakePHPModuleFactory.getInstance();
         factory.remove(phpModule);
     }
 

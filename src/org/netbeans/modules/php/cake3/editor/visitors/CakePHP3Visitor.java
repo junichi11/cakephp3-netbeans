@@ -23,8 +23,8 @@ import org.netbeans.modules.php.api.editor.EditorSupport;
 import org.netbeans.modules.php.api.editor.PhpClass;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.editor.parser.astnodes.visitors.DefaultVisitor;
 import org.openide.filesystems.FileObject;
 import org.openide.util.Lookup;
@@ -98,12 +98,12 @@ public class CakePHP3Visitor extends DefaultVisitor {
 
     @CheckForNull
     protected FileObject getEntityFile(Category category, String entityName, String pluginName) {
-        CakePHP3Module module = CakePHP3Module.forPhpModule(phpModule);
-        CakePHP3Module.Base base;
+        CakePHPModule module = CakePHPModule.forPhpModule(phpModule);
+        CakePHPModule.Base base;
         if (!StringUtils.isEmpty(pluginName)) {
-            base = CakePHP3Module.Base.PLUGIN;
+            base = CakePHPModule.Base.PLUGIN;
         } else {
-            base = CakePHP3Module.Base.APP;
+            base = CakePHPModule.Base.APP;
         }
         String relativePath = module.toPhpFileName(category, entityName);
         return module.getFile(base, category, relativePath, pluginName);
