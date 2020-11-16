@@ -57,8 +57,9 @@ public class CakePHP3ActionsExtender extends PhpModuleActionsExtender {
     public String getMenuName() {
         CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
         int majorVersion = cakeModule.getVersion().getMajor();
-        assert majorVersion >= 3;
-        return Bundle.CakePHP3ActionsExtender_menuName(majorVersion);
+        assert majorVersion >= 3 : "Invalid major version:" + majorVersion; // NOI18N
+        String version = majorVersion < 3 ? "" : String.valueOf(majorVersion);
+        return Bundle.CakePHP3ActionsExtender_menuName(version);
     }
 
     @Override

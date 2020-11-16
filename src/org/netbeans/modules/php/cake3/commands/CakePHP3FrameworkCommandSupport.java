@@ -41,8 +41,10 @@ public final class CakePHP3FrameworkCommandSupport extends FrameworkCommandSuppo
     @Override
     public String getFrameworkName() {
         CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
-        CakeVersion version = cakeModule.getVersion();
-        return "CakePHP " + version.getMajor(); // NOI18N
+        CakeVersion cakeVersion = cakeModule.getVersion();
+        int majorVersion = cakeVersion.getMajor();
+        String version = majorVersion < 3 ? "" : String.valueOf(majorVersion);  // NOI18N
+        return "CakePHP" + version; // NOI18N
     }
 
     @Override
