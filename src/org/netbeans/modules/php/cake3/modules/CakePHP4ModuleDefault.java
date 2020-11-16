@@ -160,4 +160,10 @@ public class CakePHP4ModuleDefault extends CakePHP3ModuleDefault {
         return baseDirectory.getFileObject(relativePath);
     }
 
+    @Override
+    public String getCtpExt() {
+        // CakePHP4 uses php as the template file extension
+        return "php"; // NOI18N
+    }
+
 }
