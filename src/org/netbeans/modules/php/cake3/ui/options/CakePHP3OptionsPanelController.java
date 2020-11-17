@@ -31,9 +31,9 @@ import org.openide.util.NbBundle;
         position = 490
 )
 @NbBundle.Messages({
-    "LBL_CakePHP3OptionsName=CakePHP3",
+    "LBL_CakePHP3OptionsName=CakePHP3/4",
     "CakePHP3.options.keywords.TabTitle=Frameworks & Tools",
-    "AdvancedOption_Keywords_CakePHP3=cake, cakephp, cakephp3, CakePHP3"
+    "AdvancedOption_Keywords_CakePHP3=cake, cakephp, cakephp3, CakePHP3, cakephp4, CakePHP4"
 })
 @OptionsPanelController.Keywords(
         keywords = "#AdvancedOption_Keywords_CakePHP3",
@@ -41,7 +41,7 @@ import org.openide.util.NbBundle;
 )
 public final class CakePHP3OptionsPanelController extends OptionsPanelController {
 
-    static final String ID = "CakePHP3"; // NOI18N
+    static final String ID = "CakePHP3/4"; // NOI18N
     private CakePHP3OptionsPanel panel;
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private boolean changed;

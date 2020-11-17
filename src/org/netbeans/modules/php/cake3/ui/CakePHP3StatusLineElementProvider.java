@@ -29,7 +29,7 @@ import javax.swing.SwingUtilities;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.CakePHP3Constants;
 import org.netbeans.modules.php.cake3.CakeVersion;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
 import org.openide.awt.StatusLineElementProvider;
 import org.openide.filesystems.FileObject;
 import org.openide.util.ImageUtilities;
@@ -150,11 +150,11 @@ public class CakePHP3StatusLineElementProvider implements StatusLineElementProvi
                 return;
             }
             phpModule = currentPhpModule;
-            if (!CakePHP3Module.isCakePHP(phpModule)) {
+            if (!CakePHPModule.isCakePHP(phpModule)) {
                 clearLabel();
                 return;
             }
-            CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+            CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
             CakeVersion version = cakeModule.getVersion();
             setVersion(version.getVersionNumber());
 

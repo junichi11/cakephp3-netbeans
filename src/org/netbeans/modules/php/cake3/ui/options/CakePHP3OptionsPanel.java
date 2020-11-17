@@ -21,7 +21,7 @@ import javax.swing.DefaultListModel;
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ui.OpenProjects;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
 import org.netbeans.modules.php.cake3.options.CakePHP3Options;
 
 final class CakePHP3OptionsPanel extends javax.swing.JPanel {
@@ -63,12 +63,12 @@ final class CakePHP3OptionsPanel extends javax.swing.JPanel {
         for (Project project : openProjects) {
             PhpModule phpModule = PhpModule.Factory.lookupPhpModule(project);
             if (phpModule != null) {
-                if (CakePHP3Module.isCakePHP(phpModule)) {
-                    CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+                if (CakePHPModule.isCakePHP(phpModule)) {
+                    CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
                     if (cakeModule == null) {
                         continue;
                     }
-                    cakeModule.notifyPropertyChanged(new PropertyChangeEvent(this, CakePHP3Module.PROPERTY_CHANGE_CAKE3, null, null));
+                    cakeModule.notifyPropertyChanged(new PropertyChangeEvent(this, CakePHPModule.PROPERTY_CHANGE_CAKE3, null, null));
                 }
             }
         }

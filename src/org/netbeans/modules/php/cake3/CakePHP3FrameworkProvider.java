@@ -21,7 +21,7 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.phpmodule.PhpModuleProperties;
 import org.netbeans.modules.php.cake3.commands.CakePHP3FrameworkCommandSupport;
 import org.netbeans.modules.php.cake3.editor.CakePHP3EditorExtender;
-import org.netbeans.modules.php.cake3.modules.CakePHP3ModuleFactory;
+import org.netbeans.modules.php.cake3.modules.CakePHPModuleFactory;
 import org.netbeans.modules.php.cake3.preferences.CakePHP3Preferences;
 import org.netbeans.modules.php.spi.editor.EditorExtender;
 import org.netbeans.modules.php.spi.framework.PhpFrameworkProvider;
@@ -46,8 +46,8 @@ public class CakePHP3FrameworkProvider extends PhpFrameworkProvider {
     private final BadgeIcon badgeIcon;
 
     @NbBundle.Messages({
-        "CakePHP3FrameworkProvider.name=CakePHP3",
-        "CakePHP3FrameworkProvider.description=CakePHP3"
+        "CakePHP3FrameworkProvider.name=CakePHP3/4",
+        "CakePHP3FrameworkProvider.description=CakePHP3/4"
     })
     private CakePHP3FrameworkProvider() {
         super("cakephp3", // NOI18N
@@ -122,8 +122,8 @@ public class CakePHP3FrameworkProvider extends PhpFrameworkProvider {
 
     @Override
     public void phpModuleClosed(PhpModule phpModule) {
-        // release CakePHP3Module
-        CakePHP3ModuleFactory factory = CakePHP3ModuleFactory.getInstance();
+        // release CakePHPModule
+        CakePHPModuleFactory factory = CakePHPModuleFactory.getInstance();
         factory.remove(phpModule);
     }
 

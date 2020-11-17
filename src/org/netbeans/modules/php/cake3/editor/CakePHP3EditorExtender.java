@@ -36,9 +36,9 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.editor.visitors.ControllerVisitor;
 import org.netbeans.modules.php.cake3.editor.visitors.HelperVisitor;
 import org.netbeans.modules.php.cake3.editor.visitors.ViewVisitor;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Base;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.modules.ModuleUtils;
 import org.netbeans.modules.php.editor.parser.PHPParseResult;
 import org.netbeans.modules.php.editor.parser.api.Utils;
@@ -63,7 +63,7 @@ public class CakePHP3EditorExtender extends EditorExtender {
     @Override
     public List<PhpBaseElement> getElementsForCodeCompletion(FileObject fo) {
         // Enabled PhpBaseElement is just PhpVariable
-        CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+        CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
         String ext = fo.getExt();
         if (!ext.equals("php") && !ext.equals(cakeModule.getCtpExt())) { // NOI18N
             return Collections.emptyList();
@@ -101,7 +101,7 @@ public class CakePHP3EditorExtender extends EditorExtender {
         return elements;
     }
 
-    private void parseAppController(CakePHP3Module cakeModule, Base base, String pluginName, List<PhpBaseElement> elements) {
+    private void parseAppController(CakePHPModule cakeModule, Base base, String pluginName, List<PhpBaseElement> elements) {
         FileObject appController = cakeModule.getFile(base, Category.CONTROLLER, "AppController.php", pluginName); // NOI18N
         if (appController != null) {
             Set<PhpClass> phpClasses = parseFields(appController, Category.CONTROLLER);
@@ -111,7 +111,7 @@ public class CakePHP3EditorExtender extends EditorExtender {
         }
     }
 
-    private void parseAppView(CakePHP3Module cakeModule, Base base, String pluginName, List<PhpBaseElement> elements) {
+    private void parseAppView(CakePHPModule cakeModule, Base base, String pluginName, List<PhpBaseElement> elements) {
         if (ModuleUtils.isTemplate(category)) {
             FileObject appView = cakeModule.getFile(base, Category.VIEW, "AppView.php", pluginName); // NOI18N
             if (appView != null) {
@@ -139,7 +139,7 @@ public class CakePHP3EditorExtender extends EditorExtender {
         String fileName = fo.getName();
         // if category is template, get a controller file for a template file
         if (!"AppController".equals(fileName) && category == Category.TEMPLATE) {
-            CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+            CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
             target = cakeModule.getController(fo);
             if (target == null) {
                 return Collections.singleton(phpClass);

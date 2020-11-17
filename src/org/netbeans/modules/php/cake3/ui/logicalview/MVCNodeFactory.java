@@ -26,9 +26,9 @@ import java.util.logging.Logger;
 import javax.swing.event.ChangeListener;
 import org.netbeans.api.project.Project;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Base;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.options.CakePHP3Options;
 import org.netbeans.spi.project.ui.support.NodeFactory;
 import org.netbeans.spi.project.ui.support.NodeList;
@@ -62,10 +62,10 @@ public class MVCNodeFactory implements NodeFactory {
 
         @Override
         public List<Node> keys() {
-            if (!CakePHP3Module.isCakePHP(phpModule)) {
+            if (!CakePHPModule.isCakePHP(phpModule)) {
                 return Collections.emptyList();
             }
-            CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+            CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
             if (cakeModule == null) {
                 return Collections.emptyList();
             }
@@ -184,7 +184,7 @@ public class MVCNodeFactory implements NodeFactory {
 
         @Override
         public void addNotify() {
-            CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+            CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
             if (cakeModule != null) {
                 cakeModule.addPropertyChangeListener(this);
             }
@@ -192,7 +192,7 @@ public class MVCNodeFactory implements NodeFactory {
 
         @Override
         public void removeNotify() {
-            CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+            CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
             if (cakeModule != null) {
                 cakeModule.removePropertyChangeListener(this);
             }
@@ -200,7 +200,7 @@ public class MVCNodeFactory implements NodeFactory {
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            if (CakePHP3Module.PROPERTY_CHANGE_CAKE3.equals(evt.getPropertyName())) {
+            if (CakePHPModule.PROPERTY_CHANGE_CAKE3.equals(evt.getPropertyName())) {
                 fireChange();
             }
         }

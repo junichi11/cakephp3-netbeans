@@ -21,7 +21,7 @@ import javax.swing.JComponent;
 import javax.swing.event.ChangeListener;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.validation.ValidationResult;
-import org.netbeans.modules.php.cake3.modules.CakePHP3ModuleFactory;
+import org.netbeans.modules.php.cake3.modules.CakePHPModuleFactory;
 import org.netbeans.modules.php.cake3.preferences.CakePHP3Preferences;
 import org.netbeans.modules.php.cake3.ui.customizer.CakePHP3CustomizerPanel;
 import org.netbeans.modules.php.cake3.validators.CakePHP3CustomizerValidator;
@@ -65,7 +65,7 @@ public class CakePHP3ModuleCustomizerExtender extends PhpModuleCustomizerExtende
     }
 
     @NbBundle.Messages({
-        "CakePHP3ModuleCustomizerExtender.displayName=CakePHP3"
+        "CakePHP3ModuleCustomizerExtender.displayName=CakePHP3/4"
     })
     @Override
     public String getDisplayName() {
@@ -149,7 +149,7 @@ public class CakePHP3ModuleCustomizerExtender extends PhpModuleCustomizerExtende
         CakePHP3Preferences.setJsUrl(phpModule, p.getJs());
         CakePHP3Preferences.setDotcakePath(phpModule, p.getDotcakePath());
         // release CakePHP3Module
-        CakePHP3ModuleFactory.getInstance().remove(phpModule);
+        CakePHPModuleFactory.getInstance().remove(phpModule);
         return EnumSet.of(Change.FRAMEWORK_CHANGE);
     }
 

@@ -22,7 +22,7 @@ import java.util.Set;
 import org.netbeans.modules.php.api.editor.PhpClass;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.utils.CakePHPCodeUtils;
 import org.netbeans.modules.php.editor.CodeUtils;
 import org.netbeans.modules.php.editor.parser.astnodes.Expression;

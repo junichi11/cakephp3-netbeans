@@ -34,8 +34,8 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.CakeVersion;
 import org.netbeans.modules.php.cake3.dotcake.Dotcake;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Base;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.preferences.CakePHP3Preferences;
 import org.netbeans.modules.php.cake3.utils.CakePHPCodeUtils;
 import org.netbeans.modules.php.editor.parser.PHPParseResult;
@@ -53,9 +53,9 @@ import org.openide.util.Pair;
  *
  * @author junichi11
  */
-public abstract class CakePHP3ModuleImpl {
+public abstract class CakePHPModuleImpl {
 
-    private static final Logger LOGGER = Logger.getLogger(CakePHP3ModuleImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CakePHPModuleImpl.class.getName());
     protected static final String DEFAULT_CTP_EXT = "ctp"; // NOI18N
     protected static final String DEFAULT_NAMESPACE = "App"; // NOI18N
     protected static final String DEFAULT_WEBROOT = "webroot"; // NOI18N
@@ -82,11 +82,11 @@ public abstract class CakePHP3ModuleImpl {
     private Dotcake dotcake;
     private List<Pair<String, FileObject>> vendorPluginsCache;
 
-    CakePHP3ModuleImpl(PhpModule phpModule) {
+    CakePHPModuleImpl(PhpModule phpModule) {
         this.phpModule = phpModule;
     }
 
-    public CakePHP3ModuleImpl dotcake(Dotcake dotcake) {
+    public CakePHPModuleImpl dotcake(Dotcake dotcake) {
         this.dotcake = dotcake;
         return this;
     }

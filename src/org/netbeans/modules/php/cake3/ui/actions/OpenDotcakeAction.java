@@ -20,7 +20,7 @@ import javax.swing.SwingUtilities;
 import org.netbeans.modules.csl.api.UiUtils;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.dotcake.Dotcake;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.util.NbBundle;
@@ -48,7 +48,7 @@ public class OpenDotcakeAction extends CakePHP3BaseAction {
 
     @Override
     protected void actionPerformed(PhpModule phpModule) {
-        CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+        CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
         Dotcake dotcake = cakeModule.getDotcake();
         if (dotcake == null) {
             return;

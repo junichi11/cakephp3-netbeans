@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.modules.ModuleInfo;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
@@ -50,7 +50,7 @@ public class EntityStatus extends CakePHP3GoToStatus {
         if (fileObject == null) {
             return Collections.emptyList();
         }
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(fileObject);
         ModuleInfo info = cakeModule.createModuleInfo(fileObject);
         String name = fileObject.getName();
         Inflector inflector = Inflector.getInstance();

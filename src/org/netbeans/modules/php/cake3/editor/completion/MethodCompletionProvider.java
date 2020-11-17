@@ -26,7 +26,7 @@ import org.netbeans.modules.editor.NbEditorUtilities;
 import org.netbeans.modules.editor.lib2.DocUtils;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import static org.netbeans.modules.php.api.util.FileUtils.PHP_MIME_TYPE;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
 import org.netbeans.modules.php.cake3.modules.ModuleInfo;
 import org.netbeans.modules.php.editor.lexer.LexUtilities;
 import org.netbeans.modules.php.editor.lexer.PHPTokenId;
@@ -146,9 +146,9 @@ public class MethodCompletionProvider extends CakePHP3CompletionProvider {
 
     private void autoCompleteFlash(Document document, String filter, CompletionResultSet resultSet, int startOffset) {
         FileObject fileObject = NbEditorUtilities.getFileObject(document);
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(fileObject);
         ModuleInfo info = cakeModule.createModuleInfo(fileObject);
-        List<FileObject> directories = cakeModule.getDirectories(info.getBase(), CakePHP3Module.Category.ELEMENT, info.getPluginName());
+        List<FileObject> directories = cakeModule.getDirectories(info.getBase(), CakePHPModule.Category.ELEMENT, info.getPluginName());
         for (FileObject directory : directories) {
             FileObject flashDirectory = directory.getFileObject("Flash"); // NOI18N
             if (flashDirectory != null && flashDirectory.isFolder()) {

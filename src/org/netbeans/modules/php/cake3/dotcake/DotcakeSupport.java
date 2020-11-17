@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.dotcake.Dotcake.BuildPathCategory;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 

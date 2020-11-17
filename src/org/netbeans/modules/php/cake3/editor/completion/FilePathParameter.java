@@ -21,9 +21,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import org.netbeans.modules.php.api.util.StringUtils;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Base;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.modules.ModuleInfo;
 import org.netbeans.modules.php.cake3.modules.ModuleUtils;
 import org.netbeans.spi.editor.completion.CompletionItem;
@@ -42,7 +42,7 @@ public class FilePathParameter extends Parameter {
             return Collections.emptyList();
         }
         FileObject currentFile = getFileObject();
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(currentFile);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(currentFile);
         ModuleInfo info = cakeModule.createModuleInfo(currentFile);
 
         List<String> elements = new ArrayList<>();
@@ -90,7 +90,7 @@ public class FilePathParameter extends Parameter {
         return Collections.emptyList();
     }
 
-    private List<String> getElements(Category category, CakePHP3Module cakeModule, ModuleInfo info, String subpath, String filter, String pluginName) {
+    private List<String> getElements(Category category, CakePHPModule cakeModule, ModuleInfo info, String subpath, String filter, String pluginName) {
         switch (category) {
             case JS: // fallthrough
             case CSS:
@@ -126,7 +126,7 @@ public class FilePathParameter extends Parameter {
         return Category.UNKNOWN;
     }
 
-    private List<String> getAssets(CakePHP3Module cakeModule, ModuleInfo info, String subpath, String filter, String pluginName, Category category) {
+    private List<String> getAssets(CakePHPModule cakeModule, ModuleInfo info, String subpath, String filter, String pluginName, Category category) {
         Base base = info.getBase();
         if (StringUtils.isEmpty(pluginName)) {
             if (base == Base.PLUGIN) {
@@ -159,7 +159,7 @@ public class FilePathParameter extends Parameter {
         return elements;
     }
 
-    private List<String> getTemplates(CakePHP3Module cakeModule, ModuleInfo info, String subpath, String filter, String pluginName, Category category) {
+    private List<String> getTemplates(CakePHPModule cakeModule, ModuleInfo info, String subpath, String filter, String pluginName, Category category) {
         Base base = info.getBase();
         if (StringUtils.isEmpty(pluginName)) {
             if (base == Base.PLUGIN) {
@@ -232,7 +232,7 @@ public class FilePathParameter extends Parameter {
         return elements;
     }
 
-    private List<String> getCategoryElements(CakePHP3Module cakeModule, ModuleInfo info, String subpath, String filter, String pluginName, Category category) {
+    private List<String> getCategoryElements(CakePHPModule cakeModule, ModuleInfo info, String subpath, String filter, String pluginName, Category category) {
         Base base = info.getBase();
         if (StringUtils.isEmpty(pluginName)) {
             if (base == Base.PLUGIN) {

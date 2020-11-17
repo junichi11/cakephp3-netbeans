@@ -27,9 +27,9 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.StringUtils;
 import org.netbeans.modules.php.cake3.editor.visitors.ControllerVisitor;
 import org.netbeans.modules.php.cake3.editor.visitors.TemplateVisitor;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Base;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.modules.ModuleUtils;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
@@ -57,7 +57,7 @@ class TemplateStatus extends CakePHP3GoToStatus {
     @Override
     protected void scan(PhpModule phpModule, FileObject fileObject, int offset) {
         clear();
-        CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+        CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
         Category category = cakeModule.getCategory(fileObject);
         isTemplateCell = category == Category.TEMPLATE_CELL;
 
@@ -144,7 +144,7 @@ class TemplateStatus extends CakePHP3GoToStatus {
     }
 
     private void addTemplates(List<String> templateNames, FileObject controller) {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(controller);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(controller);
         for (String name : templateNames) {
             FileObject template = getTemplate(name, controller);
             if (template == null) {
@@ -160,7 +160,7 @@ class TemplateStatus extends CakePHP3GoToStatus {
     }
 
     private void addElements(Set<String> elementPaths, PhpModule phpModule, FileObject fileObject) {
-        CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+        CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
         Base base = cakeModule.getBase(fileObject);
         for (String elementPath : elementPaths) {
             Pair<String, String> pluginElement = ModuleUtils.pluginSplit(elementPath);
@@ -182,7 +182,7 @@ class TemplateStatus extends CakePHP3GoToStatus {
     }
 
     private void addExtends(Set<String> extendsPaths, PhpModule phpModule, FileObject fileObject) {
-        CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+        CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
         Base base = cakeModule.getBase(fileObject);
         String currentPluginName = null;
         if (base == Base.PLUGIN) {
@@ -230,7 +230,7 @@ class TemplateStatus extends CakePHP3GoToStatus {
     }
 
     private void addCells(Set<String> cells, PhpModule phpModule, FileObject fileObject) {
-        CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+        CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
         Base base = cakeModule.getBase(fileObject);
         for (String cell : cells) {
             Pair<String, String> pluginSplit = ModuleUtils.pluginSplit(cell);
@@ -263,7 +263,7 @@ class TemplateStatus extends CakePHP3GoToStatus {
     }
 
     private FileObject getTemplate(String name, FileObject controller) {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(controller);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(controller);
         String relativePath = cakeModule.toPhpFileName(Category.TEMPLATE, name);
         return cakeModule.getTemplate(relativePath, controller, ""); // NOI18N
     }
