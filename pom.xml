@@ -6,9 +6,9 @@
     <!-- change the version of build.xml -->
     <version>0.8.0</version>
     <packaging>nbm</packaging>
-    <name>NetBeans CakePHP3 Framework</name>
+    <name>NetBeans CakePHP3/4 Framework</name>
     <url>https://github.com/junichi11/</url>
-    <description>This plugin provides support for CakePHP3.</description>
+    <description>This plugin provides support for CakePHP3/4.</description>
     <developers>
         <developer>
             <id>junichi11</id>
