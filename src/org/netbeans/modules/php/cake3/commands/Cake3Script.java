@@ -40,8 +40,8 @@ import org.netbeans.modules.php.api.executable.PhpExecutableValidator;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.UiUtils;
 import org.netbeans.modules.php.cake3.CakeVersion;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Base;
 import org.netbeans.modules.php.spi.framework.commands.FrameworkCommand;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
@@ -117,7 +117,7 @@ public final class Cake3Script {
     }
 
     private static FileObject getScript(PhpModule phpModule) {
-        CakePHP3Module module = CakePHP3Module.forPhpModule(phpModule);
+        CakePHPModule module = CakePHPModule.forPhpModule(phpModule);
         if (module == null) {
             return null;
         }
@@ -276,10 +276,11 @@ public final class Cake3Script {
 
     private List<String> getCommandListParams(PhpModule phpModule) {
         List<String> params = new ArrayList<>();
-        CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+        CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
         CakeVersion version = cakeModule.getVersion();
         if (version != null) {
-            if (version.getMajor() >= 3 && version.getMinor() >= 5) {
+            if ((version.getMajor() >= 3 && version.getMinor() >= 5)
+                    || version.getMajor() >= 4) { // cakephp 4
                 params.addAll(COMMAND_LIST_XML_COMMAND_350);
             } else {
                 params.addAll(COMMAND_LIST_XML_COMMAND);
@@ -326,7 +327,7 @@ public final class Cake3Script {
     }
 
     private PhpExecutable createPhpExecutable(PhpModule phpModule) {
-        CakePHP3Module module = CakePHP3Module.forPhpModule(phpModule);
+        CakePHPModule module = CakePHPModule.forPhpModule(phpModule);
         List<FileObject> directories = module.getDirectories(Base.APP);
         PhpExecutable phpExecutable = new PhpExecutable(cakePath)
                 .viaAutodetection(true);

@@ -21,8 +21,8 @@ import org.netbeans.modules.parsing.spi.ParseException;
 import org.netbeans.modules.php.api.editor.PhpClass;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.editor.visitors.HelperVisitor;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItemFactory;
 import static org.netbeans.modules.php.cake3.ui.actions.gotos.status.CakePHP3GoToStatus.DEFAULT_OFFSET;
@@ -50,7 +50,7 @@ public class HelperStatus extends CakePHP3GoToStatus {
         addItems(Category.HELPER, visitor.getHelpers());
     }
 
-    private void addItems(CakePHP3Module.Category category, List<Pair<String, PhpClass>> phpClasses) {
+    private void addItems(CakePHPModule.Category category, List<Pair<String, PhpClass>> phpClasses) {
         for (Pair<String, PhpClass> clazz : phpClasses) {
             PhpClass phpClass = clazz.second();
             FileObject file = phpClass.getFile();

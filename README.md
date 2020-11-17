@@ -1,16 +1,26 @@
-# NetBeans CakePHP3 Plugin (Dev)
+# NetBeans CakePHP3/4 Plugin
 
-This plugin provides support for CakePHP3.
+This plugin provides support for CakePHP3/4.
 
 ## Requirements
 
-- NetBeans 8.1+
+- NetBeans 12.0+
 
 ## Downloads
 
 - https://github.com/junichi11/cakephp3-netbeans/releases
+- https://plugins.netbeans.apache.org/catalogue/?id=27
 
 ## How To Install
+
+### Via NetBeans Plugin Portal Update Center
+
+- Tools > Plugins > Available Plugins
+- Click the "Check for Newest" button
+- Check "CakePHP3/4 Framework"
+- Click the "Install" button
+
+### Use downloaded nbms
 
 - Download a nbm (e.g. org-netbeans-modules-php-cake3-0.0.1-dev-201408251540.nbm)
 - Tools > Plugins > Downloaded > Add Plugins
@@ -21,16 +31,14 @@ This plugin provides support for CakePHP3.
 
 You can update to the new version by the same way as the install. You don't have to uninstall the old version.
 
-Currently, this plugin is not available on NetBeans Plugin Portal. But you can update directly from NetBeans IDE when it's available on it later.
-
 ## How To Enable
 
 - Open the project properties dialog (Right-Click your project > properties)
-- Frameworks > CakePHP3 > Check `Enabled`
+- Frameworks > CakePHP3/4 > Check `Enabled`
 
 ## Use Your Custom Directory Structure
 
-If you just installed Cake3 via Composer, you don't have to do anything.
+If you just installed Cake3/4 via Composer, you don't have to do anything.
 
 - Open the project properties
 - Set relative paths from your Source Directory to Path settings
@@ -138,12 +146,12 @@ $this->Html->docType('[Ctrl+Space]');
 ```
 
 **NOTE**
-At first, add a semicolon(<kbd>;</kbd>) if you want to use code completions for parameters. Tips: You can add it like the following: <kbd>Ctrl</kbd>+<kbd>;</kbd>
+Please add a semicolon(<kbd>;</kbd>) if you want to use code completions for parameters. Tips: You can add it like the following: <kbd>Ctrl</kbd>+<kbd>;</kbd>
 
 ### Smart Go To
 
 This feature is not enabled by default. If you want to use it, please set the KeyMap to it.
-(Tools > Options > Keymap > Search `CakePHP` > CakePHP3: Smart Go To > e.g. set <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>J</kbd>) 
+(Tools > Options > Keymap > Search `CakePHP` > CakePHP3/4: Smart Go To > e.g. set <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>J</kbd>) 
 
 Files related to the current editor are shown when you run this action.
 e.g. If your current file is a Controller, template, table, entity, testcase, conponent and helper file(s) will be shown.
@@ -224,11 +232,11 @@ The file format is the following:
 ### Custom nodes
 
 You can add some directories(nodes) under the your project tree. Controller, Model, e.t.c. are shown by default.
-If you want to hide/show them, please change the options.(Tools > Options > PHP > Frameworks and Tools > CakePHP3 > Custom nodes)
+If you want to hide/show them, please change the options.(Tools > Options > PHP > Frameworks and Tools > CakePHP3/4 > Custom nodes)
 
 ## Actions
 
-Right-click a project > CakePHP3
+Right-click a project > CakePHP3/4
 
 - Run Command
 - Run server
@@ -250,6 +258,11 @@ Refresh the version number and category paths.
 ## Donation
 
 - https://github.com/sponsors/junichi11
+
+## Issues
+
+If you have issues, please submit them to [GitHub Issues](https://github.com/junichi11/cakephp3-netbeans/issues) .
+Please don't create PRs soon.
 
 ## License
 

@@ -30,7 +30,7 @@ import org.netbeans.editor.BaseAction;
 import org.netbeans.modules.editor.NbEditorUtilities;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.FileUtils;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
 import org.netbeans.modules.php.cake3.ui.GoToPopup;
 import org.netbeans.modules.php.cake3.ui.PopupUtil;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
@@ -61,7 +61,7 @@ public abstract class CakePHP3GoToAction extends BaseAction {
         if (phpModule == null) {
             return;
         }
-        if (!CakePHP3Module.isCakePHP(phpModule)) {
+        if (!CakePHPModule.isCakePHP(phpModule)) {
             return;
         }
         // only php files
@@ -80,7 +80,7 @@ public abstract class CakePHP3GoToAction extends BaseAction {
                 status.scan();
                 defaultItems.addAll(getGoToItems(status));
             }
-        }, "CakePHP3 Go To", cancel, false);
+        }, "CakePHP3/4 Go To", cancel, false);
 
         // show popup
         try {

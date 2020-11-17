@@ -26,14 +26,14 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.CakePHP3FrameworkProvider;
 import org.netbeans.modules.php.cake3.CakeVersion;
 import org.netbeans.modules.php.cake3.dotcake.Dotcake;
-import static org.netbeans.modules.php.cake3.modules.CakePHP3ModuleFactory.DUMMY_MODULE;
+import static org.netbeans.modules.php.cake3.modules.CakePHPModuleFactory.DUMMY_MODULE;
 import org.openide.filesystems.FileObject;
 
 /**
  *
  * @author junichi11
  */
-public class CakePHP3Module {
+public class CakePHPModule {
 
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     public static String PROPERTY_CHANGE_CAKE3 = "property-change-cake3"; // NOI18N
@@ -92,10 +92,10 @@ public class CakePHP3Module {
         UNKNOWN
     }
 
-    private final CakePHP3ModuleImpl impl;
+    private final CakePHPModuleImpl impl;
     private final CakeVersion version;
 
-    CakePHP3Module(CakePHP3ModuleImpl impl, CakeVersion version) {
+    CakePHPModule(CakePHPModuleImpl impl, CakeVersion version) {
         this.impl = impl;
         this.version = version;
     }
@@ -104,18 +104,18 @@ public class CakePHP3Module {
         return CakePHP3FrameworkProvider.getInstance().isInPhpModule(phpmodule);
     }
 
-    public static CakePHP3Module forPhpModule(PhpModule phpModule) {
+    public static CakePHPModule forPhpModule(PhpModule phpModule) {
         if (phpModule == null) {
             phpModule = PhpModule.Factory.inferPhpModule();
         }
         if (phpModule == null || !isCakePHP(phpModule)) {
             return DUMMY_MODULE;
         }
-        CakePHP3ModuleFactory factory = CakePHP3ModuleFactory.getInstance();
+        CakePHPModuleFactory factory = CakePHPModuleFactory.getInstance();
         return factory.create(phpModule);
     }
 
-    public static CakePHP3Module forFileObject(FileObject fileObject) {
+    public static CakePHPModule forFileObject(FileObject fileObject) {
         if (fileObject == null) {
             return DUMMY_MODULE;
         }
@@ -229,7 +229,7 @@ public class CakePHP3Module {
     }
 
 //    void reset() {
-//        CakePHP3ModuleFactory.getInstance().reset(this);
+//        CakePHPModuleFactory.getInstance().reset(this);
 //    }
     void refreshNodes() {
         propertyChangeSupport.firePropertyChange(PROPERTY_CHANGE_CAKE3, null, null);

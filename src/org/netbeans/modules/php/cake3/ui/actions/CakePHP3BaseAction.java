@@ -24,7 +24,7 @@ import org.openide.util.NbBundle;
  */
 @NbBundle.Messages({
     "# {0} - name",
-    "CakePHPBaseAction.fullName=CakePHP3: {0}"
+    "CakePHPBaseAction.fullName=CakePHP3/4: {0}"
 })
 public abstract class CakePHP3BaseAction extends BaseAction {
 

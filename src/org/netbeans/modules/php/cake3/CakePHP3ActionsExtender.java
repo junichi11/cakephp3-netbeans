@@ -21,8 +21,8 @@ import java.util.List;
 import javax.swing.Action;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.dotcake.Dotcake;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.ui.actions.CakePHP3BaseAction;
 import org.netbeans.modules.php.cake3.ui.actions.CakePHP3GoToActionAction;
 import org.netbeans.modules.php.cake3.ui.actions.CakePHP3GoToViewAction;
@@ -50,11 +50,16 @@ public class CakePHP3ActionsExtender extends PhpModuleActionsExtender {
     }
 
     @NbBundle.Messages({
-        "CakePHP3ActionsExtender.menuName=CakePHP3"
+        "# {0} - version",
+        "CakePHP3ActionsExtender.menuName=CakePHP{0}"
     })
     @Override
     public String getMenuName() {
-        return Bundle.CakePHP3ActionsExtender_menuName();
+        CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
+        int majorVersion = cakeModule.getVersion().getMajor();
+        assert majorVersion >= 3 : "Invalid major version:" + majorVersion; // NOI18N
+        String version = majorVersion < 3 ? "" : String.valueOf(majorVersion);
+        return Bundle.CakePHP3ActionsExtender_menuName(version);
     }
 
     @Override
@@ -64,7 +69,7 @@ public class CakePHP3ActionsExtender extends PhpModuleActionsExtender {
                 new CakePHP3RefreshModuleAction()
         );
         List<CakePHP3BaseAction> actions = new ArrayList<>(defaultActions);
-        CakePHP3Module cakeModule = CakePHP3Module.forPhpModule(phpModule);
+        CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
         Dotcake dotcake = cakeModule.getDotcake();
         if (dotcake != null) {
             actions.add(new OpenDotcakeAction());
@@ -84,14 +89,14 @@ public class CakePHP3ActionsExtender extends PhpModuleActionsExtender {
 
     @Override
     public boolean isActionWithView(FileObject fo) {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fo);
-        CakePHP3Module.Category category = cakeModule.getCategory(fo);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(fo);
+        CakePHPModule.Category category = cakeModule.getCategory(fo);
         return category == Category.CONTROLLER;
     }
 
     @Override
     public boolean isViewWithAction(FileObject fo) {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fo);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(fo);
         return cakeModule.isTemplateFile(fo);
     }
 

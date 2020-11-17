@@ -23,7 +23,8 @@ import java.util.List;
 import org.netbeans.modules.php.api.executable.InvalidPhpExecutableException;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.UiUtils;
-import org.netbeans.modules.php.cake3.CakePHP3Constants;
+import org.netbeans.modules.php.cake3.CakeVersion;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
 import org.netbeans.modules.php.spi.framework.commands.FrameworkCommand;
 import org.netbeans.modules.php.spi.framework.commands.FrameworkCommandSupport;
 
@@ -39,7 +40,11 @@ public final class CakePHP3FrameworkCommandSupport extends FrameworkCommandSuppo
 
     @Override
     public String getFrameworkName() {
-        return CakePHP3Constants.CAKEPHP3;
+        CakePHPModule cakeModule = CakePHPModule.forPhpModule(phpModule);
+        CakeVersion cakeVersion = cakeModule.getVersion();
+        int majorVersion = cakeVersion.getMajor();
+        String version = majorVersion < 3 ? "" : String.valueOf(majorVersion);  // NOI18N
+        return "CakePHP" + version; // NOI18N
     }
 
     @Override

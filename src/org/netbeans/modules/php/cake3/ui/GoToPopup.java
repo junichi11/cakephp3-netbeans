@@ -241,6 +241,10 @@ public class GoToPopup extends JPanel implements FocusListener {
                     items.clear();
                     items.addAll(status.getAllTestCases());
                     break;
+                case KeyEvent.VK_V:
+                    items.clear();
+                    items.addAll(status.getTemplates());
+                    break;
                 default:
                     return;
             }

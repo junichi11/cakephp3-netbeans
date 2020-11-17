@@ -17,7 +17,7 @@ package org.netbeans.modules.php.cake3.ui.actions;
 
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.CakePHP3FrameworkProvider;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
 import org.netbeans.modules.php.spi.framework.actions.RunCommandAction;
 
 /**
@@ -35,7 +35,7 @@ public final class CakePHP3RunCommandAction extends RunCommandAction {
 
     @Override
     public void actionPerformed(PhpModule phpModule) {
-        if (!CakePHP3Module.isCakePHP(phpModule)) {
+        if (!CakePHPModule.isCakePHP(phpModule)) {
             return;
         }
         CakePHP3FrameworkProvider.getInstance().getFrameworkCommandSupport(phpModule).openPanel();

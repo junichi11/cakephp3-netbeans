@@ -28,8 +28,8 @@ import org.netbeans.modules.parsing.spi.ParseException;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.util.FileUtils;
 import org.netbeans.modules.php.api.util.StringUtils;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.netbeans.modules.php.cake3.modules.ModuleInfo;
 import org.netbeans.modules.php.cake3.modules.ModuleUtils;
 import org.netbeans.modules.php.cake3.ui.actions.gotos.items.GoToItem;
@@ -113,7 +113,7 @@ public abstract class CakePHP3GoToStatus {
     }
 
     public List<GoToItem> getEntities() {
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(getFileObject());
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(getFileObject());
         List<GoToItem> items = new ArrayList<>();
         for (GoToItem item : getTables()) {
             FileObject table = item.getFileObject();
@@ -161,7 +161,7 @@ public abstract class CakePHP3GoToStatus {
         if (fileObject == null || !FileUtils.isPhpFile(fileObject)) {
             return Collections.emptyList();
         }
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(fileObject);
         ModuleInfo info = cakeModule.createModuleInfo(fileObject);
         if (ModuleUtils.isTemplate(info.getCategory())) {
             return Collections.emptyList();
@@ -208,7 +208,7 @@ public abstract class CakePHP3GoToStatus {
             return Collections.emptyList();
         }
         List<GoToItem> items = new ArrayList<>();
-        CakePHP3Module cakeModule = CakePHP3Module.forFileObject(fileObject);
+        CakePHPModule cakeModule = CakePHPModule.forFileObject(fileObject);
         ModuleInfo info = cakeModule.createModuleInfo(fileObject);
         List<FileObject> directories = cakeModule.getDirectories(info.getBase(), category, info.getPluginName());
         for (FileObject directory : directories) {

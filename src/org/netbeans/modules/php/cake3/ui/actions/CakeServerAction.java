@@ -18,7 +18,7 @@ package org.netbeans.modules.php.cake3.ui.actions;
 import org.netbeans.modules.php.api.executable.InvalidPhpExecutableException;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.cake3.commands.Cake3Script;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule;
 import org.openide.util.NbBundle;
 
 /**
@@ -45,7 +45,7 @@ public class CakeServerAction extends CakePHP3BaseAction {
     @Override
     protected void actionPerformed(PhpModule phpModule) {
         // via shortcut
-        if (!CakePHP3Module.isCakePHP(phpModule)) {
+        if (!CakePHPModule.isCakePHP(phpModule)) {
             return;
         }
         try {

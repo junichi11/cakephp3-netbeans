@@ -15,8 +15,8 @@
  */
 package org.netbeans.modules.php.cake3.modules;
 
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Base;
-import org.netbeans.modules.php.cake3.modules.CakePHP3Module.Category;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Base;
+import org.netbeans.modules.php.cake3.modules.CakePHPModule.Category;
 import org.openide.filesystems.FileObject;
 
 /**
