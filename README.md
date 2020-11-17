@@ -34,7 +34,7 @@ You can update to the new version by the same way as the install. You don't have
 ## How To Enable
 
 - Open the project properties dialog (Right-Click your project > properties)
-- Frameworks > CakePHP3 > Check `Enabled`
+- Frameworks > CakePHP3/4 > Check `Enabled`
 
 ## Use Your Custom Directory Structure
 
@@ -146,12 +146,12 @@ $this->Html->docType('[Ctrl+Space]');
 ```
 
 **NOTE**
-At first, add a semicolon(<kbd>;</kbd>) if you want to use code completions for parameters. Tips: You can add it like the following: <kbd>Ctrl</kbd>+<kbd>;</kbd>
+Please add a semicolon(<kbd>;</kbd>) if you want to use code completions for parameters. Tips: You can add it like the following: <kbd>Ctrl</kbd>+<kbd>;</kbd>
 
 ### Smart Go To
 
 This feature is not enabled by default. If you want to use it, please set the KeyMap to it.
-(Tools > Options > Keymap > Search `CakePHP` > CakePHP3: Smart Go To > e.g. set <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>J</kbd>) 
+(Tools > Options > Keymap > Search `CakePHP` > CakePHP3/4: Smart Go To > e.g. set <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>J</kbd>) 
 
 Files related to the current editor are shown when you run this action.
 e.g. If your current file is a Controller, template, table, entity, testcase, conponent and helper file(s) will be shown.
