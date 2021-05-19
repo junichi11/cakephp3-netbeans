@@ -73,8 +73,23 @@ public class MVCNodeFactory implements NodeFactory {
             List<Node> list = new ArrayList<>();
             for (Object object : getAvailableCustomNodeList()) {
                 List<FileObject> rootDirectories = Collections.emptyList();
+                StringBuilder displayName = new StringBuilder();
                 if (object instanceof Category) {
-                    rootDirectories = cakeModule.getDirectories(Base.APP, (Category) object, null);
+                    Category category = (Category) object;
+                    switch (category) {
+                        case SHELL_HELPER:
+                            displayName.append(" (Shell)"); // NOI18N
+                            break;
+                        case TEMPLATE_CELL:
+                            displayName.append(" (Template)"); // NOI18N
+                            break;
+                        case VIEW_CELL:
+                            displayName.append(" (View)"); // NOI18N
+                            break;
+                        default:
+                            break;
+                    }
+                    rootDirectories = cakeModule.getDirectories(Base.APP, category, null);
                 } else if (object == Base.PLUGIN) {
                     List<FileObject> appDirectories = cakeModule.getDirectories(Base.APP);
                     if (!appDirectories.isEmpty()) {
@@ -90,9 +105,11 @@ public class MVCNodeFactory implements NodeFactory {
                 FileObject rootDirectory = rootDirectories.get(0);
                 DataFolder folder = getFolder(rootDirectory);
                 if (folder != null) {
-                    list.add(new MVCNode(folder, null, rootDirectory.getName()));
+                    displayName.insert(0, rootDirectory.getName());
+                    list.add(new MVCNode(folder, null, displayName.toString()));
                 }
             }
+            list.sort((o1, o2) -> o1.getDisplayName().compareTo(o2.getDisplayName()));
             return list;
         }
 
@@ -107,11 +124,23 @@ public class MVCNodeFactory implements NodeFactory {
                     case "Controller": // NOI18N
                         list.add(Category.CONTROLLER);
                         break;
+                    case "Command": // NOI18N
+                        list.add(Category.COMMAND);
+                        break;
                     case "Component": // NOI18N
                         list.add(Category.COMPONENT);
                         break;
                     case "View": // NOI18N
                         list.add(Category.VIEW);
+                        break;
+                    case "View/Cell": // NOI18N
+                        list.add(Category.VIEW_CELL);
+                        break;
+                    case "Mailer": // NOI18N
+                        list.add(Category.Mailer);
+                        break;
+                    case "Middleware": // NOI18N
+                        list.add(Category.Middleware);
                         break;
                     case "Model": // NOI18N
                         list.add(Category.MODEL);
@@ -128,11 +157,20 @@ public class MVCNodeFactory implements NodeFactory {
                     case "Entity": // NOI18N
                         list.add(Category.ENTITY);
                         break;
+                    case "Fixture": // NOI18N
+                        list.add(Category.FIXTURE);
+                        break;
                     case "Form": // NOI18N
                         list.add(Category.FORM);
                         break;
                     case "Shell": // NOI18N
                         list.add(Category.SHELL);
+                        break;
+                    case "Shell/Helper": // NOI18N
+                        list.add(Category.SHELL_HELPER);
+                        break;
+                    case "Shell/Task": // NOI18N
+                        list.add(Category.TASK);
                         break;
                     case "Table": // NOI18N
                         list.add(Category.TABLE);
@@ -140,9 +178,18 @@ public class MVCNodeFactory implements NodeFactory {
                     case "Template": // NOI18N
                         list.add(Category.TEMPLATE);
                         break;
+                    case "Template/Cell": // NOI18N
+                        list.add(Category.TEMPLATE_CELL);
+                        break;
+                    case "TestCase": // NOI18N
+                        list.add(Category.TEST_CASE);
+                        break;
                     case "app/plugins": // NOI18N
                         // XXX this is not proper
                         list.add(Base.PLUGIN);
+                        break;
+                    case "config/Seeds": // NOI18N
+                        list.add(Category.SEEDS);
                         break;
                     default:
                         break;

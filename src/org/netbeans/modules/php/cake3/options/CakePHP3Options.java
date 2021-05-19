@@ -47,13 +47,23 @@ public class CakePHP3Options {
     public static final List<String> ALL_AVAILABLE_NODES = new ArrayList<>(DEFAULT_AVAILABLE_NODES);
 
     static {
+        ALL_AVAILABLE_NODES.add("Command"); // NOI18N
         ALL_AVAILABLE_NODES.add("Element"); // NOI18N
         ALL_AVAILABLE_NODES.add("Entity"); // NOI18N
+        ALL_AVAILABLE_NODES.add("Fixture"); // NOI18N
         ALL_AVAILABLE_NODES.add("Form"); // NOI18N
+        ALL_AVAILABLE_NODES.add("Mailer"); // NOI18N
+        ALL_AVAILABLE_NODES.add("Middleware"); // NOI18N
         ALL_AVAILABLE_NODES.add("Shell"); // NOI18N
+        ALL_AVAILABLE_NODES.add("Shell/Helper"); // NOI18N
+        ALL_AVAILABLE_NODES.add("Shell/Task"); // NOI18N
         ALL_AVAILABLE_NODES.add("Table"); // NOI18N
         ALL_AVAILABLE_NODES.add("Template"); // NOI18N
+        ALL_AVAILABLE_NODES.add("Template/Cell"); // NOI18N
+        ALL_AVAILABLE_NODES.add("TestCase"); // NOI18N
+        ALL_AVAILABLE_NODES.add("View/Cell"); // NOI18N
         ALL_AVAILABLE_NODES.add("app/plugins"); // NOI18N
+        ALL_AVAILABLE_NODES.add("config/Seeds"); // NOI18N
         Collections.sort(ALL_AVAILABLE_NODES);
     }
 

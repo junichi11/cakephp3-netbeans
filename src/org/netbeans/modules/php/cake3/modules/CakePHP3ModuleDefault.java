@@ -389,6 +389,10 @@ public class CakePHP3ModuleDefault extends CakePHPModuleImpl {
                 sb.append(getSrcDirName(base));
                 sb.append("/Controller"); // NOI18N
                 break;
+            case COMMAND:
+                sb.append(getSrcDirName(base));
+                sb.append("/Command"); // NOI18N
+                break;
             case COMPONENT:
                 sb.append(getSrcDirName(base));
                 sb.append("/Controller/Component"); // NOI18N
@@ -446,6 +450,14 @@ public class CakePHP3ModuleDefault extends CakePHPModuleImpl {
                 sb.append(getSrcDirName(base));
                 sb.append("/Locale"); // NOI18N
                 break;
+            case Mailer:
+                sb.append(getSrcDirName(base));
+                sb.append("/Mailer"); // NOI18N
+                break;
+            case Middleware:
+                sb.append(getSrcDirName(base));
+                sb.append("/Middleware"); // NOI18N
+                break;
             case MODEL:
                 sb.append(getSrcDirName(base));
                 sb.append("/Model"); // NOI18N
@@ -454,9 +466,19 @@ public class CakePHP3ModuleDefault extends CakePHPModuleImpl {
                 sb.append(getSrcDirName(base));
                 sb.append("/Template/Pages"); // NOI18N
                 break;
+            case PLUGINS:
+                sb.append("plugins"); // NOI18N
+                break;
+            case SEEDS:
+                sb.append("config/Seeds"); // NOI18N
+                break;
             case SHELL:
                 sb.append(getSrcDirName(base));
                 sb.append("/Shell"); // NOI18N
+                break;
+            case SHELL_HELPER:
+                sb.append(getSrcDirName(base));
+                sb.append("/Shell/Helper"); // NOI18N
                 break;
             case TABLE:
                 sb.append(getSrcDirName(base));
