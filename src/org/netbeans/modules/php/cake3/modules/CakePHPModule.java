@@ -39,11 +39,11 @@ public class CakePHPModule {
     public static String PROPERTY_CHANGE_CAKE3 = "property-change-cake3"; // NOI18N
 
     public enum Category {
-
         BEHAVIOR("Behavior"), // NOI18N
         CONFIG(""), // NOI18N
         CONSOLE(""), // NOI18N
         CONTROLLER("Controller"), // NOI18N
+        COMMAND("Command"), // NOI18N
         COMPONENT("Component"), // NOI18N
         CSS(""), // NOI18N
         DIR(""), // NOI18N
@@ -59,8 +59,13 @@ public class CakePHPModule {
         LAYOUT(""), // NOI18N
         LOCALE(""), // NOI18N
         MODEL(""), // NOI18N
+        Mailer("Mailer"), // NOI18N
+        Middleware("Middleware"), // NOI18N
         PAGES(""), // NOI18N
+        PLUGINS(""), // NOI18N
+        SEEDS("Seed"), // NOI18N
         SHELL("Shell"), // NOI18N
+        SHELL_HELPER("Helper"), // NOI18N
         TABLE("Table"), // NOI18N
         TASK("Task"), // NOI18N
         TEMPLATE(""), // NOI18N
@@ -84,7 +89,6 @@ public class CakePHPModule {
     }
 
     public enum Base {
-
         APP,
         PLUGIN,
         VENDOR,
