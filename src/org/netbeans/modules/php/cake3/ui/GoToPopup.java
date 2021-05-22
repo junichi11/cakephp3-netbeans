@@ -17,10 +17,14 @@ package org.netbeans.modules.php.cake3.ui;
 
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +33,10 @@ import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
@@ -129,22 +136,22 @@ public class GoToPopup extends JPanel implements FocusListener {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
 
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<GoToItem>();
-        filterTextField = new javax.swing.JTextField();
+        jLabel1 = new JLabel();
+        jScrollPane1 = new JScrollPane();
+        jList1 = new JList<>();
+        filterTextField = new JTextField();
 
         setFocusCycleRoot(true);
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new GridBagLayout());
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel1.setText(caption
         );
         jLabel1.setFocusable(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         add(jLabel1, gridBagConstraints);
 
         jList1.setModel(createListModel());
@@ -152,40 +159,40 @@ public class GoToPopup extends JPanel implements FocusListener {
         jList1.setSelectedIndex(0);
         jList1.setVisibleRowCount(items.size()
         );
-        jList1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        jList1.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
                 jList1KeyPressed(evt);
             }
         });
-        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jList1.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
                 jList1MouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jList1);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(jScrollPane1, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         add(filterTextField, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
+    private void jList1MouseClicked(MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         // TODO add your handling code here:
         if (evt.getButton() == MouseEvent.BUTTON1 && evt.getClickCount() == 1) {
             openSelected();
         }
     }//GEN-LAST:event_jList1MouseClicked
 
-    private void jList1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jList1KeyPressed
+    private void jList1KeyPressed(KeyEvent evt) {//GEN-FIRST:event_jList1KeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER && evt.getModifiers() == 0) {
             openSelected();
@@ -326,10 +333,10 @@ public class GoToPopup extends JPanel implements FocusListener {
     }//GEN-LAST:event_jList1KeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField filterTextField;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<GoToItem> jList1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private JTextField filterTextField;
+    private JLabel jLabel1;
+    private JList<GoToItem> jList1;
+    private JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
     private void openSelected() {
