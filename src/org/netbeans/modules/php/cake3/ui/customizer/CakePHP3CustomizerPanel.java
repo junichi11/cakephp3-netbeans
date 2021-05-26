@@ -16,12 +16,21 @@
 package org.netbeans.modules.php.cake3.ui.customizer;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import javax.swing.GroupLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import org.openide.awt.Mnemonics;
 import org.openide.util.ChangeSupport;
+import org.openide.util.NbBundle;
 
 /**
  *
@@ -163,81 +172,80 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        generalLabel = new javax.swing.JLabel();
-        enabledCheckBox = new javax.swing.JCheckBox();
-        enabledMessageLabel = new javax.swing.JLabel();
-        pathSettingsLabel = new javax.swing.JLabel();
-        wwwRootLabel = new javax.swing.JLabel();
-        wwwRootTextField = new javax.swing.JTextField();
-        cssLabel = new javax.swing.JLabel();
-        cssTextField = new javax.swing.JTextField();
-        jsLabel = new javax.swing.JLabel();
-        jsTextField = new javax.swing.JTextField();
-        imgLabel = new javax.swing.JLabel();
-        imgTextField = new javax.swing.JTextField();
-        rootLabel = new javax.swing.JLabel();
-        rootTextField = new javax.swing.JTextField();
-        srcLabel = new javax.swing.JLabel();
-        srcTextField = new javax.swing.JTextField();
-        namespaceLabel = new javax.swing.JLabel();
-        namespaceTextField = new javax.swing.JTextField();
-        dotcakeLabel = new javax.swing.JLabel();
-        dotcakeTextField = new javax.swing.JTextField();
+        generalLabel = new JLabel();
+        enabledCheckBox = new JCheckBox();
+        enabledMessageLabel = new JLabel();
+        pathSettingsLabel = new JLabel();
+        wwwRootLabel = new JLabel();
+        wwwRootTextField = new JTextField();
+        cssLabel = new JLabel();
+        cssTextField = new JTextField();
+        jsLabel = new JLabel();
+        jsTextField = new JTextField();
+        imgLabel = new JLabel();
+        imgTextField = new JTextField();
+        rootLabel = new JLabel();
+        rootTextField = new JTextField();
+        srcLabel = new JLabel();
+        srcTextField = new JTextField();
+        namespaceLabel = new JLabel();
+        namespaceTextField = new JTextField();
+        dotcakeLabel = new JLabel();
+        dotcakeTextField = new JTextField();
 
-        org.openide.awt.Mnemonics.setLocalizedText(generalLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.generalLabel.text")); // NOI18N
+        Mnemonics.setLocalizedText(generalLabel, NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.generalLabel.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(enabledCheckBox, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.enabledCheckBox.text")); // NOI18N
-        enabledCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        Mnemonics.setLocalizedText(enabledCheckBox, NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.enabledCheckBox.text")); // NOI18N
+        enabledCheckBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 enabledCheckBoxActionPerformed(evt);
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(enabledMessageLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.enabledMessageLabel.text")); // NOI18N
+        Mnemonics.setLocalizedText(enabledMessageLabel, NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.enabledMessageLabel.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(pathSettingsLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.pathSettingsLabel.text")); // NOI18N
+        Mnemonics.setLocalizedText(pathSettingsLabel, NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.pathSettingsLabel.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(wwwRootLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.wwwRootLabel.text")); // NOI18N
+        Mnemonics.setLocalizedText(wwwRootLabel, NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.wwwRootLabel.text")); // NOI18N
 
-        wwwRootTextField.setText(org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.wwwRootTextField.text")); // NOI18N
+        wwwRootTextField.setText(NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.wwwRootTextField.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(cssLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.cssLabel.text")); // NOI18N
+        Mnemonics.setLocalizedText(cssLabel, NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.cssLabel.text")); // NOI18N
 
-        cssTextField.setText(org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.cssTextField.text")); // NOI18N
+        cssTextField.setText(NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.cssTextField.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jsLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.jsLabel.text")); // NOI18N
+        Mnemonics.setLocalizedText(jsLabel, NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.jsLabel.text")); // NOI18N
 
-        jsTextField.setText(org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.jsTextField.text")); // NOI18N
+        jsTextField.setText(NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.jsTextField.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(imgLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.imgLabel.text")); // NOI18N
+        Mnemonics.setLocalizedText(imgLabel, NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.imgLabel.text")); // NOI18N
 
-        imgTextField.setText(org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.imgTextField.text")); // NOI18N
+        imgTextField.setText(NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.imgTextField.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(rootLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.rootLabel.text")); // NOI18N
+        Mnemonics.setLocalizedText(rootLabel, NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.rootLabel.text")); // NOI18N
 
-        rootTextField.setText(org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.rootTextField.text")); // NOI18N
+        rootTextField.setText(NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.rootTextField.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(srcLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.srcLabel.text")); // NOI18N
+        Mnemonics.setLocalizedText(srcLabel, NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.srcLabel.text")); // NOI18N
 
-        srcTextField.setText(org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.srcTextField.text")); // NOI18N
+        srcTextField.setText(NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.srcTextField.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(namespaceLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.namespaceLabel.text")); // NOI18N
+        Mnemonics.setLocalizedText(namespaceLabel, NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.namespaceLabel.text")); // NOI18N
 
-        namespaceTextField.setText(org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.namespaceTextField.text")); // NOI18N
+        namespaceTextField.setText(NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.namespaceTextField.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(dotcakeLabel, org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.dotcakeLabel.text")); // NOI18N
+        Mnemonics.setLocalizedText(dotcakeLabel, NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.dotcakeLabel.text")); // NOI18N
 
-        dotcakeTextField.setText(org.openide.util.NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.dotcakeTextField.text")); // NOI18N
+        dotcakeTextField.setText(NbBundle.getMessage(CakePHP3CustomizerPanel.class, "CakePHP3CustomizerPanel.dotcakeTextField.text")); // NOI18N
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(12, 12, 12)
                                 .addComponent(enabledCheckBox))
@@ -246,27 +254,27 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
                         .addGap(50, 50, 50)
                         .addComponent(enabledMessageLabel))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                     .addComponent(pathSettingsLabel)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(12, 12, 12)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                             .addComponent(wwwRootLabel)
                                             .addComponent(rootLabel)
                                             .addComponent(srcLabel)))
                                     .addComponent(namespaceLabel)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(36, 36, 36)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                     .addComponent(cssLabel)
                                     .addComponent(imgLabel)
                                     .addComponent(jsLabel))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(wwwRootTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addComponent(wwwRootTextField, GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
                             .addComponent(cssTextField)
                             .addComponent(rootTextField)
                             .addComponent(srcTextField)
@@ -276,82 +284,81 @@ public class CakePHP3CustomizerPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(dotcakeLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dotcakeTextField)))
                 .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(generalLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(enabledCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(enabledMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(namespaceLabel)
-                    .addComponent(namespaceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(namespaceTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pathSettingsLabel)
                 .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(rootLabel)
-                    .addComponent(rootTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rootTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(srcLabel)
-                    .addComponent(srcTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(srcTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(wwwRootLabel)
-                    .addComponent(wwwRootTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cssTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(wwwRootTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(cssTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(cssLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(imgLabel)
-                    .addComponent(imgTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(imgTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(jsLabel)
-                    .addComponent(jsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(dotcakeLabel)
-                    .addComponent(dotcakeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(dotcakeTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void enabledCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enabledCheckBoxActionPerformed
+    private void enabledCheckBoxActionPerformed(ActionEvent evt) {//GEN-FIRST:event_enabledCheckBoxActionPerformed
         setAllComponentsEnabled(isCakePHP3Enabled());
     }//GEN-LAST:event_enabledCheckBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel cssLabel;
-    private javax.swing.JTextField cssTextField;
-    private javax.swing.JLabel dotcakeLabel;
-    private javax.swing.JTextField dotcakeTextField;
-    private javax.swing.JCheckBox enabledCheckBox;
-    private javax.swing.JLabel enabledMessageLabel;
-    private javax.swing.JLabel generalLabel;
-    private javax.swing.JLabel imgLabel;
-    private javax.swing.JTextField imgTextField;
-    private javax.swing.JLabel jsLabel;
-    private javax.swing.JTextField jsTextField;
-    private javax.swing.JLabel namespaceLabel;
-    private javax.swing.JTextField namespaceTextField;
-    private javax.swing.JLabel pathSettingsLabel;
-    private javax.swing.JLabel rootLabel;
-    private javax.swing.JTextField rootTextField;
-    private javax.swing.JLabel srcLabel;
-    private javax.swing.JTextField srcTextField;
-    private javax.swing.JLabel wwwRootLabel;
-    private javax.swing.JTextField wwwRootTextField;
+    private JLabel cssLabel;
+    private JTextField cssTextField;
+    private JLabel dotcakeLabel;
+    private JTextField dotcakeTextField;
+    private JCheckBox enabledCheckBox;
+    private JLabel enabledMessageLabel;
+    private JLabel generalLabel;
+    private JLabel imgLabel;
+    private JTextField imgTextField;
+    private JLabel jsLabel;
+    private JTextField jsTextField;
+    private JLabel namespaceLabel;
+    private JTextField namespaceTextField;
+    private JLabel pathSettingsLabel;
+    private JLabel rootLabel;
+    private JTextField rootTextField;
+    private JLabel srcLabel;
+    private JTextField srcTextField;
+    private JLabel wwwRootLabel;
+    private JTextField wwwRootTextField;
     // End of variables declaration//GEN-END:variables
 
     //~ Inner class
