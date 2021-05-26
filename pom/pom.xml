@@ -4,7 +4,7 @@
     <groupId>com.junichi11.netbeans.modules</groupId>
     <artifactId>netbeans-cakephp3</artifactId>
     <!-- change the version of build.xml -->
-    <version>0.10.0</version>
+    <version>0.10.1</version>
     <packaging>nbm</packaging>
     <name>NetBeans CakePHP3/4 Framework</name>
     <url>https://github.com/junichi11/</url>
