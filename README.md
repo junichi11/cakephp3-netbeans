@@ -97,7 +97,7 @@ public $components = ['Foo', 'My.Bar', 'Bar' => ['className' => 'MyBar'] ];
 
 public initialize() {
     $this->loadComponent('Foo');
-    $this->laodComponent('Bar', ['className' => 'MyBar']);
+    $this->loadComponent('Bar', ['className' => 'MyBar']);
 }
 
 // in your Controller
